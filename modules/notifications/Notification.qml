@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Shapes
 import Quickshell
 import Quickshell.Services.Notifications
@@ -9,6 +10,7 @@ import Caelestia.Config
 import qs.components
 import qs.components.controls
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -21,9 +23,13 @@ StyledRect {
     readonly property int bodyTextFormat: /[<*_`#\[\]]/.test(modelData.body) ? Text.MarkdownText : Text.PlainText
     readonly property int nonAnimHeight: summary.implicitHeight + (root.expanded ? Tokens.spacing.extraSmall * 2 + appName.height + body.height + actions.height + actions.anchors.topMargin : bodyPreview.height) + inner.anchors.margins * 2
     property bool expanded: Config.notifs.openExpanded
+    readonly property bool critical: modelData.urgency === NotificationUrgency.Critical
+    readonly property bool low: modelData.urgency === NotificationUrgency.Low
 
-    color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3secondaryContainer : Colours.tPalette.m3surfaceContainer
-    radius: Tokens.rounding.large
+    color: critical ? Qt.tint(Hallownest.void_, Qt.alpha(Hallownest.grimm, 0.1)) : Hallownest.void_
+    radius: 14
+    border.width: 1
+    border.color: critical ? Qt.alpha(Hallownest.grimm, 0.55) : Hallownest.border
 
     implicitHeight: inner.implicitHeight
 
@@ -117,7 +123,7 @@ StyledRect {
 
                 sourceComponent: ClipRect {
                     radius: Tokens.rounding.full
-                    color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3error : root.modelData.urgency === NotificationUrgency.Low ? Colours.layer(Colours.palette.m3surfaceContainerHighest, 2) : Colours.palette.m3secondaryContainer
+                    color: root.critical ? Hallownest.grimm : root.low ? Hallownest.button : Qt.alpha(Hallownest.soul, 0.12)
                     implicitWidth: TokenConfig.sizes.notifs.image
                     implicitHeight: TokenConfig.sizes.notifs.image
 
@@ -148,7 +154,7 @@ StyledRect {
 
                 sourceComponent: StyledRect {
                     radius: Tokens.rounding.full
-                    color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3error : root.modelData.urgency === NotificationUrgency.Low ? Colours.layer(Colours.palette.m3surfaceContainerHighest, 2) : Colours.palette.m3secondaryContainer
+                    color: root.critical ? Hallownest.grimm : root.low ? Hallownest.button : Qt.alpha(Hallownest.soul, 0.12)
                     implicitWidth: root.hasImage ? Tokens.sizes.notifs.badge : TokenConfig.sizes.notifs.image
                     implicitHeight: root.hasImage ? Tokens.sizes.notifs.badge : TokenConfig.sizes.notifs.image
 
@@ -166,7 +172,7 @@ StyledRect {
                         sourceComponent: ColouredIcon {
                             anchors.fill: parent
                             source: Quickshell.iconPath(root.modelData.appIcon)
-                            colour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onError : root.modelData.urgency === NotificationUrgency.Low ? Colours.palette.m3onSurface : Colours.palette.m3onSecondaryContainer
+                            colour: root.critical ? Hallownest.void_ : Hallownest.soul
                             layer.enabled: root.modelData.appIcon.endsWith("symbolic")
                         }
                     }
@@ -179,7 +185,7 @@ StyledRect {
 
                         sourceComponent: MaterialIcon {
                             text: Icons.getNotifIcon(root.modelData.summary, root.modelData.urgency)
-                            color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onError : root.modelData.urgency === NotificationUrgency.Low ? Colours.palette.m3onSurface : Colours.palette.m3onSecondaryContainer
+                            color: root.critical ? Hallownest.void_ : Hallownest.soul
                             fontStyle: Tokens.font.icon.medium
                         }
                     }
@@ -200,7 +206,7 @@ StyledRect {
                     capStyle: ShapePath.RoundCap
                     fillColor: "transparent"
                     strokeWidth: 2
-                    strokeColor: Colours.palette.m3primary
+                    strokeColor: Hallownest.soul
 
                     PathAngleArc {
                         id: progressArc
@@ -232,7 +238,7 @@ StyledRect {
                 animate: true
                 text: appNameMetrics.elidedText
                 maximumLineCount: 1
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.label.medium
 
                 opacity: root.expanded ? 1 : 0
@@ -264,6 +270,10 @@ StyledRect {
                 text: summaryMetrics.elidedText
                 maximumLineCount: 1
                 height: implicitHeight
+                color: root.critical ? Hallownest.grimm : Hallownest.soul
+                font.family: Hallownest.serif
+                font.pointSize: 11
+                font.weight: Font.Bold
 
                 states: State {
                     name: "expanded"
@@ -315,7 +325,7 @@ StyledRect {
                 anchors.leftMargin: Tokens.spacing.small
 
                 text: "•"
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.body.small
 
                 states: State {
@@ -343,7 +353,7 @@ StyledRect {
                 animate: true
                 horizontalAlignment: Text.AlignLeft
                 text: root.modelData.timeStr
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.body.small
             }
 
@@ -359,7 +369,7 @@ StyledRect {
 
                 StateLayer {
                     radius: Tokens.rounding.full
-                    color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onSecondaryContainer : Colours.palette.m3onSurface
+                    color: root.critical ? Hallownest.grimm : Hallownest.text
                     onClicked: root.expanded = !root.expanded
                 }
 
@@ -393,7 +403,7 @@ StyledRect {
                 animate: true
                 textFormat: root.bodyTextFormat
                 text: bodyPreviewMetrics.elidedText
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.body.small
 
                 opacity: root.expanded ? 0 : 1
@@ -425,7 +435,7 @@ StyledRect {
                 animate: true
                 textFormat: root.bodyTextFormat
                 text: root.modelData.body
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.body.small
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 height: text ? implicitHeight : 0
@@ -447,7 +457,7 @@ StyledRect {
                 }
             }
 
-            ButtonRow {
+            RowLayout {
                 id: actions
 
                 anchors.left: body.left
@@ -464,54 +474,36 @@ StyledRect {
                     }
                 }
 
-                IconButton {
-                    isRound: true
-                    shapeMorph: true
-                    fillWidth: root.modelData.actions.length === 0
-                    inactiveColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3secondary : Colours.layer(Colours.palette.m3surfaceContainerHighest, 2)
-                    inactiveOnColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onSecondary : Colours.palette.m3onSurfaceVariant
+                HkButton {
+                    Layout.fillWidth: root.modelData.actions.length === 0
+                    implicitHeight: 28
                     icon: "close"
-                    padding: Tokens.padding.extraSmall
                     onClicked: root.modelData.close()
                 }
 
                 Repeater {
                     model: root.modelData.actions
 
-                    TextButton {
+                    HkButton {
                         required property var modelData
 
-                        isRound: true
-                        shapeMorph: true
-                        fillWidth: true
-                        inactiveColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3secondary : Colours.layer(Colours.palette.m3surfaceContainerHighest, 2)
-                        inactiveOnColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onSecondary : Colours.palette.m3onSurfaceVariant
+                        Layout.fillWidth: true
+                        implicitHeight: 28
                         text: modelData.text
+                        tinted: root.critical
+                        accent: Hallownest.grimm
                         onClicked: modelData.invoke()
-
-                        label.horizontalAlignment: Text.AlignHCenter
-                        label.anchors.left: left
-                        label.anchors.right: right
-                        label.anchors.verticalCenter: verticalCenter
-                        label.anchors.centerIn: undefined
-                        label.anchors.margins: Tokens.padding.medium
-                        label.elide: Text.ElideRight
                     }
                 }
 
-                IconButton {
-                    isRound: true
-                    shapeMorph: true
-                    fillWidth: root.modelData.actions.length === 0
-                    inactiveColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3secondary : Colours.layer(Colours.palette.m3surfaceContainerHighest, 2)
-                    inactiveOnColour: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onSecondary : Colours.palette.m3onSurfaceVariant
+                HkButton {
+                    Layout.fillWidth: root.modelData.actions.length === 0
+                    implicitHeight: 28
                     icon: copyTimer.running ? "inventory" : "content_copy"
-                    padding: Tokens.padding.extraSmall
                     onClicked: {
                         Quickshell.clipboardText = root.modelData.body;
                         copyTimer.restart();
                     }
-                    label.animate: true
 
                     Timer {
                         id: copyTimer

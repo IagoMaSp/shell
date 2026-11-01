@@ -237,6 +237,9 @@ Etapa 3 (rediseño por módulos), hecho hasta ahora:
 - Dock de notificaciones del sidebar: cabecera y contador en Cinzel, grupos como tarjetas con
   borde, botón de limpiar `HkButton`; sin notificaciones muestra una `Mask` apagada y "All up to
   date!" en Cinzel (ya no usa `Config.paths.noNotifsPic`).
+- Notificaciones emergentes (`notifications/Notification.qml`): fondo Vacío con borde acero;
+  críticas con tinte y borde rojo Grimm. Título en Cinzel (rojo si es crítica), icono de app sobre
+  círculo tenue, acciones como `HkButton` en un `RowLayout`. Las del dock usan la misma paleta.
 
 ## Convenciones de código
 
