@@ -54,7 +54,7 @@ StyledWindow {
     readonly property bool expanded: !hasFullscreen && (hovered || dragHovered || screenState.notch || Shelf.dragging)
     readonly property bool alertShown: Todos.alert !== null && !expanded && !hasFullscreen && Hypr.focusedMonitor?.name === screen.name
     readonly property bool osdShown: NotchOsd.current !== null && !alertShown && !expanded && !hasFullscreen && Hypr.focusedMonitor?.name === screen.name
-    readonly property bool richOsd: osdShown && ["bluetooth", "charger"].includes(NotchOsd.current?.kind)
+    readonly property bool richOsd: osdShown && ["bluetooth", "charger", "battery"].includes(NotchOsd.current?.kind)
     readonly property bool minimal: NotchSettings.minimal && !expanded && !osdShown && !alertShown
     readonly property bool mascotAllowed: NotchSettings.mascot && !hasFullscreen && !expanded && !minimal && !Pomodoro.running && !Todos.alert && Notifs.popups.length === 0
     property bool mascotShown
@@ -605,7 +605,8 @@ StyledWindow {
                     id: richView
 
                     readonly property var info: NotchOsd.current
-                    readonly property bool charger: info?.kind === "charger"
+                    readonly property bool charger: info?.kind === "charger" || info?.kind === "battery"
+                    readonly property bool low: info?.kind === "battery"
                     readonly property bool plugged: info?.icon === "battery_charging_full"
                     readonly property bool connected: info?.icon !== "bluetooth_disabled"
                     readonly property real value: info?.value ?? -1
@@ -683,16 +684,20 @@ StyledWindow {
                             spacing: 0
 
                             StyledText {
-                                text: richView.plugged ? Tr.tr("Soul Restoring") : Tr.tr("On battery")
-                                color: Hallownest.soul
+                                Layout.maximumWidth: 260
+                                text: richView.low ? richView.info.text : richView.plugged ? Tr.tr("Soul Restoring") : Tr.tr("On battery")
+                                color: richView.low && richView.info.critical ? Hallownest.grimm : Hallownest.soul
+                                elide: Text.ElideRight
                                 font.family: Hallownest.serif
                                 font.pointSize: 11
                                 font.weight: Font.Bold
                             }
 
                             StyledText {
-                                text: richView.plugged ? Tr.tr("Charger connected") : Tr.tr("Charger disconnected")
-                                color: richView.plugged ? Hallownest.lifebloodSoft : Hallownest.subtext
+                                Layout.maximumWidth: 260
+                                text: richView.low ? richView.info.sub : richView.plugged ? Tr.tr("Charger connected") : Tr.tr("Charger disconnected")
+                                color: richView.low ? Hallownest.infection : richView.plugged ? Hallownest.lifebloodSoft : Hallownest.subtext
+                                elide: Text.ElideRight
                                 font.pointSize: 9
                             }
                         }

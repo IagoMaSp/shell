@@ -17,7 +17,6 @@ Singleton {
     property bool wifiReady
 
     readonly property string wifiSsid: Nmcli.active?.ssid ?? ""
-    readonly property bool capsOsd: NotchSettings.values.osdCapsLock
 
     function show(kind: string, icon: string, text: string, value: real): void {
         if (!ready)
@@ -28,6 +27,22 @@ Singleton {
             text,
             value
         };
+        hideTimer.interval = NotchSettings.osdDuration;
+        hideTimer.restart();
+    }
+
+    function showBattery(title: string, message: string, icon: string, value: real, critical: bool): void {
+        if (!ready)
+            return;
+        current = {
+            kind: "battery",
+            icon,
+            text: title,
+            sub: message.replace(/<[^>]+>/g, ""),
+            value,
+            critical
+        };
+        hideTimer.interval = critical ? 9000 : 6000;
         hideTimer.restart();
     }
 
@@ -38,8 +53,7 @@ Singleton {
     }
 
     onWifiSsidChanged: wifiTimer.restart()
-    onCapsOsdChanged: GlobalConfig.utilities.toasts.capsLockChanged = !capsOsd
-    Component.onCompleted: GlobalConfig.utilities.toasts.capsLockChanged = !capsOsd
+    Component.onCompleted: GlobalConfig.utilities.toasts.capsLockChanged = false
 
     Timer {
         running: true
@@ -62,7 +76,6 @@ Singleton {
     Timer {
         id: hideTimer
 
-        interval: NotchSettings.osdDuration
         onTriggered: root.current = null
     }
 

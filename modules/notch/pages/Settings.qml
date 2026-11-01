@@ -206,6 +206,11 @@ NotchPage {
             }
 
             Toggle {
+                key: "osdBattery"
+                text: Tr.tr("Low battery")
+            }
+
+            Toggle {
                 key: "osdWifi"
                 text: Tr.tr("Wi-Fi")
             }

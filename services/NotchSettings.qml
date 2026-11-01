@@ -31,6 +31,7 @@ Singleton {
             osdCapsLock: true,
             osdKbLayout: true,
             osdCharger: true,
+            osdBattery: true,
             osdWifi: true,
             osdBluetooth: true
         })

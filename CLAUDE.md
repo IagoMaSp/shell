@@ -413,8 +413,12 @@ al rediseñar módulos.
   pomodoro), batería ≤15 % (llora) y ≤5 % (infectado), cambio de canción (cada 3 min como
   máximo) y todas las tareas hechas. Toggle `mascotReactions`. Prueba:
   `qs -c caelestia ipc call notch react <happy|vibe|sad|cry|infected>`.
-- `NotchOsd` sincroniza `utilities.toasts.capsLockChanged = !osdCapsLock` para que el toast de
-  Caps Lock de Caelestia no salga cuando lo muestra el notch.
+- `NotchOsd` pone siempre `utilities.toasts.capsLockChanged = false`: Caps Lock solo se avisa en
+  el notch (toggle `osdCapsLock`).
+- Batería baja: `BatteryMonitor` usa los `warnLevels` de `shell.json` y, con `osdBattery`, llama a
+  `NotchOsd.showBattery(title, message, icon, value, critical)` en vez del toast (también el
+  aviso de hibernación). Vista rica en el notch (título, mensaje naranja, pila roja) 6 s, 9 s si
+  es crítica.
 - Para probar sin tocar los datos del usuario: `XDG_STATE_HOME=<scratch>` (copiar
   `scheme.json` dentro) y un `zz_*.qml` que cree `NotchWindow` y capture
   `win.contentItem.children[0].grabToImage(...)`. Para probar Media sin reproductor: un servicio

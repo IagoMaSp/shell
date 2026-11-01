@@ -24,6 +24,10 @@ Scope {
         if (root.lastPercentage >= 0) {
             for (const level of root.warnLevels) {
                 if (p <= level.level && root.lastPercentage > level.level) {
+                    if (NotchSettings.values.osdBattery) {
+                        NotchOsd.showBattery(Tr.trMarked(level.title ?? Tr.tr("Battery warning")), Tr.trMarked(level.message ?? Tr.tr("Battery level is low")), level.icon ?? "battery_android_alert", p / 100, level.critical ?? false);
+                        break;
+                    }
                     Toaster.toast(Tr.trMarked(level.title ?? Tr.tr("Battery warning")), Tr.trMarked(level.message ?? Tr.tr("Battery level is low")), level.icon ?? "battery_android_alert", level.critical ? Toast.Error : Toast.Warning);
                     break;
                 }
@@ -31,7 +35,10 @@ Scope {
         }
 
         if (!hibernateTimer.running && p <= GlobalConfig.general.battery.criticalLevel) {
-            Toaster.toast(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", Toast.Error);
+            if (NotchSettings.values.osdBattery)
+                NotchOsd.showBattery(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", p / 100, true);
+            else
+                Toaster.toast(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", Toast.Error);
             hibernateTimer.start();
         }
 
