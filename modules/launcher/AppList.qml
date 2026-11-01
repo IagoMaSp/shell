@@ -6,6 +6,7 @@ import Caelestia.Config
 import qs.components
 import qs.components.containers
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.launcher.items
 import qs.modules.launcher.services
@@ -106,10 +107,8 @@ StyledListView {
     highlightRangeMode: ListView.ApplyRange
 
     highlightFollowsCurrentItem: false
-    highlight: StyledRect {
+    highlight: HkSelection {
         radius: Tokens.rounding.large
-        color: Colours.palette.m3onSurface
-        opacity: 0.08
 
         y: root.currentItem?.y ?? 0
         implicitWidth: root.width

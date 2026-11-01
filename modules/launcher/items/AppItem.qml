@@ -28,8 +28,8 @@ Item {
 
     Item {
         anchors.fill: parent
-        anchors.leftMargin: Tokens.padding.medium
-        anchors.rightMargin: Tokens.padding.medium
+        anchors.leftMargin: Tokens.padding.medium + 16
+        anchors.rightMargin: Tokens.padding.medium + 16
         anchors.margins: Tokens.padding.small
 
         IconImage {
@@ -54,7 +54,9 @@ Item {
                 id: name
 
                 text: root.modelData?.name ?? ""
-                font: Tokens.font.body.medium
+                color: Hallownest.soul
+                font.pointSize: Tokens.font.body.medium.pointSize
+                font.weight: Font.Medium
             }
 
             StyledText {
@@ -62,7 +64,7 @@ Item {
 
                 text: (root.modelData?.comment || root.modelData?.genericName || root.modelData?.name) ?? ""
                 font: Tokens.font.body.small
-                color: Colours.palette.m3outline
+                color: Hallownest.subtext
 
                 elide: Text.ElideRight
                 width: root.width - icon.width - favouriteIcon.width - Tokens.rounding.extraLargeIncreased
@@ -79,10 +81,11 @@ Item {
             anchors.right: parent.right
             active: root.modelData && Strings.testRegexList(GlobalConfig.launcher.favouriteApps, root.modelData.id)
 
-            sourceComponent: MaterialIcon {
-                text: "favorite"
-                fill: 1
-                color: Colours.palette.m3primary
+            sourceComponent: Rectangle {
+                implicitWidth: 8
+                implicitHeight: 8
+                rotation: 45
+                color: Hallownest.gold
             }
         }
     }

@@ -22,8 +22,8 @@ Item {
 
     Item {
         anchors.fill: parent
-        anchors.leftMargin: Tokens.padding.medium
-        anchors.rightMargin: Tokens.padding.medium
+        anchors.leftMargin: Tokens.padding.medium + 16
+        anchors.rightMargin: Tokens.padding.medium + 16
         anchors.margins: Tokens.padding.small
 
         MaterialIcon {

@@ -43,6 +43,8 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.margins: Tokens.padding.medium
+        anchors.leftMargin: Tokens.padding.medium + 16
+        anchors.rightMargin: Tokens.padding.medium + 16
 
         spacing: Tokens.spacing.medium
 
@@ -57,10 +59,10 @@ Item {
 
             color: {
                 if (text.includes("error: ") || text.includes("warning: "))
-                    return Colours.palette.m3error;
+                    return Hallownest.grimm;
                 if (!root.math)
-                    return Colours.palette.m3onSurfaceVariant;
-                return Colours.palette.m3onSurface;
+                    return Hallownest.subtext;
+                return Hallownest.soul;
             }
 
             text: root.math.length > 0 ? (Qalculator.result ? Tr.trMarked(Qalculator.result) : Tr.tr("Calculating...")) : Tr.tr("Type an expression to calculate")
@@ -71,7 +73,7 @@ Item {
         }
 
         StyledRect {
-            color: Colours.palette.m3tertiary
+            color: Hallownest.lifeblood
             radius: Tokens.rounding.large
             clip: true
 
@@ -88,7 +90,7 @@ Item {
                     root.list.screenState.launcher = false;
                 }
 
-                color: Colours.palette.m3onTertiary
+                color: Hallownest.void_
             }
 
             StyledText {
@@ -99,7 +101,7 @@ Item {
                 anchors.rightMargin: Tokens.spacing.small
 
                 text: Tr.tr("Open in calculator")
-                color: Colours.palette.m3onTertiary
+                color: Hallownest.void_
                 font: Tokens.font.label.medium
 
                 opacity: stateLayer.containsMouse ? 1 : 0
@@ -119,7 +121,7 @@ Item {
                 anchors.rightMargin: Tokens.padding.medium
 
                 text: "open_in_new"
-                color: Colours.palette.m3onTertiary
+                color: Hallownest.void_
                 fontStyle: Tokens.font.icon.large
             }
 

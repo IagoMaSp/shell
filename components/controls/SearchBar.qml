@@ -24,8 +24,14 @@ TextFieldBase {
         id: bg
 
         anchors.fill: parent
-        color: Colours.tPalette.m3surfaceContainer
+        color: Hallownest.card
         radius: Tokens.rounding.full
+        border.width: 1
+        border.color: root.activeFocus ? Qt.alpha(Hallownest.soul, 0.35) : Hallownest.border
+
+        Behavior on border.color {
+            CAnim {}
+        }
 
         StateLayer {
             id: stateLayer
@@ -65,7 +71,7 @@ TextFieldBase {
         anchors.leftMargin: Tokens.padding.large
 
         text: "search"
-        color: Colours.palette.m3onSurfaceVariant
+        color: root.activeFocus ? Hallownest.soul : Hallownest.steel
         fontStyle: Tokens.font.icon.builders.medium.scale(0.9).build()
     }
 

@@ -211,6 +211,7 @@ al rediseñar módulos.
 | `CharmNotches` | Muescas de amuleto con flechas (`notches`, `current`, `selected`, `stepped`) |
 | `IslandShape` | Forma pegada al borde superior con fillets (`w`, `h`, `radius`, `leftFillet`, `rightFillet`) |
 | `SoulVessel` / `SoulParticles` | Orbe con líquido / partículas de Alma |
+| `HkSelection` | Resaltado de lista con punteros ornamentados (`radius`, `inset`, `colour`) |
 | `HkRadio` | Opción con rombo que se rellena (`checked`, `text`, `accent`, señal `clicked`) |
 | `Mask` | Máscara de vida (silueta del Caballero con ojos): `filled`, `colour`, `glow`, `size` |
 
@@ -223,6 +224,11 @@ Etapa 3 (rediseño por módulos), hecho hasta ahora:
   volumen con `HkSlider` Lifeblood, interruptores `HkSwitch`, "Open settings" como `HkButton`
   teñido; reescanear redes y selector de perfil de energía con píldoras tenues. `TrayMenu`,
   `ActiveWindow` y `WirelessPassword` solo heredan la paleta.
+- Launcher: la selección es `HkSelection` (fondo tenue + punteros en rombo a los lados que
+  laten, como en los menús del juego); los ítems dejan 16 px extra a cada lado para ellos. Nombre
+  en blanco Alma, descripción gris, favoritas = rombo dorado. `SearchBar` (compartida con Nexus
+  y el menú de atajos): fondo `card`, borde acero que pasa a Alma con foco. Estado vacío con
+  título en Cinzel.
 
 ## Convenciones de código
 

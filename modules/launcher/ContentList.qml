@@ -124,7 +124,7 @@ Item {
 
         MaterialIcon {
             text: root.state === "wallpapers" ? "wallpaper_slideshow" : "manage_search"
-            color: Colours.palette.m3onSurfaceVariant
+            color: Hallownest.steel
             fontStyle: Tokens.font.icon.extraLarge
 
             anchors.verticalCenter: parent.verticalCenter
@@ -135,13 +135,15 @@ Item {
 
             StyledText {
                 text: root.state === "wallpapers" ? Tr.tr("No wallpapers found") : Tr.tr("No results")
-                color: Colours.palette.m3onSurfaceVariant
-                font: Tokens.font.body.builders.large.weight(Font.Medium).build()
+                color: Hallownest.soul
+                font.family: Hallownest.serif
+                font.pointSize: 13
+                font.weight: Font.Bold
             }
 
             StyledText {
                 text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? Tr.tr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : Tr.tr("Try searching for something else")
-                color: Colours.palette.m3onSurfaceVariant
+                color: Hallownest.subtext
                 font: Tokens.font.body.medium
             }
         }

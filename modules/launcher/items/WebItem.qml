@@ -37,13 +37,15 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.margins: Tokens.padding.medium
+        anchors.leftMargin: Tokens.padding.medium + 16
+        anchors.rightMargin: Tokens.padding.medium + 16
 
         spacing: Tokens.spacing.medium
 
         MaterialIcon {
             Layout.alignment: Qt.AlignVCenter
             text: root.isUrl ? "language" : "travel_explore"
-            color: Colours.palette.m3onSurfaceVariant
+            color: Hallownest.subtext
             fontStyle: Tokens.font.icon.extraLarge
         }
 
@@ -59,7 +61,7 @@ Item {
                         return root.site ? Tr.tr("Type something to search %1").arg(root.site.engine.name) : Tr.tr("Type something to search the web");
                     return root.isUrl ? Tr.tr("Open %1").arg(root.query) : Tr.tr("Search \"%1\"").arg(root.searchText);
                 }
-                color: root.searchText ? Colours.palette.m3onSurface : Colours.palette.m3onSurfaceVariant
+                color: root.searchText ? Hallownest.soul : Hallownest.subtext
                 font: Tokens.font.body.medium
                 elide: Text.ElideRight
             }
@@ -67,7 +69,7 @@ Item {
             StyledText {
                 Layout.fillWidth: true
                 text: root.isUrl ? WebSearch.browserName : Tr.tr("%1 in %2").arg(root.site?.engine.name ?? WebSearch.engineName).arg(WebSearch.browserName)
-                color: Colours.palette.m3outline
+                color: Hallownest.faint
                 font: Tokens.font.body.small
                 elide: Text.ElideRight
             }
@@ -76,7 +78,7 @@ Item {
         MaterialIcon {
             Layout.alignment: Qt.AlignVCenter
             text: "open_in_new"
-            color: Colours.palette.m3outline
+            color: Hallownest.faint
             fontStyle: Tokens.font.icon.large
         }
     }
