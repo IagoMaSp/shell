@@ -7,6 +7,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -30,7 +31,10 @@ ColumnLayout {
         Layout.topMargin: visible ? Tokens.padding.medium : 0
         Layout.rightMargin: Tokens.padding.extraSmall
         text: Tr.tr("Wireless")
-        font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: 10
+        font.weight: Font.Bold
     }
 
     Toggle {
@@ -175,10 +179,12 @@ ColumnLayout {
         implicitHeight: rescanBtn.implicitHeight + Tokens.padding.small
 
         radius: Tokens.rounding.full
-        color: Colours.palette.m3primaryContainer
+        color: Qt.alpha(Hallownest.lifeblood, 0.16)
+        border.width: 1
+        border.color: Qt.alpha(Hallownest.lifeblood, 0.35)
 
         StateLayer {
-            color: Colours.palette.m3onPrimaryContainer
+            color: Hallownest.lifeblood
             disabled: Nmcli.scanning || !Nmcli.wifiEnabled
             onClicked: Nmcli.rescanWifi()
         }
@@ -196,13 +202,13 @@ ColumnLayout {
                 Layout.topMargin: Math.round(fontInfo.pointSize * 0.0575)
                 animate: true
                 text: "wifi_find"
-                color: Colours.palette.m3onPrimaryContainer
+                color: Hallownest.lifeblood
             }
 
             StyledText {
                 Layout.topMargin: -Math.round(scanIcon.fontInfo.pointSize * 0.0575)
                 text: Tr.tr("Rescan networks")
-                color: Colours.palette.m3onPrimaryContainer
+                color: Hallownest.lifeblood
             }
 
             Behavior on opacity {
@@ -228,7 +234,10 @@ ColumnLayout {
         Layout.topMargin: visible ? Tokens.padding.medium : 0
         Layout.rightMargin: Tokens.padding.extraSmall
         text: Tr.tr("Ethernet")
-        font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: 10
+        font.weight: Font.Bold
     }
 
     StyledText {
@@ -390,7 +399,7 @@ ColumnLayout {
             text: parent.label
         }
 
-        StyledSwitch {
+        HkSwitch {
             id: toggle
         }
     }

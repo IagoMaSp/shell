@@ -21,13 +21,24 @@ Item {
         onClicked: root.screenState.session = !root.screenState.session
     }
 
+    Rectangle {
+        anchors.centerIn: parent
+        implicitWidth: icon.implicitHeight + 6
+        implicitHeight: implicitWidth
+        rotation: 45
+        radius: 4
+        color: Qt.alpha(Hallownest.grimm, 0.12)
+        border.width: 1
+        border.color: Qt.alpha(Hallownest.grimm, 0.55)
+    }
+
     MaterialIcon {
         id: icon
 
         anchors.centerIn: parent
 
         text: "power_settings_new"
-        color: Colours.palette.m3error
+        color: Hallownest.grimm
         fontStyle: Tokens.font.icon.builders.small.weight(Font.Bold).build()
     }
 }

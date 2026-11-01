@@ -12,6 +12,7 @@ Item {
     property color colour: Hallownest.soul
     property bool running
     property real phase
+    property bool ornate: true
     property real shown: Math.max(0, Math.min(1, level))
 
     function wave(offset: real, amp: real): string {
@@ -46,6 +47,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         anchors.margins: -6
+        visible: root.ornate
         radius: width / 2
         color: "transparent"
         border.width: 1
@@ -58,7 +60,7 @@ Item {
         layer.effect: MultiEffect {
             shadowEnabled: true
             shadowColor: root.colour
-            shadowOpacity: 0.5
+            shadowOpacity: root.ornate ? 0.5 : 0.35
             shadowBlur: 1
             shadowHorizontalOffset: 0
             shadowVerticalOffset: 0
@@ -69,8 +71,8 @@ Item {
             anchors.fill: parent
             radius: width / 2
             color: Hallownest.card
-            border.width: 2
-            border.color: Qt.alpha(Hallownest.steel, 0.45)
+            border.width: root.ornate ? 2 : 1.5
+            border.color: root.ornate ? Qt.alpha(Hallownest.steel, 0.45) : Qt.alpha(root.colour, 0.8)
 
             Shape {
                 anchors.fill: parent
@@ -81,7 +83,7 @@ Item {
                     strokeWidth: -1
 
                     PathSvg {
-                        path: root.wave(Math.PI, 3)
+                        path: root.wave(Math.PI, root.height / 37)
                     }
                 }
 
@@ -90,7 +92,7 @@ Item {
                     strokeWidth: -1
 
                     PathSvg {
-                        path: root.wave(0, 2.5)
+                        path: root.wave(0, root.height / 45)
                     }
                 }
             }

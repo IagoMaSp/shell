@@ -160,7 +160,9 @@ Column {
         StyledRect {
             id: indicator
 
-            color: Colours.palette.m3primary
+            color: Qt.alpha(Hallownest.soul, 0.12)
+            border.width: 1
+            border.color: Qt.alpha(Hallownest.soul, 0.45)
             radius: Tokens.rounding.full
             state: profiles.current
 
@@ -244,7 +246,7 @@ Column {
 
         StateLayer {
             radius: Tokens.rounding.full
-            color: profiles.current === parent.icon ? Colours.palette.m3onPrimary : Colours.palette.m3onSurface
+            color: Hallownest.soul
             onClicked: PowerProfiles.profile = parent.profile
         }
 
@@ -255,7 +257,7 @@ Column {
 
             text: parent.icon
             fontStyle: Tokens.font.icon.large
-            color: profiles.current === text ? Colours.palette.m3onPrimary : Colours.palette.m3onSurfaceVariant
+            color: profiles.current === text ? Hallownest.soul : Hallownest.subtext
             fill: profiles.current === text ? 1 : 0
 
             Behavior on fill {

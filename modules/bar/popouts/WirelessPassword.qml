@@ -187,7 +187,10 @@ ColumnLayout {
             StyledText {
                 Layout.alignment: Qt.AlignHCenter
                 text: Tr.tr("Enter password")
-                font: Tokens.font.body.builders.large.weight(Font.Medium).build()
+                color: Hallownest.steel
+                font.family: Hallownest.serif
+                font.pointSize: 12
+                font.weight: Font.Bold
             }
 
             StyledText {

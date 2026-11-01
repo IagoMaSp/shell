@@ -8,6 +8,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -23,7 +24,10 @@ ColumnLayout {
         Layout.topMargin: Tokens.padding.medium
         Layout.rightMargin: Tokens.padding.extraSmall
         text: Tr.tr("Bluetooth")
-        font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: 10
+        font.weight: Font.Bold
     }
 
     Toggle {
@@ -172,14 +176,13 @@ ColumnLayout {
         }
     }
 
-    IconTextButton {
+    HkButton {
         Layout.fillWidth: true
         Layout.topMargin: Tokens.spacing.medium
-        inactiveColour: Colours.palette.m3primaryContainer
-        inactiveOnColour: Colours.palette.m3onPrimaryContainer
-        verticalPadding: Tokens.padding.extraSmall
         text: Tr.tr("Open settings")
         icon: "settings"
+        tinted: true
+        accent: Hallownest.lifeblood
 
         onClicked: root.popouts.detachRequested("bluetooth")
     }
@@ -198,7 +201,7 @@ ColumnLayout {
             text: parent.label
         }
 
-        StyledSwitch {
+        HkSwitch {
             id: toggle
         }
     }

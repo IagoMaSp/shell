@@ -8,6 +8,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 
 Item {
@@ -17,14 +18,6 @@ Item {
 
     implicitWidth: Tokens.sizes.bar.audioWidth
     implicitHeight: layout.implicitHeight + Tokens.padding.medium * 2
-
-    ButtonGroup {
-        id: sinks
-    }
-
-    ButtonGroup {
-        id: sources
-    }
 
     ColumnLayout {
         id: layout
@@ -36,19 +29,19 @@ Item {
 
         StyledText {
             text: Tr.trCtx("Output device", "audio output device")
-            font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+            color: Hallownest.steel
+            font.family: Hallownest.serif
+            font.pointSize: 10
+            font.weight: Font.Bold
         }
 
         Repeater {
             model: Audio.sinks
 
-            StyledRadioButton {
-                id: control
-
+            HkRadio {
                 required property PwNode modelData
 
                 Layout.fillWidth: true
-                ButtonGroup.group: sinks
                 checked: Audio.sink?.id === modelData.id
                 onClicked: Audio.setAudioSink(modelData)
                 text: modelData.description
@@ -58,17 +51,19 @@ Item {
         StyledText {
             Layout.topMargin: Tokens.spacing.medium
             text: Tr.trCtx("Input device", "audio input device")
-            font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+            color: Hallownest.steel
+            font.family: Hallownest.serif
+            font.pointSize: 10
+            font.weight: Font.Bold
         }
 
         Repeater {
             model: Audio.sources
 
-            StyledRadioButton {
+            HkRadio {
                 required property PwNode modelData
 
                 Layout.fillWidth: true
-                ButtonGroup.group: sources
                 checked: Audio.source?.id === modelData.id
                 onClicked: Audio.setAudioSource(modelData)
                 text: modelData.description
@@ -78,7 +73,10 @@ Item {
         StyledText {
             Layout.topMargin: Tokens.spacing.medium
             text: Audio.muted ? Tr.tr("Volume (muted)") : Tr.tr("Volume (%1%)").arg(Math.round(Audio.volume * 100))
-            font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+            color: Hallownest.steel
+            font.family: Hallownest.serif
+            font.pointSize: 10
+            font.weight: Font.Bold
         }
 
         CustomMouseArea {
@@ -92,24 +90,24 @@ Item {
                     Audio.decrementVolume();
             }
 
-            StyledSlider {
+            HkSlider {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                implicitHeight: parent.implicitHeight
-
+                anchors.rightMargin: 8
+                anchors.verticalCenter: parent.verticalCenter
+                colour: Hallownest.lifeblood
                 value: Audio.volume
-                onInteraction: value => Audio.setVolume(value)
+                onMoved: value => Audio.setVolume(value)
             }
         }
 
-        IconTextButton {
+        HkButton {
             Layout.fillWidth: true
             Layout.topMargin: Tokens.spacing.medium
-            inactiveColour: Colours.palette.m3primaryContainer
-            inactiveOnColour: Colours.palette.m3onPrimaryContainer
-            verticalPadding: Tokens.padding.extraSmall
             text: Tr.tr("Open settings")
             icon: "settings"
+            tinted: true
+            accent: Hallownest.lifeblood
 
             onClicked: root.popouts.detachRequested("audio")
         }

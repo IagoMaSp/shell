@@ -43,7 +43,9 @@ StyledRect {
     y: start + mask.y
     implicitHeight: end - start
     radius: Tokens.rounding.full
-    color: Colours.palette.m3primary
+    color: Qt.alpha(Hallownest.soul, 0.08)
+    border.width: 1
+    border.color: Qt.alpha(Hallownest.soul, 0.22)
 
     Anim on start {
         id: startAnim
@@ -70,7 +72,7 @@ StyledRect {
 
         source: root.mask
         sourceColor: Colours.palette.m3onSurface
-        colorizationColor: Colours.palette.m3onPrimary
+        colorizationColor: Hallownest.soul
 
         x: 0
         y: -parent.start

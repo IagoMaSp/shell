@@ -8,6 +8,7 @@ import M3Shapes
 import Caelestia.Components
 import Caelestia.Config
 import qs.components
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -87,21 +88,25 @@ Item {
     Component {
         id: shapeComponent
 
-        MaterialShape {
-            implicitSize: Tokens.sizes.bar.innerWidth - Tokens.padding.small
+        Item {
+            implicitWidth: Tokens.sizes.bar.innerWidth - Tokens.padding.small
+            implicitHeight: implicitWidth
 
-            color: root.fgColour
-            scale: root.focused ? 2 / 3 : root.isOccupied ? 1 / 3 : 1 / 4
+            Mask {
+                anchors.centerIn: parent
+                size: parent.width * 0.62
+                filled: root.focused || root.isOccupied
+                colour: root.focused ? Hallownest.soul : Hallownest.steel
+                glow: root.focused
+                scale: root.focused ? 1 : root.isOccupied ? 0.78 : 0.62
 
-            animationEasing: Tokens.anim.expressiveDefaultSpatial
-            animationDuration: Tokens.anim.durations.expressiveDefaultSpatial * Tokens.anim.durations.scale
+                Behavior on colour {
+                    CAnim {}
+                }
 
-            Behavior on color {
-                CAnim {}
-            }
-
-            Behavior on scale {
-                Anim {}
+                Behavior on scale {
+                    Anim {}
+                }
             }
         }
     }

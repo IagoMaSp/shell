@@ -28,7 +28,10 @@ ColumnLayout {
         Layout.topMargin: Tokens.padding.medium
         Layout.rightMargin: Tokens.padding.extraSmall
         text: Tr.tr("Keyboard layouts")
-        font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: 10
+        font.weight: Font.Bold
     }
 
     ListView {
@@ -156,8 +159,9 @@ ColumnLayout {
             Layout.fillWidth: true
             text: kb.activeLabel
             elide: Text.ElideRight
-            font: Tokens.font.body.builders.medium.weight(Font.Medium).build()
-            color: Colours.palette.m3primary
+            color: Hallownest.soul
+            font.pointSize: 10
+            font.weight: Font.DemiBold
         }
 
         Connections {

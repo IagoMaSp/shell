@@ -211,6 +211,18 @@ al rediseñar módulos.
 | `CharmNotches` | Muescas de amuleto con flechas (`notches`, `current`, `selected`, `stepped`) |
 | `IslandShape` | Forma pegada al borde superior con fillets (`w`, `h`, `radius`, `leftFillet`, `rightFillet`) |
 | `SoulVessel` / `SoulParticles` | Orbe con líquido / partículas de Alma |
+| `HkRadio` | Opción con rombo que se rellena (`checked`, `text`, `accent`, señal `clicked`) |
+| `Mask` | Máscara de vida (silueta del Caballero con ojos): `filled`, `colour`, `glow`, `size` |
+
+Etapa 3 (rediseño por módulos), hecho hasta ahora:
+- Barra: workspaces como máscaras de vida (`Workspace.qml`, `shapeComponent`: activa blanca con
+  brillo, ocupada acero, vacía apagada); indicador activo = píldora tenue con borde. Batería =
+  mini `SoulVessel` (`ornate: false`; Lifeblood cargando, rojo ≤20 %). Apagado dentro de un
+  rombo rojo Grimm.
+- Popouts de la barra: cabeceras en Cinzel acero; dispositivos de audio con `HkRadio` (rombo),
+  volumen con `HkSlider` Lifeblood, interruptores `HkSwitch`, "Open settings" como `HkButton`
+  teñido; reescanear redes y selector de perfil de energía con píldoras tenues. `TrayMenu`,
+  `ActiveWindow` y `WirelessPassword` solo heredan la paleta.
 
 ## Convenciones de código
 
