@@ -7,6 +7,7 @@ import Quickshell.Services.Notifications
 import Caelestia.Config
 import qs.components
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -58,7 +59,9 @@ StyledRect {
 
     clip: true
     radius: Tokens.rounding.large
-    color: Colours.layer(Colours.palette.m3surfaceContainer, 2)
+    color: Hallownest.card
+    border.width: 1
+    border.color: Hallownest.border
 
     Behavior on implicitHeight {
         Anim {}

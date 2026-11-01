@@ -5,6 +5,7 @@ import Caelestia.I18n
 import Caelestia.State
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 
 StyledRect {
@@ -16,6 +17,8 @@ StyledRect {
 
     radius: Tokens.rounding.large
     color: Colours.tPalette.m3surfaceContainer
+    border.width: 1
+    border.color: Hallownest.border
     clip: true
 
     RowLayout {
@@ -64,9 +67,9 @@ StyledRect {
             }
         }
 
-        StyledSwitch {
+        HkSwitch {
             checked: RuntimeState.inhibitIdle
-            onToggled: RuntimeState.inhibitIdle = checked
+            onToggled: checked => RuntimeState.inhibitIdle = checked
         }
     }
 

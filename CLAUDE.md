@@ -212,6 +212,7 @@ al rediseñar módulos.
 | `IslandShape` | Forma pegada al borde superior con fillets (`w`, `h`, `radius`, `leftFillet`, `rightFillet`) |
 | `SoulVessel` / `SoulParticles` | Orbe con líquido / partículas de Alma |
 | `HkSelection` | Resaltado de lista con punteros ornamentados (`radius`, `inset`, `colour`) |
+| `HkToggle` | Botón de icono con estado (`icon`, `checked`, `isToggle`, `accent`) |
 | `HkRadio` | Opción con rombo que se rellena (`checked`, `text`, `accent`, señal `clicked`) |
 | `Mask` | Máscara de vida (silueta del Caballero con ojos): `filled`, `colour`, `glow`, `size` |
 
@@ -229,6 +230,13 @@ Etapa 3 (rediseño por módulos), hecho hasta ahora:
   en blanco Alma, descripción gris, favoritas = rombo dorado. `SearchBar` (compartida con Nexus
   y el menú de atajos): fondo `card`, borde acero que pasa a Alma con foco. Estado vacío con
   título en Cinzel.
+- Utilidades: toggles rápidos con `HkToggle` (tarjeta con icono y rombo bajo el icono cuando
+  está activo), "Keep awake" con `HkSwitch`, tarjetas con borde acero, cabecera en Cinzel.
+- Toasts de la shell (`utilities/toasts/ToastItem.qml`): fondo Vacío, icono en rombo y borde del
+  color del tipo (info Alma, éxito Unn, aviso Oro, error Grimm), título en Cinzel.
+- Dock de notificaciones del sidebar: cabecera y contador en Cinzel, grupos como tarjetas con
+  borde, botón de limpiar `HkButton`; sin notificaciones muestra una `Mask` apagada y "All up to
+  date!" en Cinzel (ya no usa `Config.paths.noNotifsPic`).
 
 ## Convenciones de código
 

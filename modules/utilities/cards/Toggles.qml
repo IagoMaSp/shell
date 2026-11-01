@@ -9,6 +9,7 @@ import Caelestia.I18n
 import Caelestia.State
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.nexus
 import qs.modules.bar.popouts as BarPopouts
@@ -42,6 +43,8 @@ StyledRect {
 
     radius: Tokens.rounding.large
     color: Colours.tPalette.m3surfaceContainer
+    border.width: 1
+    border.color: Hallownest.border
 
     ColumnLayout {
         id: layout
@@ -50,9 +53,9 @@ StyledRect {
         anchors.margins: Tokens.padding.large
         spacing: Tokens.spacing.medium
 
-        StyledText {
+        HkSection {
+            first: true
             text: Tr.tr("Quick toggles")
-            font: Tokens.font.body.medium
         }
 
         QuickToggleRow {
@@ -65,7 +68,7 @@ StyledRect {
         }
     }
 
-    component QuickToggleRow: ButtonRow {
+    component QuickToggleRow: RowLayout {
         property alias model: repeater.model
 
         Layout.fillWidth: true
@@ -113,7 +116,6 @@ StyledRect {
                     roleValue: "settings"
                     delegate: Toggle {
                         icon: "settings"
-                        inactiveOnColour: Colours.palette.m3onSurfaceVariant
                         isToggle: false
                         onClicked: {
                             root.screenState.utilities = false;
@@ -152,7 +154,6 @@ StyledRect {
                         checked: VPN.connected && VPN.status.state !== "needs-auth" && VPN.status.state !== "error"
                         enabled: !VPN.connecting && !VPN.disconnecting
                         isToggle: VPN.status.state !== "needs-auth" && VPN.status.state !== "error"
-                        inactiveOnColour: Colours.palette.m3onSurfaceVariant
                         onClicked: VPN.toggle()
                     }
                 }
@@ -160,11 +161,7 @@ StyledRect {
         }
     }
 
-    component Toggle: IconButton {
-        inactiveColour: Colours.layer(Colours.palette.m3surfaceContainerHighest, 2)
-        fillWidth: true
-        isToggle: true
-        isRound: true
-        shapeMorph: true
+    component Toggle: HkToggle {
+        Layout.fillWidth: true
     }
 }

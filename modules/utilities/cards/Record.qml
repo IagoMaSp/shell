@@ -21,6 +21,8 @@ StyledRect {
 
     radius: Tokens.rounding.large
     color: Colours.tPalette.m3surfaceContainer
+    border.width: 1
+    border.color: Hallownest.border
 
     Ref {
         service: Recorder
