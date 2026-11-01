@@ -69,7 +69,7 @@ Item {
         text: nonAnimPlaceholder.text
 
         animate: true
-        color: root.pam.passwd.active ? Colours.palette.m3secondary : Colours.palette.m3outline
+        color: root.pam.passwd.active ? Hallownest.lifeblood : Hallownest.faint
         font: Tokens.font.body.builders.medium.scale(root.centerScale).width(110).build()
 
         opacity: root.buffer ? 0 : 1
@@ -223,13 +223,15 @@ Item {
             }
         }
 
-        MaterialShape {
+        Rectangle {
             id: charShape
 
             anchors.centerIn: parent
-            implicitSize: charList.implicitHeight * 1.5
-            shape: root.shapeQueue[char.index % root.shapeQueue.length] ?? MaterialShape.Circle
-            color: Colours.palette.m3onSurface
+            implicitWidth: charList.implicitHeight * 0.55
+            implicitHeight: implicitWidth
+            rotation: 45
+            radius: 1.5
+            color: Hallownest.soul
 
             opacity: root.showPassword ? 0 : 1
 

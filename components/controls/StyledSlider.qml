@@ -15,12 +15,12 @@ Slider {
     property bool animateWave
     property real waveFrequency: 6
     property int waveDuration: 1000
-    property int radius: Tokens.rounding.medium
+    property int radius: 3
     property bool interactionOnMove: true
     readonly property bool dragging: mouse.pressed
 
-    property color fgColour: enabled ? Colours.palette.m3primary : Qt.alpha(Colours.palette.m3onSurface, 0.38)
-    property color bgColour: enabled ? Colours.palette.m3secondaryContainer : Qt.alpha(Colours.palette.m3onSurface, 0.1)
+    property color fgColour: enabled ? Hallownest.soul : Qt.alpha(Hallownest.steel, 0.4)
+    property color bgColour: enabled ? Qt.alpha(Hallownest.steel, 0.18) : Qt.alpha(Hallownest.steel, 0.08)
 
     property real pos: visualPosition
     property real filledWidth

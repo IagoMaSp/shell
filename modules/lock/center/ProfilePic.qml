@@ -1,12 +1,9 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import M3Shapes
-import Caelestia
-import Caelestia.Config
+import Quickshell.Widgets
 import Caelestia.Multimedia
-import qs.components
-import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -14,44 +11,62 @@ Item {
     id: root
 
     required property int centerWidth
-    readonly property color bgColour: Colours.tPalette.m3surfaceContainerHighest
+    readonly property real diameter: Math.round(centerWidth * 0.5)
 
     implicitWidth: Math.round(centerWidth * 0.7)
-    implicitHeight: {
-        CUtils.dependency(shape.height); // Force update when shape height changes
-        return shape.pathBounds().height;
-    }
+    implicitHeight: diameter + 28
 
-    MaterialShape {
-        id: shape
+    Rectangle {
+        id: ring
 
         anchors.centerIn: parent
-        implicitSize: root.implicitWidth
+        width: root.diameter + 18
+        height: width
+        radius: width / 2
+        color: "transparent"
+        border.width: 1
+        border.color: Qt.alpha(Hallownest.steel, 0.3)
 
-        shape: MaterialShape.ClamShell
-        color: Qt.alpha(root.bgColour, 1)
-        opacity: root.bgColour.a
-        layer.enabled: true
+        Repeater {
+            model: 4
+
+            Rectangle {
+                required property int index
+                readonly property real angle: index * Math.PI / 2 - Math.PI / 2
+
+                x: ring.width / 2 + Math.cos(angle) * ring.width / 2 - width / 2
+                y: ring.height / 2 + Math.sin(angle) * ring.height / 2 - height / 2
+                width: 7
+                height: 7
+                rotation: 45
+                color: Hallownest.steel
+            }
+        }
     }
 
-    MaterialIcon {
+    ClippingRectangle {
+        id: frame
+
         anchors.centerIn: parent
+        width: root.diameter
+        height: width
+        radius: width / 2
+        color: Hallownest.card
+        border.width: 2
+        border.color: Qt.alpha(Hallownest.soul, 0.45)
 
-        text: "person"
-        color: Colours.palette.m3onSurfaceVariant
-        fontStyle: Tokens.font.icon.size(root.centerWidth / 4).build()
-        visible: !pfp.ready
-    }
+        HealthMask {
+            anchors.centerIn: parent
+            size: root.diameter * 0.62
+            glow: true
+            visible: !pfp.ready
+        }
 
-    Visual {
-        id: pfp
+        Visual {
+            id: pfp
 
-        anchors.fill: shape
-        source: `${Paths.home}/.face`
-
-        layer.enabled: true
-        layer.effect: Mask {
-            maskSource: shape
+            anchors.fill: parent
+            source: `${Paths.home}/.face`
         }
     }
 }

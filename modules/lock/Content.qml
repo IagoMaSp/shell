@@ -50,7 +50,9 @@ RowLayout {
 
             bottomRightRadius: Tokens.rounding.extraLarge
             radius: Tokens.rounding.medium
-            color: Colours.tPalette.m3surfaceContainer
+            color: Hallownest.card
+            border.width: 1
+            border.color: Hallownest.border
 
             NotifDock {
                 lock: root.lock

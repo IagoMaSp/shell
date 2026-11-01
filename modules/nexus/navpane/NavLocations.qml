@@ -50,7 +50,9 @@ VerticalFadeFlickable {
                     return h % 2 === 0 ? h : h + 1;
                 }
 
-                color: isCurrentPage ? Colours.palette.m3secondaryContainer : Colours.layer(Colours.palette.m3surfaceContainerHigh, 2)
+                color: isCurrentPage ? Qt.alpha(Hallownest.soul, 0.08) : Hallownest.card
+                border.width: 1
+                border.color: isCurrentPage ? Qt.alpha(Hallownest.soul, 0.3) : Hallownest.border
 
                 topLeftRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryStart ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
                 topRightRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryStart ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
@@ -88,14 +90,16 @@ VerticalFadeFlickable {
                         implicitWidth: height
 
                         radius: Tokens.rounding.full
-                        color: item.isCurrentPage ? Colours.palette.m3primary : Colours.palette.m3secondaryContainer
+                        color: item.isCurrentPage ? Qt.alpha(Hallownest.soul, 0.14) : Hallownest.button
+                        border.width: 1
+                        border.color: item.isCurrentPage ? Qt.alpha(Hallownest.soul, 0.5) : Hallownest.border
 
                         MaterialIcon {
                             anchors.centerIn: parent
                             anchors.verticalCenterOffset: 1
 
                             text: item.modelData.icon
-                            color: item.isCurrentPage ? Colours.palette.m3onPrimary : Colours.palette.m3onSecondaryContainer
+                            color: item.isCurrentPage ? Hallownest.soul : Hallownest.subtext
                             fontStyle: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
                             grade: 25
                             fill: item.modelData.noFill ? 0 : 1

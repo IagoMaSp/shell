@@ -25,8 +25,10 @@ StyledRect {
     }
     implicitHeight: input.implicitHeight + Tokens.padding.small
 
-    color: Colours.tPalette.m3surfaceContainer
+    color: Hallownest.card
     radius: Tokens.rounding.full
+    border.width: 1
+    border.color: Hallownest.border
 
     focus: true
     onActiveFocusChanged: {
@@ -153,13 +155,16 @@ StyledRect {
                 return h % 2 === 0 ? h : h + 1;
             }
 
-            MaterialShape {
+            Rectangle {
                 anchors.fill: parent
+                anchors.margins: 4
 
-                color: root.lock.pam.buffer ? Colours.palette.m3primary : Colours.layer(Colours.palette.m3surfaceContainerHigh, 2)
-                shape: root.lock.pam.buffer ? MaterialShape.Arrow : MaterialShape.Circle
-                scale: !root.lock.pam.buffer ? 1 : mouse.pressed ? 0.6 : mouse.containsMouse ? 0.8 : 0.7
-                rotation: 90
+                radius: 6
+                color: root.lock.pam.buffer ? Hallownest.soul : Hallownest.button
+                border.width: 1
+                border.color: root.lock.pam.buffer ? Hallownest.soul : Hallownest.border
+                scale: mouse.pressed ? 0.85 : mouse.containsMouse ? 1.05 : 1
+                rotation: 45
 
                 Behavior on scale {
                     Anim {
@@ -186,9 +191,8 @@ StyledRect {
 
                 anchors.centerIn: parent
                 text: "arrow_forward"
-                color: Colours.palette.m3onSurfaceVariant
-                fontStyle: Tokens.font.icon.builders.medium.scale(root.centerScale * 1.2).build()
-                opacity: root.lock.pam.buffer ? 0 : 1
+                color: root.lock.pam.buffer ? Hallownest.void_ : Hallownest.subtext
+                fontStyle: Tokens.font.icon.builders.medium.scale(root.centerScale).build()
 
                 Behavior on opacity {
                     Anim {

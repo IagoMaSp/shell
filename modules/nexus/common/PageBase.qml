@@ -52,7 +52,10 @@ ColumnLayout {
             StyledText {
                 Layout.fillWidth: true
                 text: root.title
-                font: Tokens.font.title.large
+                color: Hallownest.soul
+                font.family: Hallownest.serif
+                font.pointSize: Tokens.font.title.large.pointSize + 2
+                font.weight: Font.Bold
                 elide: Text.ElideRight
             }
         }

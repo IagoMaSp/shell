@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Effects
 import Caelestia.Config
 import Caelestia.I18n
 import qs.components
@@ -23,8 +24,20 @@ Item {
 
         y: -root.calcTopOff(hourMetrics)
         text: Time.hourStr
-        color: Colours.palette.m3primary
-        font: Tokens.font.headline.builders.large.scale(7 * root.centerScale).width(30).build()
+        color: Hallownest.soul
+        font.family: Hallownest.serif
+        font.pointSize: Tokens.font.headline.large.pointSize * 6 * root.centerScale
+        font.weight: Font.Bold
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            shadowEnabled: true
+            shadowColor: Hallownest.soul
+            shadowOpacity: 0.35
+            shadowBlur: 1
+            shadowHorizontalOffset: 0
+            shadowVerticalOffset: 0
+            blurMax: 32
+        }
 
         TextMetrics {
             id: hourMetrics
@@ -41,8 +54,10 @@ Item {
         y: -root.calcTopOff(minuteMetrics)
 
         text: Time.minuteStr
-        color: Colours.palette.m3secondary
-        font: Tokens.font.headline.builders.large.scale((Units.twelveHourClock ? 3.8 : 7) * root.centerScale).width(30).build()
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: Tokens.font.headline.large.pointSize * (Units.twelveHourClock ? 3.3 : 6) * root.centerScale
+        font.weight: Font.Bold
 
         TextMetrics {
             id: minuteMetrics
@@ -61,7 +76,7 @@ Item {
         asynchronous: true
 
         sourceComponent: StyledRect {
-            color: Colours.tPalette.m3surfaceContainerHigh
+            color: Hallownest.card
             radius: Tokens.rounding.large
 
             implicitWidth: minuteMetrics.tightBoundingRect.width
@@ -79,8 +94,9 @@ Item {
                 }
 
                 text: Time.amPmStr
-                color: Colours.palette.m3onSurface
-                font: Tokens.font.headline.builders.small.scale(2 * root.centerScale).width(30).build()
+                color: Hallownest.soul
+                font.family: Hallownest.serif
+                font.pointSize: Tokens.font.headline.small.pointSize * 2 * root.centerScale
 
                 TextMetrics {
                     id: amPmMetrics

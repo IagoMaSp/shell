@@ -41,7 +41,7 @@ StyledRect {
     property color disabledOnColour: Qt.alpha(Colours.palette.m3onSurface, 0.38)
 
     property bool internalChecked
-    property real shapeMorphExpansion: shapeMorph && pressed ? 24 : 0 // Apparently it's always 24px no matter the width of the button
+    property real shapeMorphExpansion: 0
     readonly property color onColour: disabled ? disabledOnColour : internalChecked ? activeOnColour : inactiveOnColour
 
     property real pressedRadius: Tokens.rounding.small
@@ -52,16 +52,17 @@ StyledRect {
 
     onCheckedChanged: internalChecked = checked
 
-    radius: {
-        if (radiusMorph && pressed)
-            return pressedRadius;
-        if (internalChecked)
-            return checkedRadius;
-        if (isRound)
-            return (height || implicitHeight) / 2 * Math.min(1, Tokens.rounding.scale);
-        return defaultRadius;
-    }
+    radius: Math.min((height || implicitHeight) / 2, isRound ? 999 : 16)
     color: type === ButtonBase.Text ? "transparent" : disabled ? disabledColour : internalChecked ? activeColour : inactiveColour
+    border.width: type === ButtonBase.Text ? 0 : 1
+    border.color: internalChecked ? Qt.alpha(activeOnColour, 0.25) : Hallownest.border
+    scale: pressed ? 0.95 : 1
+
+    Behavior on scale {
+        Anim {
+            type: Anim.FastSpatial
+        }
+    }
 
     // Make size required so we don't forget to set it
     required implicitWidth

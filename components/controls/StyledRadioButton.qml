@@ -15,12 +15,13 @@ RadioButton {
     indicator: Rectangle {
         id: outerCircle
 
-        implicitWidth: 20
-        implicitHeight: 20
-        radius: Tokens.rounding.full
+        implicitWidth: 14
+        implicitHeight: 14
+        rotation: 45
+        radius: 2
         color: "transparent"
-        border.color: root.checked ? Colours.palette.m3primary : Colours.palette.m3onSurfaceVariant
-        border.width: 2
+        border.color: root.checked ? Hallownest.soul : Qt.alpha(Hallownest.steel, 0.7)
+        border.width: 1.5
         anchors.verticalCenter: parent.verticalCenter
 
         StateLayer {
@@ -32,11 +33,11 @@ RadioButton {
 
         StyledRect {
             anchors.centerIn: parent
-            implicitWidth: 8
-            implicitHeight: 8
+            implicitWidth: 6
+            implicitHeight: 6
 
-            radius: Tokens.rounding.full
-            color: Qt.alpha(Colours.palette.m3primary, root.checked ? 1 : 0)
+            radius: 1
+            color: Qt.alpha(Hallownest.soul, root.checked ? 1 : 0)
         }
 
         Behavior on border.color {

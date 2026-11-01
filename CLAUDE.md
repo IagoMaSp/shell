@@ -246,6 +246,17 @@ Etapa 3 (rediseño por módulos), hecho hasta ahora:
   etiqueta en Cinzel; enfocado o con hover se ilumina en su color: Logout Alma, Shutdown Grimm,
   Hibernate Lifeblood, Reboot Oro) y rombo indicador a la izquierda del enfocado. El hover da el
   foco; teclado (flechas, Tab, vim) igual que antes.
+- Pantalla de bloqueo: reloj en Cinzel (horas Alma con brillo, minutos acero), fecha en Cinzel
+  con rombo; foto de perfil en círculo con anillo y rombos (sin `.face` muestra `HealthMask`);
+  contraseña con rombos de Alma por carácter y botón de enviar en rombo; CPU/RAM/disco como
+  `SoulVessel` con texto contorneado y temperatura en píldora; clima con `WeatherIcon` del
+  notch; tarjetas con borde; fetch rebautizado `hallownest.sh` (logo del sistema o máscara).
+- Controles base (`components/controls/`, afectan a toda la shell y a Nexus): `StyledSwitch`
+  con rombo, `StyledRadioButton` en rombo, `ButtonBase` en píldora con borde y sin morph de
+  formas, `StyledSlider` en blanco Alma sobre pista acero.
+- Nexus: títulos de página y `SectionHeader` en Cinzel, `ConnectedRect` = `card`, menú lateral
+  con tarjetas con borde y la sección activa resaltada en blanco tenue.
+- Etapa 3 completa. Etapa 4 (independizarse de Caelestia: nombre, IPC, atajos, carpetas) pendiente.
 
 ## Convenciones de código
 

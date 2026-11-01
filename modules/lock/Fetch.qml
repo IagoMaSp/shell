@@ -8,6 +8,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -22,7 +23,9 @@ StyledRect {
 
     implicitHeight: layout.implicitHeight + layout.anchors.topMargin + layout.anchors.margins
     radius: Tokens.rounding.medium
-    color: Colours.tPalette.m3surfaceContainer
+    color: Hallownest.card
+    border.width: 1
+    border.color: Hallownest.border
 
     ColumnLayout {
         id: layout
@@ -43,7 +46,7 @@ StyledRect {
                 implicitWidth: prompt.implicitWidth + Tokens.padding.medium * 2
                 implicitHeight: prompt.implicitHeight + Tokens.padding.small * 2
 
-                color: Colours.palette.m3primary
+                color: Hallownest.soul
                 radius: Tokens.rounding.medium
 
                 MonoText {
@@ -51,13 +54,13 @@ StyledRect {
 
                     anchors.centerIn: parent
                     text: ">"
-                    color: Colours.palette.m3onPrimary
+                    color: Hallownest.void_
                 }
             }
 
             MonoText {
                 Layout.fillWidth: true
-                text: "caelestiafetch.sh"
+                text: "hallownest.sh"
                 elide: Text.ElideRight
             }
 
@@ -186,8 +189,9 @@ StyledRect {
     Component {
         id: caelestiaLogo
 
-        Logo {
-            width: height
+        HealthMask {
+            size: height
+            glow: true
         }
     }
 
@@ -197,7 +201,7 @@ StyledRect {
         ColouredIcon {
             source: SysInfo.osLogo
             implicitSize: height
-            colour: Colours.palette.m3primary
+            colour: Hallownest.soul
             layer.enabled: Config.lock.recolourLogo
         }
     }

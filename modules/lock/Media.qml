@@ -16,7 +16,7 @@ ClipRect {
 
     implicitHeight: layout.implicitHeight + layout.anchors.margins * 2
     radius: Tokens.rounding.extraLarge
-    color: Colours.tPalette.m3surfaceContainer
+    color: Hallownest.card
 
     FadeImage {
         anchors.fill: parent
@@ -58,7 +58,7 @@ ClipRect {
             Layout.fillWidth: true
             animate: true
             text: (Players.active?.trackTitle ?? Tr.tr("Nothing playing")) || Tr.tr("Unknown track")
-            color: Colours.palette.m3primary
+            color: Hallownest.soul
             horizontalAlignment: Text.AlignHCenter
             font: Tokens.font.title.medium
             elide: Text.ElideRight
@@ -68,7 +68,7 @@ ClipRect {
             Layout.fillWidth: true
             animate: true
             text: (Players.active?.trackArtist ?? Tr.tr("Try playing some music!")) || Tr.tr("Unknown artist")
-            color: Colours.palette.m3onSurfaceVariant
+            color: Hallownest.subtext
             horizontalAlignment: Text.AlignHCenter
             font: Tokens.font.body.small
             elide: Text.ElideRight
