@@ -189,6 +189,29 @@ build/               Salida de CMake; build/qml es el plugin que usa la shell
 - **Scripts de runtime**: ponerlos en `assets/` y referenciarlos con
   `Quickshell.shellPath("assets/x.py")`.
 
+### Librería Hallownest (`components/hallownest/`, `import qs.components.hallownest`)
+
+Componentes propios con la paleta fija `Hallownest` (`services/Hallownest.qml`: colores,
+`serif` = Cinzel, `mono`, flavour). Úsalos en vez de los controles M3 de `components/controls`
+al rediseñar módulos.
+
+| Componente | Para qué |
+|---|---|
+| `HkButton` | Píldora: `icon`, `text`, `filled`, `tinted` + `accent`, `disabled`, `iconAfter` |
+| `HkField` | Campo de texto en píldora (`leadingIcon`) |
+| `HkSwitch` | Interruptor con rombo (`checked`, señal `toggled(checked)`) |
+| `HkStepper` | − valor + (`value`, `from`, `to`, `stepSize`, `suffix`, señal `moved`) |
+| `HkSlider` | Barra fina con punta de Aguijón (`value`, `colour`, señal `moved`) |
+| `HkCheck` | Círculo de color que se rellena con check |
+| `HkSelect` | Desplegable (`options` strings u objetos `{text}`, `currentIndex`, `activated`) |
+| `HkCard` | Tarjeta oscura con borde; `ornate` añade filigrana |
+| `HkRow` | Fila de ajustes (`text`, `subtext`, `icon`, `first`/`last` redondean el grupo; hijos a la derecha) |
+| `HkSection` / `HkTitle` | Cabecera de sección / título en Cinzel |
+| `Filigree` | Ornamento de esquinas inferiores (`radius`, `inset`) |
+| `CharmNotches` | Muescas de amuleto con flechas (`notches`, `current`, `selected`, `stepped`) |
+| `IslandShape` | Forma pegada al borde superior con fillets (`w`, `h`, `radius`, `leftFillet`, `rightFillet`) |
+| `SoulVessel` / `SoulParticles` | Orbe con líquido / partículas de Alma |
+
 ## Convenciones de código
 
 - Orden dentro de cada objeto QML: `id`, propiedades, señales, funciones, bindings, hijos,
@@ -319,8 +342,6 @@ build/               Salida de CMake; build/qml es el plugin que usa la shell
   anima siempre y los del pronóstico solo con hover. Los iconos sin dibujo caen al glifo.
   Todas las páginas usan la paleta fija `Hallownest` (no `Colours`). Settings usa filas propias
   (`SettingRow`, interruptor con rombo, contador −/+) en vez de los de Nexus.
-- Controles propios del notch: `HkButton` (píldora; `filled`, `tinted` + `accent`), `HkField`
-  (campo de texto en píldora), `SoulVessel` (orbe con líquido ondulante), `NailSlider`.
 - Pomodoro: `SoulVessel` que se vacía (naranja Infección en foco, Lifeblood en descanso), hora
   grande en Cinzel, botones reset/play/selector de modo/saltar.
 - To-Do: dos columnas (tarjeta con `X/Y` en Cinzel, barra, Add task, Clear done + lista de

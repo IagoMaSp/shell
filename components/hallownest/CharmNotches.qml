@@ -10,7 +10,7 @@ Item {
     id: root
 
     required property int current
-    required property var pages
+    required property var notches
     readonly property bool expanded: hover.hovered
 
     signal selected(index: int)
@@ -41,7 +41,7 @@ Item {
         }
 
         Repeater {
-            model: root.pages
+            model: root.notches
 
             Item {
                 id: slot

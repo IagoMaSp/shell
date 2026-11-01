@@ -6,6 +6,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.containers
+import qs.components.hallownest
 import qs.services
 import qs.modules.notch
 
@@ -26,12 +27,12 @@ NotchPage {
             width: parent.width
             spacing: 2
 
-            Section {
+            HkSection {
                 first: true
                 text: Tr.tr("Theme")
             }
 
-            SettingRow {
+            HkRow {
                 first: true
                 last: true
                 text: Tr.tr("Flavour")
@@ -69,7 +70,7 @@ NotchPage {
                 }
             }
 
-            Section {
+            HkSection {
                 text: Tr.tr("Appearance")
             }
 
@@ -139,7 +140,7 @@ NotchPage {
                 to: 120
             }
 
-            Section {
+            HkSection {
                 text: Tr.tr("Productivity")
             }
 
@@ -169,7 +170,7 @@ NotchPage {
                 to: 60
             }
 
-            Section {
+            HkSection {
                 text: Tr.tr("System overlays")
             }
 
@@ -226,117 +227,18 @@ NotchPage {
         }
     }
 
-    component Section: StyledText {
-        property bool first
-
-        Layout.topMargin: first ? 0 : Tokens.spacing.large
-        Layout.bottomMargin: Tokens.spacing.small
-        Layout.leftMargin: Tokens.padding.small
-        color: Hallownest.steel
-        font.family: Hallownest.serif
-        font.pointSize: 10
-        font.weight: Font.Bold
-        font.letterSpacing: 0.8
-    }
-
-    component SettingRow: Rectangle {
-        id: row
-
-        property bool first
-        property bool last
-        property string text
-        property string subtext
-        default property alias content: trailing.data
-
-        Layout.fillWidth: true
-        implicitHeight: Math.max(44, labels.implicitHeight + 16)
-        topLeftRadius: first ? 14 : 4
-        topRightRadius: first ? 14 : 4
-        bottomLeftRadius: last ? 14 : 4
-        bottomRightRadius: last ? 14 : 4
-        color: Hallownest.card
-
-        ColumnLayout {
-            id: labels
-
-            anchors.left: parent.left
-            anchors.right: trailing.left
-            anchors.leftMargin: Tokens.padding.large
-            anchors.rightMargin: Tokens.spacing.medium
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 0
-
-            StyledText {
-                Layout.fillWidth: true
-                text: row.text
-                color: Hallownest.text
-                font.pointSize: 10
-                elide: Text.ElideRight
-            }
-
-            StyledText {
-                Layout.fillWidth: true
-                visible: text !== ""
-                text: row.subtext
-                color: Hallownest.subtext
-                font.pointSize: 8
-                elide: Text.ElideRight
-            }
-        }
-
-        Row {
-            id: trailing
-
-            anchors.right: parent.right
-            anchors.rightMargin: Tokens.padding.large
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: Tokens.spacing.small
-        }
-    }
-
-    component Toggle: SettingRow {
+    component Toggle: HkRow {
         id: toggle
 
         required property string key
-        readonly property bool checked: NotchSettings.values[key] ?? false
 
-        Rectangle {
-            implicitWidth: 38
-            implicitHeight: 20
-            radius: 10
-            color: toggle.checked ? Qt.alpha(Hallownest.lifeblood, 0.35) : Hallownest.button
-            border.width: 1
-            border.color: toggle.checked ? Qt.alpha(Hallownest.lifeblood, 0.7) : Hallownest.border
-
-            Behavior on color {
-                CAnim {}
-            }
-
-            Rectangle {
-                x: toggle.checked ? parent.width - width - 3 : 3
-                anchors.verticalCenter: parent.verticalCenter
-                implicitWidth: 14
-                implicitHeight: 14
-                rotation: 45
-                radius: 2
-                color: toggle.checked ? Hallownest.soul : Hallownest.steel
-
-                Behavior on x {
-                    Anim {
-                        type: Anim.FastSpatial
-                    }
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: NotchSettings.set(toggle.key, !toggle.checked)
-            }
+        HkSwitch {
+            checked: NotchSettings.values[toggle.key] ?? false
+            onToggled: checked => NotchSettings.set(toggle.key, checked)
         }
     }
 
-    component Stepper: SettingRow {
+    component Stepper: HkRow {
         id: stepper
 
         required property string key
@@ -344,38 +246,15 @@ NotchPage {
         property real from: 0
         property real to: 99
         property real stepSize: 1
-        readonly property real value: NotchSettings.values[key] ?? 0
-
-        function step(dir: int): void {
-            const next = Math.round((value + dir * stepSize) / stepSize) * stepSize;
-            NotchSettings.set(key, Math.max(from, Math.min(to, Number(next.toFixed(2)))));
-        }
 
         text: label
 
-        HkButton {
-            implicitHeight: 24
-            icon: "remove"
-            disabled: stepper.value <= stepper.from
-            onClicked: stepper.step(-1)
-        }
-
-        StyledText {
-            anchors.verticalCenter: parent.verticalCenter
-            width: 44
-            horizontalAlignment: Text.AlignHCenter
-            text: stepper.stepSize < 1 ? stepper.value.toFixed(2) : Math.round(stepper.value)
-            color: Hallownest.soul
-            font.family: Hallownest.mono
-            font.pointSize: 10
-            font.weight: Font.Bold
-        }
-
-        HkButton {
-            implicitHeight: 24
-            icon: "add"
-            disabled: stepper.value >= stepper.to
-            onClicked: stepper.step(1)
+        HkStepper {
+            value: NotchSettings.values[stepper.key] ?? 0
+            from: stepper.from
+            to: stepper.to
+            stepSize: stepper.stepSize
+            onMoved: value => NotchSettings.set(stepper.key, value)
         }
     }
 }

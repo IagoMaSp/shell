@@ -8,6 +8,7 @@ import Caelestia.I18n
 import qs.components
 import qs.components.containers
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.notch
 
@@ -31,17 +32,14 @@ NotchPage {
     implicitWidth: 580
     implicitHeight: Math.max(summary.implicitHeight, layout.implicitHeight)
 
-    Rectangle {
+    HkCard {
         id: summary
 
         anchors.left: parent.left
         anchors.top: parent.top
         implicitWidth: 150
         implicitHeight: Math.max(150, layout.implicitHeight)
-        radius: 14
-        color: Hallownest.card
-        border.width: 1
-        border.color: Hallownest.border
+        ornate: true
 
         ColumnLayout {
             anchors.centerIn: parent
@@ -202,37 +200,11 @@ NotchPage {
                     anchors.rightMargin: Tokens.padding.small
                     spacing: Tokens.spacing.small
 
-                    Item {
+                    HkCheck {
                         visible: !task.editing
-                        implicitWidth: 22
-                        implicitHeight: 22
-
-                        Rectangle {
-                            readonly property color c: root.colours[task.modelData.colour ?? 0]
-
-                            anchors.centerIn: parent
-                            implicitWidth: 15
-                            implicitHeight: 15
-                            radius: 7.5
-                            color: task.modelData.done ? c : "transparent"
-                            border.width: 1.5
-                            border.color: c
-
-                            MaterialIcon {
-                                anchors.centerIn: parent
-                                visible: task.modelData.done
-                                text: "check"
-                                color: Hallownest.void_
-                                fontStyle: Tokens.font.icon.small
-                                scale: 0.75
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: Todos.toggle(task.modelData.id)
-                        }
+                        checked: task.modelData.done
+                        colour: root.colours[task.modelData.colour ?? 0]
+                        onClicked: Todos.toggle(task.modelData.id)
                     }
 
                     ColourDot {

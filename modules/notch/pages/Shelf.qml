@@ -7,6 +7,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.notch
 
@@ -68,7 +69,7 @@ NotchPage {
     implicitWidth: hasItems ? summary.implicitWidth + Tokens.spacing.large + cellSize * columns : 420
     implicitHeight: hasItems ? Math.max(summary.implicitHeight, layout.implicitHeight) : layout.implicitHeight
 
-    Rectangle {
+    HkCard {
         id: summary
 
         anchors.left: parent.left
@@ -76,10 +77,7 @@ NotchPage {
         visible: root.hasItems
         implicitWidth: 140
         implicitHeight: Math.max(140, layout.implicitHeight)
-        radius: 14
-        color: Hallownest.card
-        border.width: 1
-        border.color: Hallownest.border
+        ornate: true
 
         ColumnLayout {
             anchors.centerIn: parent

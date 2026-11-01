@@ -8,9 +8,10 @@ import Caelestia.Config
 import qs.components
 import qs.components.controls
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
-import qs.modules.notch
 import qs.modules.calendar
+import qs.modules.notch
 
 CustomMouseArea {
     id: root

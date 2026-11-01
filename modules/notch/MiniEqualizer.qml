@@ -3,8 +3,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Effects
 import Caelestia.Services
+import qs.components.hallownest
 import qs.services
-import qs.modules.notch.mascot
 
 Item {
     id: root

@@ -12,6 +12,7 @@ Rectangle {
     property bool filled
     property bool tinted
     property bool disabled
+    property bool iconAfter
 
     signal clicked
 
@@ -45,6 +46,7 @@ Rectangle {
 
         anchors.centerIn: parent
         spacing: Tokens.spacing.extraSmall
+        layoutDirection: root.iconAfter ? Qt.RightToLeft : Qt.LeftToRight
 
         MaterialIcon {
             anchors.verticalCenter: parent.verticalCenter

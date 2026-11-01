@@ -14,6 +14,7 @@ import Caelestia.Services
 import qs.components
 import qs.components.containers
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.notch.mascot
 import qs.modules.notch.pages as Pages
@@ -454,20 +455,9 @@ StyledWindow {
                 }
 
                 Filigree {
-                    r: pill.radius
-                    h: pill.height
+                    anchors.fill: parent
+                    radius: pill.radius
                     opacity: root.expanded ? 0.22 : 0
-                }
-
-                Filigree {
-                    r: pill.radius
-                    h: pill.height
-                    opacity: root.expanded ? 0.22 : 0
-
-                    transform: Scale {
-                        origin.x: pill.width / 2
-                        xScale: -1
-                    }
                 }
 
                 Collapsed {
@@ -899,12 +889,12 @@ StyledWindow {
                             animate: true
                         }
 
-                        PageDots {
+                        CharmNotches {
                             id: dots
 
                             anchors.centerIn: parent
                             current: root.pageIndex
-                            pages: NotchPages.pages
+                            notches: NotchPages.pages
 
                             onSelected: index => root.goTo(index)
                             onStepped: delta => root.step(delta)
@@ -1245,44 +1235,6 @@ StyledWindow {
         Pages.Todo {
             screenState: root.screenState
             page: root.page
-        }
-    }
-
-    component Filigree: Shape {
-        id: fil
-
-        required property real r
-        required property real h
-        readonly property real d: 7
-
-        anchors.fill: parent
-        visible: opacity > 0
-        preferredRendererType: Shape.CurveRenderer
-
-        Behavior on opacity {
-            Anim {
-                type: Anim.DefaultEffects
-            }
-        }
-
-        ShapePath {
-            fillColor: "transparent"
-            strokeColor: Hallownest.steel
-            strokeWidth: 1
-            capStyle: ShapePath.RoundCap
-
-            PathSvg {
-                path: `M ${fil.d} ${fil.h - fil.r - 12} L ${fil.d} ${fil.h - fil.r} A ${fil.r - fil.d} ${fil.r - fil.d} 0 0 0 ${fil.r} ${fil.h - fil.d} L ${fil.r + 16} ${fil.h - fil.d}`
-            }
-        }
-
-        ShapePath {
-            fillColor: Hallownest.steel
-            strokeWidth: -1
-
-            PathSvg {
-                path: `M ${fil.r + 21} ${fil.h - fil.d - 2.5} l 2.5 2.5 l -2.5 2.5 l -2.5 -2.5 Z M ${fil.d} ${fil.h - fil.r - 17.5} l 2.5 2.5 l -2.5 2.5 l -2.5 -2.5 Z M ${fil.d + 5} ${fil.h - fil.d - 5} m 0 -1.5 l 1.5 1.5 l -1.5 1.5 l -1.5 -1.5 Z`
-            }
         }
     }
 }
