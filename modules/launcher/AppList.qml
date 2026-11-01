@@ -20,22 +20,59 @@ StyledListView {
 
     readonly property string requestedState: stateForText(search.text)
     readonly property string displayState: stateForText(displayText)
+    readonly property string calcExpression: calcExpressionForText(displayText)
+    readonly property string webQuery: webQueryForText(displayText)
 
     function syncDisplayText(): void {
         if (screenState.launcher && requestedState === displayState)
             displayText = search.text;
     }
 
+    // Plain text counts as a calculation when it starts with "=" or looks like maths
+    function isMath(text: string): bool {
+        const t = text.trim();
+        if (t.startsWith("="))
+            return true;
+        return /[\d)π]\s*[+\-*\/^×÷]\s*[\d(.√π]/.test(t) // 2+3, (1+2)*3
+            || /^-?[\d.,]+\s*[^\s\d]*\s+(to|in)\s+[^\s\d]+$/i.test(t) // 10 km to mi
+            || /^[\d.,]+\s*%\s+of\s+[\d.,]+$/i.test(t) // 15% of 200
+            || /^[\d.,]+\s*!$/.test(t) // 5!
+            || /^√\s*[\d(]/.test(t) // √2
+            || /^[a-z]+\(.*\d/i.test(t); // sqrt(16)
+    }
+
+    function calcExpressionForText(text: string): string {
+        const prefix = `${GlobalConfig.launcher.actionPrefix}calc `;
+        if (text.startsWith(prefix))
+            return text.slice(prefix.length);
+        if (text.startsWith(GlobalConfig.launcher.actionPrefix) || !isMath(text))
+            return "";
+        const t = text.trim();
+        return t.startsWith("=") ? t.slice(1).trim() : t;
+    }
+
+    function webQueryForText(text: string): string {
+        const prefix = `${GlobalConfig.launcher.actionPrefix}web `;
+        return text.startsWith(prefix) ? text.slice(prefix.length) : text;
+    }
+
     function stateForText(text: string): string {
         const prefix = GlobalConfig.launcher.actionPrefix;
         if (text.startsWith(prefix)) {
-            for (const action of ["calc", "scheme", "variant"])
+            for (const action of ["calc", "scheme", "variant", "web"])
                 if (text.startsWith(`${prefix}${action} `))
                     return action;
 
             return "actions";
         }
 
+        if (WebSearch.siteSearch(text))
+            return "web";
+        if (isMath(text))
+            return "calc";
+        // Fall back to a web search when nothing matches
+        if (text.trim() && !text.startsWith(GlobalConfig.launcher.specialPrefix) && Apps.search(text).length === 0)
+            return "web";
         return "apps";
     }
 
@@ -44,6 +81,7 @@ StyledListView {
         case "actions":
             return Actions.query(text);
         case "calc":
+        case "web":
             return [0];
         case "scheme":
             return Schemes.query(text);
@@ -87,6 +125,8 @@ StyledListView {
     onStateChanged: {
         if (state === "scheme" || state === "variant")
             Schemes.reload();
+        else if (state === "web")
+            WebSearch.reload();
     }
 
     Component.onCompleted: displayText = search.text
@@ -111,6 +151,13 @@ StyledListView {
 
             PropertyChanges {
                 root.delegate: calcItem
+            }
+        },
+        State {
+            name: "web"
+
+            PropertyChanges {
+                root.delegate: webItem
             }
         },
         State {
@@ -267,6 +314,14 @@ StyledListView {
         id: calcItem
 
         CalcItem {
+            list: root
+        }
+    }
+
+    Component {
+        id: webItem
+
+        WebItem {
             list: root
         }
     }

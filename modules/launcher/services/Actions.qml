@@ -24,7 +24,14 @@ Searcher {
 
         model: {
             const enableDangerous = GlobalConfig.launcher.enableDangerousActions;
-            return GlobalConfig.launcher.actions.values.filter(a => a.enabled && (enableDangerous || !a.dangerous));
+            const webAction = {
+                name: "Web search",
+                icon: "travel_explore",
+                description: "Search the web in Zen Browser",
+                command: ["autocomplete", "web"],
+                enabled: true
+            };
+            return [webAction, ...GlobalConfig.launcher.actions.values.filter(a => a.enabled && (enableDangerous || !a.dangerous))];
         }
 
         Action {}

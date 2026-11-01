@@ -69,11 +69,10 @@ Item {
                         Wallpapers.previewColourLock = true;
                     Wallpapers.setWallpaper(currentItem.modelData.path);
                     root.screenState.launcher = false;
+                } else if (list.currentList.state === "calc" || list.currentList.state === "web") {
+                    currentItem.onClicked();
                 } else if (text.startsWith(GlobalConfig.launcher.actionPrefix)) {
-                    if (text.startsWith(`${GlobalConfig.launcher.actionPrefix}calc `))
-                        currentItem.onClicked();
-                    else
-                        currentItem.modelData.onClicked(list.currentList);
+                    currentItem.modelData.onClicked(list.currentList);
                 } else {
                     Apps.launch(currentItem.modelData);
                     root.screenState.launcher = false;
@@ -87,6 +86,19 @@ Item {
         Keys.onEscapePressed: root.screenState.launcher = false
 
         Keys.onPressed: event => {
+            // Shift+Enter always searches the web, even if an app matches
+            if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier) && !list.showWallpapers) {
+                const prefix = GlobalConfig.launcher.actionPrefix;
+                const webPrefix = `${prefix}web `;
+                const query = text.startsWith(webPrefix) ? text.slice(webPrefix.length) : (text.startsWith(prefix) ? "" : text);
+                if (query.trim()) {
+                    WebSearch.open(query);
+                    root.screenState.launcher = false;
+                    event.accepted = true;
+                    return;
+                }
+            }
+
             if (!GlobalConfig.launcher.vimKeybinds)
                 return;
 

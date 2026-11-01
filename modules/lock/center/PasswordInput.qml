@@ -15,6 +15,10 @@ StyledRect {
     required property int centerWidth
     required property var lock
 
+    function isArrow(key: int): bool {
+        return key === Qt.Key_Up || key === Qt.Key_Down || key === Qt.Key_Left || key === Qt.Key_Right;
+    }
+
     implicitWidth: {
         const w = centerWidth * 0.8;
         return lock.pam.buffer ? w : Math.min(w, inputField.placeholderWidth + iconWrapper.implicitWidth + enterButton.implicitWidth + input.spacing * 2 + Tokens.padding.medium * 2);
@@ -34,10 +38,20 @@ StyledRect {
         if (root.lock.unlocking)
             return;
 
+        // Arrows never reach the password, so they control the lock screen games
+        if (root.isArrow(event.key)) {
+            root.lock.gameKey(event.key, true, event.isAutoRepeat);
+            return;
+        }
+
         if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return)
             inputField.placeholder.animate = false;
 
         root.lock.pam.handleKey(event);
+    }
+    Keys.onReleased: event => {
+        if (root.isArrow(event.key) && !event.isAutoRepeat)
+            root.lock.gameKey(event.key, false, false);
     }
 
     Behavior on implicitWidth {

@@ -17,6 +17,8 @@ WlSessionLockSurface {
 
     readonly property alias unlocking: unlockAnim.running
 
+    signal gameKey(key: int, pressed: bool, isRepeat: bool)
+
     contentItem.Config.screen: screen.name
     contentItem.Tokens.screen: screen.name
 

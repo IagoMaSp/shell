@@ -16,6 +16,9 @@ StyledRect {
 
     required property real rootHeight
     readonly property int cBoxSize: Tokens.font.body.medium.pointSize * 2
+    // Undertale human souls, with Determination in the middle
+    readonly property var souls: ["#42fcff", "#fca600", "#003cff", "#ff0000", "#d535d9", "#00c000", "#ffff00"]
+    readonly property var soulPixels: [".###...###.", "#####.#####", "###########", "###########", "###########", ".#########.", "..#######..", "...#####...", "....###....", ".....#....."]
 
     implicitHeight: layout.implicitHeight + layout.anchors.topMargin + layout.anchors.margins
     radius: Tokens.rounding.medium
@@ -143,15 +146,37 @@ StyledRect {
                 spacing: Tokens.spacing.largeIncreased
 
                 Repeater {
-                    model: CUtils.clamp(Math.floor((layout.width + coloursRow.spacing) / (root.cBoxSize + coloursRow.spacing)), 0, 8)
+                    model: {
+                        const count = CUtils.clamp(Math.floor((layout.width + coloursRow.spacing) / (root.cBoxSize + coloursRow.spacing)), 0, root.souls.length);
+                        const start = Math.floor((root.souls.length - count) / 2);
+                        return root.souls.slice(start, start + count);
+                    }
 
-                    StyledRect {
-                        required property int index
+                    Item {
+                        id: soul
 
-                        implicitWidth: implicitHeight
+                        required property color modelData
+
+                        implicitWidth: root.cBoxSize
                         implicitHeight: root.cBoxSize
-                        color: Colours.palette[`term${index}`]
-                        radius: Tokens.rounding.medium
+
+                        PixelArt {
+                            anchors.centerIn: parent
+                            rows: root.soulPixels
+                            pixelSize: root.cBoxSize / 11
+                            color: soul.modelData
+                            scale: soulHover.hovered ? 1.25 : 1
+
+                            Behavior on scale {
+                                Anim {
+                                    type: Anim.FastSpatial
+                                }
+                            }
+                        }
+
+                        HoverHandler {
+                            id: soulHover
+                        }
                     }
                 }
             }

@@ -11,7 +11,7 @@ Item {
     id: root
 
     required property var list
-    readonly property string math: list.search.text.slice(`${GlobalConfig.launcher.actionPrefix}calc `.length)
+    readonly property string math: list.calcExpression
 
     function onClicked(): void {
         Quickshell.execDetached(["wl-copy", Qalculator.rawResult]);
@@ -24,6 +24,11 @@ Item {
     }
 
     implicitHeight: Tokens.sizes.launcher.itemHeight
+
+    Component.onCompleted: {
+        if (math.length > 0)
+            Qalculator.evalAsync(math);
+    }
 
     anchors.left: parent?.left
     anchors.right: parent?.right

@@ -24,25 +24,25 @@ Scope {
     CustomShortcut {
         // qmllint enable unresolved-type
         name: "showall"
-        description: "Toggle launcher, dashboard and osd"
+        description: "Toggle launcher and utilities"
         onPressed: {
             if (root.hasFullscreen)
                 return;
             const v = ShellState.forActive();
-            v.launcher = v.dashboard = v.osd = v.utilities = !(v.launcher || v.dashboard || v.osd || v.utilities);
+            v.launcher = v.utilities = !(v.launcher || v.utilities);
         }
     }
 
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
-        name: "dashboard"
-        description: "Toggle dashboard"
+        name: "notch"
+        description: "Toggle notch"
         onPressed: {
             if (root.hasFullscreen)
                 return;
             const screenState = ShellState.forActive();
-            screenState.dashboard = !screenState.dashboard;
+            screenState.notch = !screenState.notch;
         }
     }
 
@@ -111,7 +111,7 @@ Scope {
     IpcHandler {
         function toggle(drawer: string): void {
             if (list().split("\n").includes(drawer)) {
-                if (root.hasFullscreen && ["launcher", "session", "dashboard"].includes(drawer))
+                if (root.hasFullscreen && ["launcher", "session", "notch"].includes(drawer))
                     return;
                 const screenState = ShellState.forActive();
                 screenState[drawer] = !screenState[drawer];
