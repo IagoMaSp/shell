@@ -92,9 +92,9 @@ Item {
             implicitWidth: Tokens.sizes.bar.innerWidth - Tokens.padding.small
             implicitHeight: implicitWidth
 
-            Mask {
+            HealthMask {
                 anchors.centerIn: parent
-                size: parent.width * 0.62
+                size: parent.width * 0.66
                 filled: root.focused || root.isOccupied
                 colour: root.focused ? Hallownest.soul : Hallownest.steel
                 glow: root.focused

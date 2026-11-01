@@ -214,11 +214,13 @@ al rediseñar módulos.
 | `HkSelection` | Resaltado de lista con punteros ornamentados (`radius`, `inset`, `colour`) |
 | `HkToggle` | Botón de icono con estado (`icon`, `checked`, `isToggle`, `accent`) |
 | `HkRadio` | Opción con rombo que se rellena (`checked`, `text`, `accent`, señal `clicked`) |
+| `HealthMask` | Máscara de vida: dibujo del usuario (`assets/hallownest/health-mask.svg`, recortado de `~/Pictures/InkScape/healthMask.svg`: PNG incrustado + calco vectorial); `filled`, `colour` (tinte), `glow` |
 | `Mask` | Máscara de vida (silueta del Caballero con ojos): `filled`, `colour`, `glow`, `size` |
 
 Etapa 3 (rediseño por módulos), hecho hasta ahora:
-- Barra: workspaces como máscaras de vida (`Workspace.qml`, `shapeComponent`: activa blanca con
-  brillo, ocupada acero, vacía apagada); indicador activo = píldora tenue con borde. Batería =
+- Barra: workspaces como máscaras de vida del juego (`HealthMask`, forma de huevo con punta y
+  ojos ovalados; en `Workspace.qml`, `shapeComponent`: activa blanca con brillo, ocupada acero,
+  vacía apagada). El usuario rechazó las cabezas del Caballero ahí; indicador activo = píldora tenue con borde. Batería =
   mini `SoulVessel` (`ornate: false`; Lifeblood cargando, rojo ≤20 %). Apagado dentro de un
   rombo rojo Grimm.
 - Popouts de la barra: cabeceras en Cinzel acero; dispositivos de audio con `HkRadio` (rombo),
@@ -240,6 +242,10 @@ Etapa 3 (rediseño por módulos), hecho hasta ahora:
 - Notificaciones emergentes (`notifications/Notification.qml`): fondo Vacío con borde acero;
   críticas con tinte y borde rojo Grimm. Título en Cinzel (rojo si es crítica), icono de app sobre
   círculo tenue, acciones como `HkButton` en un `RowLayout`. Las del dock usan la misma paleta.
+- Menú de sesión (`session/Content.qml`): `SessionButton` propio (tarjeta 80 px con icono y
+  etiqueta en Cinzel; enfocado o con hover se ilumina en su color: Logout Alma, Shutdown Grimm,
+  Hibernate Lifeblood, Reboot Oro) y rombo indicador a la izquierda del enfocado. El hover da el
+  foco; teclado (flechas, Tab, vim) igual que antes.
 
 ## Convenciones de código
 
