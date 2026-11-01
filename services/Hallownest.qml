@@ -2,6 +2,8 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
+import qs.utils
 
 Singleton {
     id: root
@@ -28,8 +30,51 @@ Singleton {
     readonly property color crystal: "#a8dadc"
     readonly property var charms: [grimm, gold, unn, crystal]
 
+    readonly property var flavours: ["vessel", "lifeblood", "infection", "greenpath"]
+    property string flavour: "vessel"
+    property bool loaded
+
     readonly property string serif: cinzel.status === FontLoader.Ready ? cinzel.name : "serif"
     readonly property string mono: "JetBrainsMono Nerd Font"
+
+    function setFlavour(name: string): void {
+        if (!flavours.includes(name) || name === flavour)
+            return;
+        flavour = name;
+        state.setText(JSON.stringify({
+            flavour
+        }));
+        Quickshell.execDetached(["caelestia", "scheme", "set", "-n", "hollowknight", "-f", name, "-m", "dark"]);
+    }
+
+    FileView {
+        id: state
+
+        path: `${Paths.state}/hallownest.json`
+        printErrors: false
+
+        onLoaded: {
+            try {
+                const f = JSON.parse(text()).flavour;
+                if (root.flavours.includes(f))
+                    root.flavour = f;
+            } catch (e) {}
+            root.loaded = true;
+        }
+        onLoadFailed: root.loaded = true
+    }
+
+    IpcHandler {
+        function flavour(name: string): void {
+            root.setFlavour(name);
+        }
+
+        function list(): string {
+            return root.flavours.join("\n");
+        }
+
+        target: "hallownest"
+    }
 
     FontLoader {
         id: cinzel

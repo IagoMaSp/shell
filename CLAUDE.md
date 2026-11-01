@@ -168,7 +168,13 @@ build/               Salida de CMake; build/qml es el plugin que usa la shell
   `~/.config/caelestia/shell-tokens.json`. Ventanas propias deben fijar
   `contentItem.Config.screen` y `contentItem.Tokens.screen`.
 - **Colores**: `Colours.palette.m3*` (Material 3) y `Colours.tPalette` (con transparencia).
-  Se cargan de `~/.local/state/caelestia/scheme.json`, que escribe la CLI `caelestia`.
+  [fork] Tema fijo Hollow Knight: `Colours` ya NO lee `scheme.json`; carga
+  `assets/schemes/hollowknight/<flavour>/dark.txt` según `Hallownest.flavour` (vessel,
+  lifeblood, infection, greenpath), guardado en `~/.local/state/caelestia/hallownest.json`.
+  Se cambia con `qs -c caelestia ipc call hallownest flavour <nombre>` o en Settings del notch;
+  `Hallownest.setFlavour` también ejecuta `caelestia scheme set -n hollowknight -f <flavour>`
+  para que GTK/Qt/terminal sigan el tema. El selector de esquemas de Nexus, `>scheme` del
+  launcher y el modo claro solo afectan a las otras apps (la shell los ignora).
 - **Animaciones**: `Anim { type: Anim.DefaultSpatial }` / `CAnim` para colores. Los tipos se
   mapean a curvas y duraciones de los tokens.
 - **Atajos globales**: `CustomShortcut { name: "x" }` registra `caelestia:x`; en Hyprland se

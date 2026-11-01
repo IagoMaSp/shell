@@ -59,9 +59,27 @@ Singleton {
         return Qt.hsla(c.hslHue, c.hslSaturation, 0.1, 1);
     }
 
+    function loadTheme(data: string): void {
+        const colours = {};
+        for (const line of data.split("\n")) {
+            const [name, hex] = line.trim().split(/\s+/);
+            if (name && hex)
+                colours[name] = hex;
+        }
+        apply({
+            name: "hollowknight",
+            flavour: Hallownest.flavour,
+            mode: "dark",
+            colours
+        }, false);
+    }
+
     function load(data: string, isPreview: bool): void {
+        apply(JSON.parse(data), isPreview);
+    }
+
+    function apply(scheme: var, isPreview: bool): void {
         const colours = isPreview ? preview : current;
-        const scheme = JSON.parse(data);
 
         if (!isPreview) {
             root.scheme = scheme.name;
@@ -114,10 +132,8 @@ Singleton {
     }
 
     FileView {
-        path: `${Paths.state}/scheme.json`
-        watchChanges: true
-        onFileChanged: reload()
-        onLoaded: root.load(text(), false)
+        path: Hallownest.loaded ? Quickshell.shellPath(`assets/schemes/hollowknight/${Hallownest.flavour}/dark.txt`) : ""
+        onLoaded: root.loadTheme(text())
     }
 
     ImageAnalyser {

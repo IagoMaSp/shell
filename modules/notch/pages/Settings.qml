@@ -12,7 +12,7 @@ import qs.modules.notch
 NotchPage {
     id: root
 
-    implicitWidth: 480
+    implicitWidth: 560
     implicitHeight: 420
 
     StyledFlickable {
@@ -28,6 +28,48 @@ NotchPage {
 
             Section {
                 first: true
+                text: Tr.tr("Theme")
+            }
+
+            SettingRow {
+                first: true
+                last: true
+                text: Tr.tr("Flavour")
+                subtext: Tr.tr("Hollow Knight palette for the whole shell")
+
+                Repeater {
+                    model: [
+                        {
+                            id: "vessel",
+                            colour: Hallownest.soul
+                        },
+                        {
+                            id: "lifeblood",
+                            colour: Hallownest.lifeblood
+                        },
+                        {
+                            id: "infection",
+                            colour: Hallownest.infection
+                        },
+                        {
+                            id: "greenpath",
+                            colour: Hallownest.unn
+                        }
+                    ]
+
+                    HkButton {
+                        required property var modelData
+
+                        implicitHeight: 26
+                        text: modelData.id.charAt(0).toUpperCase() + modelData.id.slice(1)
+                        accent: modelData.colour
+                        tinted: Hallownest.flavour === modelData.id
+                        onClicked: Hallownest.setFlavour(modelData.id)
+                    }
+                }
+            }
+
+            Section {
                 text: Tr.tr("Appearance")
             }
 
