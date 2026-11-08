@@ -3,15 +3,10 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.components.misc
 import qs.services
 
 Scope {
-    id: root
-
-    function find(id: string): int {
-        return NotchPages.pages.findIndex(p => p.id === id);
-    }
-
     Variants {
         model: Screens.screens
 
@@ -22,6 +17,18 @@ Scope {
         }
     }
 
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
+        name: "mascot"
+        description: "Pick a notch mascot animation"
+        onPressed: menu.toggle()
+    }
+
+    MascotMenu {
+        id: menu
+    }
+
     IpcHandler {
         function toggle(): void {
             const s = ShellState.forActive();
@@ -30,7 +37,7 @@ Scope {
 
         function open(page: string): void {
             const s = ShellState.forActive();
-            const idx = root.find(page);
+            const idx = NotchPages.find(page);
             if (idx >= 0)
                 s.notchPage = idx;
             s.notch = true;
@@ -41,7 +48,19 @@ Scope {
         }
 
         function mascot(): void {
-            ShellState.forActive().mascotCalls++;
+            const s = ShellState.forActive();
+            s.mascotPick = "";
+            s.mascotCalls++;
+        }
+
+        function play(name: string): void {
+            const s = ShellState.forActive();
+            s.mascotPick = name;
+            s.mascotCalls++;
+        }
+
+        function mascotMenu(): void {
+            menu.toggle();
         }
 
         function react(name: string): void {
@@ -50,7 +69,7 @@ Scope {
         }
 
         function pages(): string {
-            return NotchPages.pages.map(p => p.id).join("\n");
+            return NotchPages.all.map(p => p.id).join("\n");
         }
 
         target: "notch"

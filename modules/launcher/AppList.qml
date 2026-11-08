@@ -23,6 +23,8 @@ StyledListView {
     readonly property string displayState: stateForText(displayText)
     readonly property string calcExpression: calcExpressionForText(displayText)
     readonly property string webQuery: webQueryForText(displayText)
+    readonly property string translateQuery: displayText.startsWith(`${GlobalConfig.launcher.actionPrefix}tr `) ? displayText.slice(GlobalConfig.launcher.actionPrefix.length + 3) : ""
+    readonly property string fileQuery: displayState === "files" ? displayText.slice(1) : ""
 
     function syncDisplayText(): void {
         if (screenState.launcher && requestedState === displayState)
@@ -60,13 +62,17 @@ StyledListView {
     function stateForText(text: string): string {
         const prefix = GlobalConfig.launcher.actionPrefix;
         if (text.startsWith(prefix)) {
-            for (const action of ["calc", "scheme", "variant", "web"])
+            for (const action of ["calc", "web", "tr"])
                 if (text.startsWith(`${prefix}${action} `))
                     return action;
+            if (text.startsWith(`${prefix}theme `))
+                return "scheme";
 
             return "actions";
         }
 
+        if (text.startsWith("/"))
+            return "files";
         if (WebSearch.siteSearch(text))
             return "web";
         if (isMath(text))
@@ -83,11 +89,12 @@ StyledListView {
             return Actions.query(text);
         case "calc":
         case "web":
+        case "tr":
             return [0];
         case "scheme":
             return Schemes.query(text);
-        case "variant":
-            return M3Variants.query(text);
+        case "files":
+            return FileSearch.results;
         default:
             return Apps.search(text);
         }
@@ -122,12 +129,11 @@ StyledListView {
     state: screenState.launcher ? requestedState : displayState
 
     onStateChanged: {
-        if (state === "scheme" || state === "variant")
-            Schemes.reload();
-        else if (state === "web")
+        if (state === "web")
             WebSearch.reload();
     }
 
+    onFileQueryChanged: FileSearch.search(fileQuery)
     Component.onCompleted: displayText = search.text
 
     states: [
@@ -153,6 +159,13 @@ StyledListView {
             }
         },
         State {
+            name: "tr"
+
+            PropertyChanges {
+                root.delegate: translateItem
+            }
+        },
+        State {
             name: "web"
 
             PropertyChanges {
@@ -160,17 +173,17 @@ StyledListView {
             }
         },
         State {
+            name: "files"
+
+            PropertyChanges {
+                root.delegate: fileItem
+            }
+        },
+        State {
             name: "scheme"
 
             PropertyChanges {
                 root.delegate: schemeItem
-            }
-        },
-        State {
-            name: "variant"
-
-            PropertyChanges {
-                root.delegate: variantItem
             }
         }
     ]
@@ -318,6 +331,14 @@ StyledListView {
     }
 
     Component {
+        id: translateItem
+
+        TranslateItem {
+            list: root
+        }
+    }
+
+    Component {
         id: webItem
 
         WebItem {
@@ -326,17 +347,17 @@ StyledListView {
     }
 
     Component {
-        id: schemeItem
+        id: fileItem
 
-        SchemeItem {
+        FileItem {
             list: root
         }
     }
 
     Component {
-        id: variantItem
+        id: schemeItem
 
-        VariantItem {
+        SchemeItem {
             list: root
         }
     }

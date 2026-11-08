@@ -40,6 +40,8 @@ Item {
         model: ScriptModel {
             values: {
                 const toasts = [];
+                if (NotchSettings.values.notifsInNotch)
+                    return toasts;
                 let count = 0;
                 for (const toast of Toaster.toasts) {
                     if (!root.shouldShowToast(toast))

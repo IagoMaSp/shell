@@ -31,7 +31,21 @@ Searcher {
                 command: ["autocomplete", "web"],
                 enabled: true
             };
-            return [webAction, ...GlobalConfig.launcher.actions.values.filter(a => a.enabled && (enableDangerous || !a.dangerous))];
+            const translateAction = {
+                name: "Translate",
+                icon: "translate",
+                description: "Translate text to Spanish (or to English if it already is)",
+                command: ["autocomplete", "tr"],
+                enabled: true
+            };
+            const ocrAction = {
+                name: "Copy text from screen",
+                icon: "document_scanner",
+                description: "Select a region and copy the text in it (OCR)",
+                command: ["sh", Quickshell.shellPath("assets/ocr.sh")],
+                enabled: true
+            };
+            return [webAction, translateAction, ocrAction, ...GlobalConfig.launcher.actions.values.filter(a => a.enabled && (enableDangerous || !a.dangerous))];
         }
 
         Action {}

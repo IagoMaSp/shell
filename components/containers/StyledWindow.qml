@@ -7,7 +7,7 @@ PanelWindow {
     // qmllint enable uncreatable-type
     required property string name
 
-    WlrLayershell.namespace: `caelestia-${name}`
+    WlrLayershell.namespace: `paleshell-${name}`
     color: "transparent"
 
     contentItem.Config.screen: screen.name

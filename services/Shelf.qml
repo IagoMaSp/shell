@@ -154,6 +154,19 @@ Singleton {
         onExited: root.detectMime()
     }
 
+    // Files sent from the phone with KDE Connect land on the shelf too
+    Process {
+        running: true
+        command: ["sh", "-c", "command -v kdeconnectd >/dev/null && exec dbus-monitor --session \"type='signal',interface='org.kde.kdeconnect.device.share',member='shareReceived'\""]
+        stdout: SplitParser {
+            onRead: line => {
+                const m = /string "(file:\/\/[^"]+)"/.exec(line);
+                if (m)
+                    root.addUrls([m[1]]);
+            }
+        }
+    }
+
     FileView {
         id: file
 

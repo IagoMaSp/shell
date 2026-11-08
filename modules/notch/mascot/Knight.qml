@@ -21,7 +21,7 @@ Item {
     property real voidness
     property real soulness
     readonly property color headColour: Qt.tint(Qt.tint(boneColour, Qt.rgba(1, 1, 1, soulness * 0.7)), Qt.rgba(0.03, 0.03, 0.045, voidness))
-    readonly property color eyeColour: Qt.tint(Qt.tint("black", Qt.rgba(0.66, 0.74, 0.84, soulness)), Qt.rgba(0.95, 0.97, 0.98, voidness))
+    readonly property color eyeColour: Qt.tint(Qt.tint(Season.current === "grimm" ? "#7a0f17" : "black", Qt.rgba(0.66, 0.74, 0.84, soulness)), Qt.rgba(0.95, 0.97, 0.98, voidness))
     readonly property color rimColour: Qt.tint(Qt.tint("#4d4d4d", Qt.rgba(0.8, 0.86, 0.92, soulness)), Qt.rgba(0.08, 0.08, 0.1, voidness))
     readonly property color lidColour: "#8c919b"
 
@@ -30,8 +30,11 @@ Item {
     readonly property real canvasWidth: 90
     readonly property real canvasHeight: 74
     readonly property real ratio: size / canvasHeight
-    readonly property bool reacting: celebrateAnim.running || vibeAnim.running || sadAnim.running || cryAnim.running || infectAnim.running || angryAnim.running || shockedAnim.running || soulAnim.running || voidAnim.running
+    readonly property bool reacting: celebrateAnim.running || vibeAnim.running || sadAnim.running || cryAnim.running || infectAnim.running || angryAnim.running || shockedAnim.running || soulAnim.running || voidAnim.running || bossAnim.running || rageAnim.running
     readonly property bool busy: wakeAnim.running || leaveAnim.running || actionAnim.running || reacting
+
+    readonly property var reactionNames: ["happy", "vibe", "sad", "cry", "infected", "angry", "shocked", "soul", "void", "boss"]
+    readonly property var actionNames: ["look", "tilt", "hop", "confused", "sigh", "stare"]
 
     property string expression: "open"
     property real breath
@@ -60,6 +63,10 @@ Item {
     property real anger
     property real angerBeat
     property real shock
+    property real boss
+    // Set for the whole transformation so the notch can grow before the bigger head appears
+    property bool bossShown
+    property real bossInfection
 
     property real idleX: 0.7
     property real idleY: -0.2
@@ -71,7 +78,7 @@ Item {
     signal woke
 
     function resetFace(): void {
-        for (const anim of [celebrateAnim, vibeAnim, sadAnim, cryAnim, infectAnim, angryAnim, shockedAnim, soulAnim, voidAnim, stareAnim, sighAnim])
+        for (const anim of [celebrateAnim, vibeAnim, sadAnim, cryAnim, infectAnim, angryAnim, shockedAnim, soulAnim, voidAnim, stareAnim, sighAnim, bossAnim, rageAnim])
             anim.stop();
         expression = "open";
         scanning = false;
@@ -89,12 +96,23 @@ Item {
         shock = 0;
         soulness = 0;
         voidness = 0;
+        boss = 0;
+        bossInfection = 0;
+        bossShown = false;
         tilt = 0;
         hop = 0;
         squash = 0;
     }
 
     function wake(): void {
+        // Disturbing the Hollow Knight infects it before it turns back and leaves
+        if (bossAnim.running || rageAnim.running) {
+            if (bossAnim.running) {
+                bossAnim.stop();
+                rageAnim.restart();
+            }
+            return;
+        }
         if (wakeAnim.running || leaveAnim.running)
             return;
         const startle = closed;
@@ -122,9 +140,10 @@ Item {
             angry: angryAnim,
             shocked: shockedAnim,
             soul: soulAnim,
-            void: voidAnim
+            void: voidAnim,
+            boss: bossAnim
         };
-        if (!anims[name] || wakeAnim.running || leaveAnim.running)
+        if (!anims[name] || wakeAnim.running || leaveAnim.running || bossAnim.running || rageAnim.running)
             return;
         actionAnim.stop();
         resetFace();
@@ -136,17 +155,36 @@ Item {
     }
 
     function randomAction(): void {
+        if (Math.random() < 0.03) {
+            react("boss");
+            return;
+        }
         const actions = ["blink2", "look", "tilt", "tilt", "happy", "hop", "confused", "sigh", "stare", "stare", "void"];
         const action = actions[Math.floor(Math.random() * actions.length)];
         actionAnim.action = action;
         actionAnim.restart();
     }
 
+    function surprise(): void {
+        const all = reactionNames.concat(actionNames);
+        play(all[Math.floor(Math.random() * all.length)]);
+    }
+
+    function play(name: string): void {
+        if (reactionNames.includes(name)) {
+            react(name);
+        } else if (actionNames.includes(name) && !wakeAnim.running && !leaveAnim.running && !bossAnim.running && !rageAnim.running) {
+            resetFace();
+            actionAnim.action = name;
+            actionAnim.restart();
+        }
+    }
+
     implicitWidth: canvasWidth * ratio
     implicitHeight: size
 
     onDozingChanged: {
-        if (dozing && running) {
+        if (dozing && running && !boss) {
             actionAnim.action = "yawn";
             actionAnim.restart();
         }
@@ -277,7 +315,7 @@ Item {
     }
 
     Timer {
-        running: root.running && !root.dozing && !root.busy
+        running: root.running && !root.dozing && (!root.busy || root.boss === 1)
         repeat: true
         interval: 3500
 
@@ -1378,6 +1416,361 @@ Item {
         }
     }
 
+    // Easter egg: the Knight turns into the Hollow Knight for a while
+    SequentialAnimation {
+        id: bossAnim
+
+        ScriptAction {
+            script: {
+                root.expression = "open";
+                root.bossShown = true;
+            }
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 1
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            NumberAnimation {
+                target: root
+                property: "squash"
+                to: 0.5
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                loops: 9
+
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: 0.9
+                    duration: 40
+                }
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: -0.9
+                    duration: 40
+                }
+            }
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "boss"
+                to: 1
+                duration: 450
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: -0.9
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: 0
+                    duration: 380
+                    easing.type: Easing.OutBack
+                }
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0.8
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.InQuad
+                }
+            }
+            NumberAnimation {
+                target: root
+                property: "shake"
+                to: 0
+                duration: 60
+            }
+        }
+        PauseAnimation {
+            duration: 250
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 0
+                duration: 800
+                easing.type: Easing.InOutSine
+            }
+        }
+        PauseAnimation {
+            duration: 7000
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 1
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            NumberAnimation {
+                target: root
+                property: "squash"
+                to: 0.5
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                loops: 9
+
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: 0.9
+                    duration: 40
+                }
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: -0.9
+                    duration: 40
+                }
+            }
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "boss"
+                to: 0
+                duration: 450
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: -0.9
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: 0
+                    duration: 380
+                    easing.type: Easing.OutBack
+                }
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0.8
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.InQuad
+                }
+            }
+            NumberAnimation {
+                target: root
+                property: "shake"
+                to: 0
+                duration: 60
+            }
+        }
+        PauseAnimation {
+            duration: 250
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 0
+                duration: 800
+                easing.type: Easing.InOutSine
+            }
+        }
+        ScriptAction {
+            script: root.bossShown = false
+        }
+    }
+
+    SequentialAnimation {
+        id: rageAnim
+
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "bossInfection"
+                to: 1
+                duration: 500
+                easing.type: Easing.OutQuad
+            }
+            NumberAnimation {
+                target: root
+                property: "squash"
+                to: 0.3
+                duration: 300
+                easing.type: Easing.OutQuad
+            }
+            SequentialAnimation {
+                loops: 14
+
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: 1.2
+                    duration: 40
+                }
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: -1.2
+                    duration: 40
+                }
+            }
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "squash"
+                to: 0
+                duration: 300
+                easing.type: Easing.OutBack
+            }
+            NumberAnimation {
+                target: root
+                property: "shake"
+                to: 0
+                duration: 60
+            }
+        }
+        PauseAnimation {
+            duration: 900
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 1
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            NumberAnimation {
+                target: root
+                property: "squash"
+                to: 0.5
+                duration: 700
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                loops: 9
+
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: 0.9
+                    duration: 40
+                }
+                NumberAnimation {
+                    target: root
+                    property: "shake"
+                    to: -0.9
+                    duration: 40
+                }
+            }
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "boss"
+                to: 0
+                duration: 450
+                easing.type: Easing.InOutSine
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: -0.9
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "squash"
+                    to: 0
+                    duration: 380
+                    easing.type: Easing.OutBack
+                }
+            }
+            SequentialAnimation {
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0.8
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+                NumberAnimation {
+                    target: root
+                    property: "hop"
+                    to: 0
+                    duration: 300
+                    easing.type: Easing.InQuad
+                }
+            }
+            NumberAnimation {
+                target: root
+                property: "shake"
+                to: 0
+                duration: 60
+            }
+        }
+        PauseAnimation {
+            duration: 250
+        }
+        ScriptAction {
+            script: root.bossInfection = 0
+        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: root
+                property: "voidness"
+                to: 0
+                duration: 800
+                easing.type: Easing.InOutSine
+            }
+        }
+        ScriptAction {
+            script: {
+                root.bossShown = false;
+                root.woke();
+            }
+        }
+    }
+
     SequentialAnimation {
         id: wakeAnim
 
@@ -1500,18 +1893,23 @@ Item {
             id: body
 
             readonly property real pivotX: 144.39 - root.originX
-            readonly property real pivotY: 101.6 - root.originY
+            // The Hollow Knight's head rises above the canvas: the layer only draws inside the item
+            readonly property real headroom: 45
+            readonly property real pivotY: 101.6 - root.originY + headroom
+            readonly property bool voidRim: root.voidness > root.soulness
 
             anchors.fill: parent
-            layer.enabled: root.soulness > 0.01
+            anchors.topMargin: -headroom
+            layer.enabled: root.soulness > 0.01 || root.voidness > 0.01
+            // Soul = wide glow; Void = tight light rim so the black body doesn't vanish into the notch
             layer.effect: MultiEffect {
                 shadowEnabled: true
                 shadowColor: Hallownest.soul
-                shadowOpacity: root.soulness
-                shadowBlur: 1
+                shadowOpacity: Math.max(root.soulness, root.voidness)
+                shadowBlur: body.voidRim ? 0.15 : 1
                 shadowHorizontalOffset: 0
                 shadowVerticalOffset: 0
-                blurMax: 24
+                blurMax: body.voidRim ? 5 : 24
             }
 
             transform: [
@@ -1534,10 +1932,11 @@ Item {
 
             Item {
                 x: -root.originX
-                y: -root.originY
+                y: -root.originY + body.headroom
 
                 Shape {
                     preferredRendererType: Shape.CurveRenderer
+                    opacity: 1 - root.boss
 
                     ShapePath {
                         fillColor: root.headColour
@@ -1565,18 +1964,109 @@ Item {
                     height: 42.401421
                     radius: 12.796824
                     color: root.headColour
+                    opacity: 1 - root.boss
                 }
 
                 Eye {
                     x: 130.3 + root.smoothLookX * 3.5
                     y: 77 + root.smoothLookY * 2.5
                     isLeft: true
+                    opacity: 1 - root.boss
                 }
 
                 Eye {
                     x: 158.5 + root.smoothLookX * 3.5
                     y: 77 + root.smoothLookY * 2.5
                     isLeft: false
+                    opacity: 1 - root.boss
+                }
+
+                // Hollow Knight head (HK.svg, page coordinates), scaled onto the Knight's base
+                Item {
+                    opacity: root.boss
+                    visible: opacity > 0
+                    transform: [
+                        Translate {
+                            x: -165.47
+                            y: -105.15
+                        },
+                        Scale {
+                            xScale: 0.95
+                            yScale: 0.95
+                        },
+                        Translate {
+                            x: 144.39
+                            y: 101.6
+                        }
+                    ]
+
+                    Shape {
+                        preferredRendererType: Shape.CurveRenderer
+                        transform: Matrix4x4 {
+                            matrix: Qt.matrix4x4(1.7237558, 0, 0, -91.080165, 0, 1.5595504, 0, -174.2474, 0, 0, 1, 0, 0, 0, 0, 1)
+                        }
+
+                        ShapePath {
+                            fillColor: root.headColour
+                            strokeColor: root.headColour
+                            strokeWidth: 0.4
+
+                            PathSvg {
+                                path: "m 143.06465,113.63647 c -0.49088,0.14127 -0.9819,0.28299 -1.47278,0.42427 -5.2763,2.61716 -8.95798,7.60134 -11.3223,12.87001 -3.75006,8.47435 -4.61984,18.07537 -3.1502,27.18077 1.18976,6.9552 3.83913,13.88012 8.69456,19.11408 3.22906,3.49281 7.78496,6.03877 12.64006,5.92522 0.15444,-0.001 0.30834,-0.005 0.46198,-0.0109 V 159.3572 c -0.64516,0.0514 -1.29531,0.0505 -1.93476,0.0191 -2.52817,-0.37181 -4.10647,-2.70146 -5.08238,-4.85965 -1.29291,-2.85106 -1.82778,-5.94349 -2.27428,-9.03976 -0.14379,-0.58936 -0.28719,-1.17848 -0.43098,-1.76785 -0.3249,1.03899 -0.71569,2.06441 -0.69711,3.16931 -0.13605,1.38951 -0.36744,2.82561 -1.09399,4.04162 -0.44392,-2.99627 -0.26054,-6.0474 -0.17312,-9.06457 0.14876,-2.88198 0.29242,-5.84341 0.8847,-8.69352 -0.10159,-0.39983 0.15138,-1.85675 -0.38551,-0.95757 -0.95144,0.92949 -1.16903,2.29988 -1.75596,3.45096 -0.36568,0.8552 -0.7408,1.70743 -1.156,2.53989 -0.25497,-4.50339 0.78468,-8.98936 2.11615,-13.20901 1.13848,-3.32448 2.43428,-6.7007 4.67465,-9.45369 0.58167,-0.55571 1.01824,-1.22492 1.45727,-1.89601 z"
+                            }
+                        }
+
+                        ShapePath {
+                            fillColor: root.headColour
+                            strokeColor: root.headColour
+                            strokeWidth: 0.4
+
+                            PathSvg {
+                                path: "m 154.59799,113.60147 c 0.49088,0.14127 0.9819,0.28299 1.47278,0.42427 5.2763,2.61716 8.95798,7.60134 11.3223,12.87001 3.75006,8.47435 4.61984,18.07537 3.1502,27.18077 -1.18976,6.9552 -3.83913,13.88012 -8.69456,19.11408 -3.22906,3.49281 -7.78496,6.03877 -12.64006,5.92522 -0.15444,-0.001 -0.30834,-0.005 -0.46198,-0.0109 l 6e-4,-19.76019 c 0.64516,0.0514 1.29471,0.028 1.93416,-0.003 2.52817,-0.37181 4.10647,-2.70146 5.08238,-4.85965 1.29291,-2.85106 1.82778,-5.94349 2.27428,-9.03976 0.14379,-0.58936 0.28719,-1.17848 0.43098,-1.76785 0.3249,1.03899 0.71569,2.06441 0.69711,3.16931 0.13605,1.38951 0.36744,2.82561 1.09399,4.04162 0.44392,-2.99627 0.26054,-6.0474 0.17312,-9.06457 -0.14876,-2.88198 -0.29242,-5.84341 -0.8847,-8.69352 0.10159,-0.39983 -0.15138,-1.85675 0.38551,-0.95757 0.95144,0.92949 1.16903,2.29988 1.75596,3.45096 0.36568,0.8552 0.7408,1.70743 1.156,2.53989 0.25497,-4.50339 -0.78468,-8.98936 -2.11615,-13.20901 -1.13848,-3.32448 -2.43428,-6.7007 -4.67465,-9.45369 -0.58167,-0.55571 -1.01824,-1.22492 -1.45727,-1.89601 z"
+                            }
+                        }
+
+                        // Fills the antialiasing seam where both halves meet
+                        ShapePath {
+                            fillColor: root.headColour
+                            strokeWidth: -1
+
+                            PathSvg {
+                                path: "M 148.3,159.2 H 149.4 V 178.9 H 148.3 Z"
+                            }
+                        }
+                    }
+
+                    Shape {
+                        preferredRendererType: Shape.CurveRenderer
+                        opacity: root.bossInfection
+                        visible: opacity > 0
+                        transform: Translate {
+                            x: 109.06
+                            y: -190.84
+                        }
+
+                        ShapePath {
+                            fillColor: "black"
+                            strokeWidth: -1
+
+                            PathSvg {
+                                path: "m 72.443439,291.48136 3.924092,-9.69485 -2.295859,-10.27094 -2.175026,-1.32919 2.900035,1.57086 2.537529,10.75428 -1.28646,6.36822 z M 54.053947,265.14673 c 6.65936,3.0133 7.674328,4.31243 7.571752,4.67715 -1.385679,2.26476 -3.315364,3.90182 -5.437563,5.31675 l -8.337595,1.57083 -10.64204,7.25804 -0.147011,5.40091 0.943431,-4.66857 10.208125,-6.90286 7.97509,-0.72501 c 2.962743,-2.51153 5.65347,-5.24067 8.337595,-7.9751 l -3.745876,-2.17501 4.599676,-4.96281 c -1.34971,1.06746 -2.601011,2.35959 -4.166389,2.88788 l -1.520799,1.71242 z"
+                            }
+                        }
+                    }
+
+                    HollowEye {
+                        cx: 201.75719
+                        cy: 8.269906
+                        matrix: Qt.matrix4x4(0.90768296, -0.55016429, 0, 0, 0.41965658, 0.83505644, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+                    }
+
+                    HollowEye {
+                        cx: -77.935188
+                        cy: 148.5948
+                        matrix: Qt.matrix4x4(-0.90768296, 0.55016429, 0, 0, 0.41965658, 0.83505644, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+                    }
                 }
 
                 Repeater {
@@ -1998,6 +2488,47 @@ Item {
                     }
                 }
             }
+        }
+    }
+
+    component HollowEye: Item {
+        id: hollowEye
+
+        required property real cx
+        required property real cy
+        required property matrix4x4 matrix
+
+        transform: [
+            Scale {
+                origin.x: hollowEye.cx
+                origin.y: hollowEye.cy
+                yScale: root.blink
+            },
+            Matrix4x4 {
+                matrix: hollowEye.matrix
+            },
+            Translate {
+                x: root.smoothLookX * 3
+                y: root.smoothLookY * 2
+            }
+        ]
+
+        Oval {
+            x: hollowEye.cx
+            y: hollowEye.cy
+            rx: 6.085526
+            ry: 9.8280611
+            fill: Qt.tint(Qt.tint("#1a1a1a", Qt.rgba(0.835, 0.1, 0.1, root.bossInfection)), Qt.rgba(0.95, 0.97, 0.98, root.voidness))
+        }
+
+        Oval {
+            x: hollowEye.cx
+            y: hollowEye.cy
+            rx: 5.35
+            ry: 8.92
+            fill: "#d88f01"
+            opacity: root.bossInfection * (1 - root.voidness)
+            visible: opacity > 0
         }
     }
 

@@ -38,10 +38,12 @@ NotchPage {
         anchors.left: parent.left
         anchors.top: parent.top
         implicitWidth: 150
-        implicitHeight: Math.max(150, layout.implicitHeight)
+        implicitHeight: Math.max(summaryContent.implicitHeight + Tokens.padding.extraLarge * 2, layout.implicitHeight)
         ornate: true
 
         ColumnLayout {
+            id: summaryContent
+
             anchors.centerIn: parent
             spacing: Tokens.spacing.small
 

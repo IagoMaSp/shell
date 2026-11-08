@@ -25,7 +25,7 @@ void loaded(ConfigKind kind, settings::RootNode* layer, const QString& screen) {
     const auto message = issues > 0
                              ? markN(u"Config loaded with %n issue."_s, u"Config loaded with %n issues."_s, issues)
                              : mark(u"Config loaded successfully!"_s);
-    Toaster::instance()->toast(mark(u"Config loaded"_s), message, issues > 0 ? u"settings_alert"_s : u"rule_settings"_s,
+    Toaster::instance()->toast(mark(u"Config loaded"_s), message, issues > 0 ? u"warning"_s : u"check_circle"_s,
         issues > 0 ? Toast::Type::Warning : Toast::Type::Info);
 }
 

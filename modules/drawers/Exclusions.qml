@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Caelestia.Config
 import qs.components.containers
+import qs.services
 import qs.modules.bar as Bar
 
 Scope {
@@ -17,8 +18,12 @@ Scope {
         exclusiveZone: root.bar.exclusiveZone
     }
 
+    // Windows stay clear of whichever island is in use: the notch's resting pill (34 px, not its
+    // taller alert states, so windows don't jump) or the dock row (60 px). The notch's zone is 5 px
+    // short so Hyprland's 10 px gap under it reads as half
     ExclusionZone {
         anchors.top: true
+        exclusiveZone: contentItem.Config.border.thickness + (!Dock.mode && !NotchSettings.minimal ? 34 * NotchSettings.scale - 10: 0)
     }
 
     ExclusionZone {
@@ -27,6 +32,7 @@ Scope {
 
     ExclusionZone {
         anchors.bottom: true
+        exclusiveZone: contentItem.Config.border.thickness + (Dock.mode ? 60 : 0)
     }
 
     component ExclusionZone: StyledWindow {

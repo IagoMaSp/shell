@@ -18,13 +18,20 @@ Item {
 
     readonly property int padding: Tokens.padding.large
     readonly property int rounding: Tokens.rounding.extraLarge
+    // The dock's app menu shows its own grid until something is typed
+    readonly property alias query: search.text
+    property bool listShown: true
+    // Grid shown instead of the list while nothing is typed (the dock's app menu)
+    property GridView appGrid
+    readonly property real searchHeight: search.height + padding + search.anchors.bottomMargin
 
     implicitWidth: listWrapper.width + padding * 2
-    implicitHeight: search.height + listWrapper.height + padding + search.anchors.bottomMargin
+    implicitHeight: searchHeight + (listShown ? listWrapper.height : 0)
 
     Item {
         id: listWrapper
 
+        visible: root.listShown
         implicitWidth: list.width
         implicitHeight: list.height + root.padding
 
@@ -62,6 +69,10 @@ Item {
         placeholderText: Tr.tr("Type \"%1\" for commands").arg(GlobalConfig.launcher.actionPrefix)
 
         onAccepted: {
+            if (!root.listShown && root.appGrid) {
+                root.appGrid.currentItem?.launch();
+                return;
+            }
             const currentItem = list.currentList?.currentItem;
             if (currentItem) {
                 if (list.showWallpapers) {
@@ -69,25 +80,42 @@ Item {
                         Wallpapers.previewColourLock = true;
                     Wallpapers.setWallpaper(currentItem.modelData.path);
                     root.screenState.launcher = false;
-                } else if (list.currentList.state === "calc" || list.currentList.state === "web") {
+                } else if (["calc", "web", "files", "tr"].includes(list.currentList.state)) {
                     currentItem.onClicked();
                 } else if (text.startsWith(GlobalConfig.launcher.actionPrefix)) {
                     currentItem.modelData.onClicked(list.currentList);
                 } else {
-                    Apps.launch(currentItem.modelData);
-                    root.screenState.launcher = false;
+                    currentItem.open();
                 }
             }
         }
 
-        Keys.onUpPressed: list.currentList?.decrementCurrentIndex()
-        Keys.onDownPressed: list.currentList?.incrementCurrentIndex()
+        Keys.onUpPressed: !root.listShown && root.appGrid ? root.appGrid.moveCurrentIndexUp() : list.currentList?.decrementCurrentIndex()
+        Keys.onDownPressed: !root.listShown && root.appGrid ? root.appGrid.moveCurrentIndexDown() : list.currentList?.incrementCurrentIndex()
+        Keys.onLeftPressed: event => {
+            if (!root.listShown && root.appGrid)
+                root.appGrid.moveCurrentIndexLeft();
+            else
+                event.accepted = false;
+        }
+        Keys.onRightPressed: event => {
+            if (!root.listShown && root.appGrid)
+                root.appGrid.moveCurrentIndexRight();
+            else
+                event.accepted = false;
+        }
 
         Keys.onEscapePressed: root.screenState.launcher = false
 
         Keys.onPressed: event => {
             // Shift+Enter always searches the web, even if an app matches
             if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ShiftModifier) && !list.showWallpapers) {
+                // ...except in file search, where it opens the containing folder
+                if (list.currentList?.state === "files") {
+                    list.currentList.currentItem?.openFolder();
+                    event.accepted = true;
+                    return;
+                }
                 const prefix = GlobalConfig.launcher.actionPrefix;
                 const webPrefix = `${prefix}web `;
                 const query = text.startsWith(webPrefix) ? text.slice(webPrefix.length) : (text.startsWith(prefix) ? "" : text);

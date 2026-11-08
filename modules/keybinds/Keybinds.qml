@@ -9,7 +9,7 @@ import qs.components.containers
 import qs.components.misc
 import qs.services
 
-// Cheatsheet of the Hyprland keybinds, toggled with the caelestia:keybinds global shortcut.
+// Cheatsheet of the Hyprland keybinds, toggled with the paleshell:keybinds global shortcut.
 // Only binds with a description ("Section|Text") are listed, see hypr/hyprland/keybinds.lua.
 Scope {
     id: root

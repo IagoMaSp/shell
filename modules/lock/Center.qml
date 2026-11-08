@@ -35,11 +35,12 @@ ColumnLayout {
         font.letterSpacing: 1.5
     }
 
-    ProfilePic {
+    NextClass {
         Layout.alignment: Qt.AlignHCenter
-        Layout.topMargin: Tokens.spacing.extraExtraLarge * root.centerScale
-        Layout.bottomMargin: Tokens.spacing.extraLarge * root.centerScale
-        centerWidth: root.centerWidth
+    }
+
+    Item {
+        Layout.fillHeight: true
     }
 
     PasswordInput {

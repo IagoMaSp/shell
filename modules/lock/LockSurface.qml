@@ -26,6 +26,7 @@ WlSessionLockSurface {
 
     Connections {
         function onUnlock(): void {
+            bench.standUp();
             unlockAnim.start();
         }
 
@@ -40,6 +41,18 @@ WlSessionLockSurface {
                 target: lockContent
                 properties: "implicitWidth,implicitHeight"
                 to: lockContent.size
+            }
+            // Let the Knight get up before the bench fades
+            SequentialAnimation {
+                PauseAnimation {
+                    duration: 520
+                }
+                NumberAnimation {
+                    target: bench
+                    property: "opacity"
+                    to: 0
+                    duration: 280
+                }
             }
             Anim {
                 target: lockBg
@@ -177,6 +190,83 @@ WlSessionLockSurface {
             anchors.fill: parent
             sourceComponent: Config.lock.useWallpaper ? wallpaperBackground : screencopyBackground
         }
+    }
+
+    BenchRest {
+        id: benchRest
+
+        anchors.fill: parent
+        visible: NotchSettings.values.animBench
+        progress: 1
+        rays: 1
+        opacity: root.unlocking ? 0 : 1
+
+        Behavior on opacity {
+            Anim {
+                type: Anim.DefaultEffects
+            }
+        }
+
+        SequentialAnimation {
+            running: true
+
+            NumberAnimation {
+                target: benchRest
+                property: "flash"
+                to: 1
+                duration: 250
+                easing.type: Easing.OutQuad
+            }
+            ParallelAnimation {
+                NumberAnimation {
+                    target: benchRest
+                    property: "flash"
+                    to: 0
+                    duration: 900
+                    easing.type: Easing.InQuad
+                }
+                NumberAnimation {
+                    target: benchRest
+                    property: "progress"
+                    to: 0
+                    duration: 1400
+                    easing.type: Easing.InOutSine
+                }
+                NumberAnimation {
+                    target: benchRest
+                    property: "rays"
+                    to: 0.5
+                    duration: 1400
+                    easing.type: Easing.InOutSine
+                }
+            }
+        }
+    }
+
+    Bench {
+        id: bench
+
+        visible: NotchSettings.values.animBench
+        canvasScale: root.height * 0.135 / 180
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: root.height - 8 - 200 * canvasScale
+    }
+
+    HoverHandler {
+        onPointChanged: bench.follow(point.position.x - bench.x, point.position.y - bench.y)
+    }
+
+    Connections {
+        function onBufferChanged(): void {
+            if (root.pam.buffer)
+                bench.look();
+        }
+
+        function onFlashMsg(): void {
+            bench.refuse();
+        }
+
+        target: root.pam
     }
 
     Component {

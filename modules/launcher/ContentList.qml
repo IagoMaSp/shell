@@ -47,9 +47,10 @@ Item {
         State {
             name: "wallpapers"
 
+            // Uses the whole app menu
             PropertyChanges {
-                root.implicitWidth: Math.max(root.Tokens.sizes.launcher.itemWidth * 1.2, wallpaperList.implicitWidth)
-                root.implicitHeight: root.Tokens.sizes.launcher.wallpaperHeight
+                root.implicitWidth: root.content.width - root.padding * 2
+                root.implicitHeight: root.maxHeight
                 wallpaperList.active: true
             }
         }
@@ -96,17 +97,13 @@ Item {
         asynchronous: true
         active: false
 
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
 
         sourceComponent: WallpaperList {
             objectName: "launcherWallpaperList"
 
             search: root.search
             screenState: root.screenState
-            panels: root.panels
-            content: root.content
         }
     }
 
@@ -142,7 +139,7 @@ Item {
             }
 
             StyledText {
-                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? Tr.tr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : Tr.tr("Try searching for something else")
+                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? Tr.tr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : root.search.text.startsWith("/") ? Tr.tr("Type a name to search your files") : Tr.tr("Try searching for something else")
                 color: Hallownest.subtext
                 font: Tokens.font.body.medium
             }

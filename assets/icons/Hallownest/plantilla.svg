@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Plantilla de iconos de apps Hallownest (128 x 128 px).
+
+  1. Archivo > Guardar como... con el nombre de PENDIENTES.md (p. ej. zen-browser.svg) dentro de
+     assets/icons/Hallownest/apps/scalable/, formato "SVG de Inkscape" o "SVG simple".
+  2. Dibuja solo en la capa "Simbolo". La capa "Base" es el marco comun: no la toques para que
+     todos los iconos combinen.
+  3. La capa "Ayudas" (oculta) marca la zona segura: el simbolo debe quedar dentro del circulo
+     punteado. Dejala oculta al guardar.
+  4. Trazo del simbolo: 5-6 px (a 32 px de pantalla queda en ~1.5 px). Colores: los del panel
+     Muestras (Objeto > Muestras). Pocos colores: blanco Alma y como mucho un acento.
+  5. Trazos y textos pasados a trayecto (Trayecto > Trazo a trayecto / Objeto a trayecto).
+-->
+<svg
+   width="128"
+   height="128"
+   viewBox="0 0 128 128"
+   version="1.1"
+   id="icon"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
+  <sodipodi:namedview
+     id="namedview"
+     pagecolor="#2a2d35"
+     bordercolor="#9ba4b5"
+     borderopacity="1"
+     inkscape:pageopacity="1"
+     inkscape:document-units="px"
+     inkscape:zoom="5"
+     inkscape:cx="64"
+     inkscape:cy="64"
+     inkscape:current-layer="simbolo"
+     showgrid="true">
+    <inkscape:grid
+       id="grid"
+       type="xygrid"
+       units="px"
+       spacingx="4"
+       spacingy="4"
+       empspacing="4"
+       color="#9ba4b5"
+       opacity="0.08"
+       empcolor="#9ba4b5"
+       empopacity="0.2" />
+    <sodipodi:guide position="64,128" orientation="1,0" id="guide-v" inkscape:label="centro" />
+    <sodipodi:guide position="0,64" orientation="0,-1" id="guide-h" inkscape:label="centro" />
+    <sodipodi:guide position="28,128" orientation="1,0" id="guide-l" inkscape:label="zona segura" />
+    <sodipodi:guide position="100,128" orientation="1,0" id="guide-r" inkscape:label="zona segura" />
+    <sodipodi:guide position="0,28" orientation="0,-1" id="guide-b" inkscape:label="zona segura" />
+    <sodipodi:guide position="0,100" orientation="0,-1" id="guide-t" inkscape:label="zona segura" />
+  </sodipodi:namedview>
+  <defs id="defs">
+    <!-- Hallownest palette, listed in Objeto > Muestras -->
+    <linearGradient id="vacio" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Vacio"><stop offset="0" stop-color="#06070a" /></linearGradient>
+    <linearGradient id="tarjeta" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Tarjeta"><stop offset="0" stop-color="#14161c" /></linearGradient>
+    <linearGradient id="acero" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Acero"><stop offset="0" stop-color="#9ba4b5" /></linearGradient>
+    <linearGradient id="alma" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Alma"><stop offset="0" stop-color="#f0f4f8" /></linearGradient>
+    <linearGradient id="gris" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Gris"><stop offset="0" stop-color="#8a93a3" /></linearGradient>
+    <linearGradient id="lifeblood" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Lifeblood"><stop offset="0" stop-color="#38bdf8" /></linearGradient>
+    <linearGradient id="grimm" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Grimm"><stop offset="0" stop-color="#e63946" /></linearGradient>
+    <linearGradient id="oro" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Oro"><stop offset="0" stop-color="#f4a261" /></linearGradient>
+    <linearGradient id="infeccion" osb:paint="solid" inkscape:swatch="solid" inkscape:label="Infeccion"><stop offset="0" stop-color="#ff6b35" /></linearGradient>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="base"
+     inkscape:label="Base"
+     sodipodi:insensitive="true">
+    <circle id="amuleto" cx="64" cy="64" r="57" fill="#06070a" stroke="#9ba4b5" stroke-width="3" />
+    <circle id="anillo" cx="64" cy="64" r="49" fill="none" stroke="#9ba4b5" stroke-opacity="0.35" stroke-width="1.5" />
+    <g id="rombos" fill="#9ba4b5">
+      <path d="M 64,1.5 69,7 64,12.5 59,7 Z" />
+      <path d="M 64,115.5 69,121 64,126.5 59,121 Z" />
+      <path d="M 1.5,64 7,59 12.5,64 7,69 Z" />
+      <path d="M 115.5,64 121,59 126.5,64 121,69 Z" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="simbolo"
+     inkscape:label="Simbolo">
+    <!-- Ejemplo: borralo y dibuja el simbolo de la app -->
+    <path id="ejemplo" d="M 64,34 92,64 64,94 36,64 Z" fill="none" stroke="#f0f4f8" stroke-width="5" stroke-linejoin="miter" />
+    <path id="ejemplo-centro" d="M 64,54 74,64 64,74 54,64 Z" fill="#38bdf8" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="ayudas"
+     inkscape:label="Ayudas"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <circle cx="64" cy="64" r="36" fill="none" stroke="#e63946" stroke-width="0.6" stroke-dasharray="2,2" />
+    <path d="M 64,24 V 104 M 24,64 H 104" stroke="#e63946" stroke-width="0.4" stroke-opacity="0.6" />
+  </g>
+</svg>

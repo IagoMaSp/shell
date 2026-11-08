@@ -1,0 +1,12 @@
+[Icon Theme]
+Name=Hallownest
+Comment=PaleShell app icons; everything not drawn yet comes from Papirus-Dark
+Inherits=Papirus-Dark,hicolor
+Directories=apps/scalable
+
+[apps/scalable]
+Size=128
+MinSize=8
+MaxSize=512
+Type=Scalable
+Context=Applications

@@ -17,6 +17,11 @@ Singleton {
     property bool needsStop
     property bool needsPause
 
+    function elapsedText(): string {
+        const s = Math.floor(elapsed);
+        return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    }
+
     function start(extraArgs = []): void {
         needsStart = true;
         startArgs = extraArgs;

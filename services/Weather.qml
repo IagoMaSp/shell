@@ -23,6 +23,8 @@ Singleton {
     property string pendingCoords
 
     readonly property string icon: cc ? Icons.getWeatherIcon(cc.weatherCode) : "cloud_alert"
+    // Forces the notch weather scene (sun, night, cloud, fog, rain, storm, snow); "" = real weather, not persisted
+    property string previewScene
     readonly property string description: cc ? getWeatherCondition(cc.weatherCode) : Tr.tr("No weather")
     readonly property string temp: formatTemp(cc?.tempC)
     readonly property string feelsLike: formatTemp(cc?.feelsLikeC)
@@ -416,5 +418,13 @@ Singleton {
 
         name: "caelestia.qml.services.weather"
         defaultLogLevel: LoggingCategory.Info
+    }
+
+    IpcHandler {
+        function scene(name: string): void {
+            root.previewScene = name === "auto" ? "" : name;
+        }
+
+        target: "weather"
     }
 }

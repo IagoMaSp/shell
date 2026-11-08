@@ -12,9 +12,21 @@ Singleton {
     readonly property color shell: "#0e1015"
     readonly property color card: "#14161c"
     readonly property color button: "#18181c"
-    readonly property color steel: "#9ba4b5"
+    readonly property var steels: ({
+            vessel: "#9ba4b5",
+            lifeblood: "#8fb3cc",
+            infection: "#b8a08f",
+            greenpath: "#94b39c"
+        })
+    readonly property color steel: steels[flavour] ?? "#9ba4b5"
     readonly property color border: Qt.alpha(steel, 0.15)
-    readonly property color soul: "#f0f4f8"
+    readonly property var accents: ({
+            vessel: "#f0f4f8",
+            lifeblood: "#6cc9ff",
+            infection: "#ff8a2a",
+            greenpath: "#74c98a"
+        })
+    readonly property color soul: accents[flavour] ?? "#f0f4f8"
     readonly property color text: "#e2e8f0"
     readonly property color subtext: "#8a93a3"
     readonly property color faint: "#4a505c"
@@ -44,7 +56,12 @@ Singleton {
         state.setText(JSON.stringify({
             flavour
         }));
-        Quickshell.execDetached(["caelestia", "scheme", "set", "-n", "hollowknight", "-f", name, "-m", "dark"]);
+        // The icons are re-tinted before caelestia reapplies the icon theme; thunar-theme.py must
+        // run after caelestia, which rewrites thunar.css
+        Quickshell.execDetached(["sh", "-c", `python3 "$1" ${name}; caelestia scheme set -n hollowknight -f ${name} -m dark; python3 "$0" ${name}; command -v spicetify >/dev/null && spicetify -q refresh`, Quickshell.shellPath("assets/thunar-theme.py"), Quickshell.shellPath("assets/icon-theme.py")]);
+        Quickshell.execDetached(["python3", Quickshell.shellPath("assets/zen-theme.py"), name]);
+        Quickshell.execDetached(["python3", Quickshell.shellPath("assets/obsidian-theme.py"), name]);
+        Quickshell.execDetached(["python3", Quickshell.shellPath("assets/apps-theme.py"), name]);
     }
 
     FileView {
@@ -60,6 +77,8 @@ Singleton {
                     root.flavour = f;
             } catch (e) {}
             root.loaded = true;
+            Quickshell.execDetached(["python3", Quickshell.shellPath("assets/thunar-theme.py"), root.flavour]);
+            Quickshell.execDetached(["python3", Quickshell.shellPath("assets/icon-theme.py"), root.flavour]);
         }
         onLoadFailed: root.loaded = true
     }

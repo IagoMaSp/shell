@@ -33,7 +33,17 @@ Singleton {
             osdCharger: true,
             osdBattery: true,
             osdWifi: true,
-            osdBluetooth: true
+            osdBluetooth: true,
+            notifsInNotch: true,
+            nextEvent: true,
+            nextEventLead: 20,
+            agentOsd: true,
+            agentAlerts: true,
+            animBench: true,
+            animWeather: true,
+            animSeasons: true,
+            animTyping: true,
+            animGoo: true
         })
     property var values: defaults
 

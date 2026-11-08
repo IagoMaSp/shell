@@ -25,75 +25,91 @@ NotchPage {
         anchors.right: parent.right
         spacing: Tokens.spacing.medium
 
-        RowLayout {
+        Item {
             Layout.fillWidth: true
-            spacing: Tokens.spacing.large
+            implicitHeight: hero.implicitHeight + Tokens.padding.large * 2
 
-            HoverHandler {
-                id: mainHover
+            WeatherScene {
+                anchors.fill: parent
+                kind: mainIcon.kind
+                night: ["clear_night", "bedtime", "partly_cloudy_night"].includes(Weather.icon)
             }
 
-            WeatherIcon {
-                icon: Weather.icon
-                fontStyle: Tokens.font.icon.builders.extraLarge.scale(2).build()
-                colour: Hallownest.soul
-                animate: true
-                active: mainHover.hovered
-            }
+            RowLayout {
+                id: hero
 
-            ColumnLayout {
-                spacing: 0
+                anchors.fill: parent
+                anchors.margins: Tokens.padding.large
+                spacing: Tokens.spacing.large
 
-                StyledText {
-                    text: Weather.temp
-                    font: Tokens.font.body.builders.large.size(36).weight(Font.Medium).build()
-                    color: Hallownest.lifeblood
+                HoverHandler {
+                    id: mainHover
                 }
 
-                StyledText {
-                    text: Weather.description
-                    font: Tokens.font.body.medium
-                    color: Hallownest.subtext
+                WeatherIcon {
+                    id: mainIcon
+
+                    icon: Weather.icon
+                    fontStyle: Tokens.font.icon.builders.extraLarge.scale(2).build()
+                    colour: Hallownest.soul
+                    animate: true
+                    active: mainHover.hovered
                 }
 
-                StyledText {
-                    text: Weather.city || Tr.tr("Loading...")
-                    font: Tokens.font.label.medium
-                    color: Hallownest.faint
-                }
-            }
+                ColumnLayout {
+                    spacing: 0
 
-            Item {
-                Layout.fillWidth: true
-            }
+                    StyledText {
+                        text: Weather.temp
+                        font: Tokens.font.body.builders.large.size(36).weight(Font.Medium).build()
+                        color: Hallownest.lifeblood
+                    }
 
-            GridLayout {
-                columns: 2
-                rowSpacing: Tokens.spacing.small
-                columnSpacing: Tokens.spacing.large
+                    StyledText {
+                        text: Weather.description
+                        font: Tokens.font.body.medium
+                        color: Hallownest.subtext
+                    }
 
-                Stat {
-                    icon: "thermostat"
-                    value: Weather.feelsLike
-                    colour: Hallownest.lifeblood
-                }
-
-                Stat {
-                    icon: "water_drop"
-                    value: Strings.percent(Weather.humidity)
-                    colour: Hallownest.crystal
+                    StyledText {
+                        text: Weather.city || Tr.tr("Loading...")
+                        font: Tokens.font.label.medium
+                        color: Hallownest.faint
+                    }
                 }
 
-                Stat {
-                    icon: "air"
-                    value: Weather.windSpeed ? Tr.tr("%1 km/h").arg(Weather.windSpeed) : "--"
-                    colour: Hallownest.gold
+                Item {
+                    Layout.fillWidth: true
                 }
 
-                Stat {
-                    icon: "wb_twilight"
-                    value: `${Weather.sunrise} – ${Weather.sunset}`
-                    colour: Hallownest.gold
+                GridLayout {
+                    columns: 2
+                    rowSpacing: Tokens.spacing.small
+                    columnSpacing: Tokens.spacing.large
+
+                    Stat {
+                        icon: "thermostat"
+                        value: Weather.feelsLike
+                        colour: Hallownest.lifeblood
+                    }
+
+                    Stat {
+                        icon: "water_drop"
+                        value: Strings.percent(Weather.humidity)
+                        colour: Hallownest.crystal
+                    }
+
+                    Stat {
+                        icon: "air"
+                        value: Weather.windSpeed ? Tr.tr("%1 km/h").arg(Weather.windSpeed) : "--"
+                        colour: Hallownest.gold
+                    }
+
+                    Stat {
+                        icon: "wb_twilight"
+                        value: `${Weather.sunrise} – ${Weather.sunset}`
+                        colour: Hallownest.gold
+                    }
                 }
             }
         }

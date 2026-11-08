@@ -71,7 +71,7 @@ NotchPage {
             }
 
             HkSection {
-                text: Tr.tr("Appearance")
+                text: Tr.tr("Animations")
             }
 
             Toggle {
@@ -82,6 +82,42 @@ NotchPage {
             }
 
             Toggle {
+                key: "animBench"
+                text: Tr.tr("Bench rest")
+                subtext: Tr.tr("Darken before locking and the Knight on the bench in the lock screen")
+            }
+
+            Toggle {
+                key: "animWeather"
+                text: Tr.tr("Weather scenes")
+                subtext: Tr.tr("Animated landscape in the Weather page")
+            }
+
+            Toggle {
+                key: "animSeasons"
+                text: Tr.tr("Seasons")
+                subtext: Tr.tr("Grimm embers in October and snow in December")
+            }
+
+            Toggle {
+                key: "animTyping"
+                text: Tr.tr("Dialogue typing")
+                subtext: Tr.tr("Notifications are typed out like an NPC")
+            }
+
+            Toggle {
+                last: true
+                key: "animGoo"
+                text: Tr.tr("Island and dock transition")
+                subtext: Tr.tr("Drops travel along the frame when switching modes")
+            }
+
+            HkSection {
+                text: Tr.tr("Appearance")
+            }
+
+            Toggle {
+                first: true
                 key: "mascotRandom"
                 text: Tr.tr("Random visits")
                 subtext: Tr.tr("The Knight drops by now and then")
@@ -171,6 +207,39 @@ NotchPage {
             }
 
             HkSection {
+                text: Tr.tr("AI agents")
+            }
+
+            HkRow {
+                first: true
+                text: Tr.tr("Claude Code hooks")
+                subtext: AgentSessions.hooksInstalled ? Tr.tr("Live sessions and approvals in the notch") : Tr.tr("Adds hooks to ~/.claude/settings.json (with a backup)")
+
+                HkButton {
+                    implicitHeight: 26
+                    icon: AgentSessions.hooksInstalled ? "link_off" : "add_link"
+                    text: AgentSessions.hooksInstalled ? Tr.tr("Remove") : Tr.tr("Install")
+                    accent: AgentSessions.hooksInstalled ? Hallownest.grimm : Hallownest.lifeblood
+                    tinted: true
+                    disabled: AgentSessions.hooksBusy
+                    onClicked: AgentSessions.installHooks(!AgentSessions.hooksInstalled)
+                }
+            }
+
+            Toggle {
+                key: "agentAlerts"
+                text: Tr.tr("Approvals in the notch")
+                subtext: Tr.tr("Allow or deny Claude's requests from the collapsed notch")
+            }
+
+            Toggle {
+                last: true
+                key: "agentOsd"
+                text: Tr.tr("Finished sessions")
+                subtext: Tr.tr("Show an overlay when Claude finishes")
+            }
+
+            HkSection {
                 text: Tr.tr("System overlays")
             }
 
@@ -218,6 +287,16 @@ NotchPage {
             Toggle {
                 key: "osdBluetooth"
                 text: Tr.tr("Bluetooth")
+            }
+
+            Toggle {
+                key: "notifsInNotch"
+                text: Tr.tr("Notifications")
+            }
+
+            Toggle {
+                key: "nextEvent"
+                text: Tr.tr("Next class")
             }
 
             Stepper {

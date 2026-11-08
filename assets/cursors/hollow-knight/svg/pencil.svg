@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Cursor "pencil (Handwriting.cur)" de Hollow Knight, para redibujar en vector (lienzo 32 x 32, no lo cambies).
+  1. Dibuja en la capa "Cursor" calcando la capa "Referencia" (el pixel art original, bloqueada).
+  2. La capa "Ayudas" marca en rojo el punto activo (hotspot): la punta del cursor debe caer ahi.
+  3. Guarda como SVG de Inkscape con este mismo nombre y ejecuta
+     python3 scripts/hallownest-cursors.py (las capas Referencia y Ayudas se quitan solas).
+  Borra el archivo para volver al pixel art.
+-->
+<svg width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <sodipodi:namedview id="namedview" pagecolor="#2a2d35" inkscape:pageopacity="1" inkscape:zoom="20"
+     inkscape:cx="16.0" inkscape:cy="16.0" inkscape:current-layer="cursor" showgrid="true">
+    <inkscape:grid id="grid" type="xygrid" units="px" spacingx="1" spacingy="1" empspacing="8"
+       color="#9ba4b5" opacity="0.08" empcolor="#9ba4b5" empopacity="0.2" />
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="referencia" inkscape:label="Referencia" sodipodi:insensitive="true" opacity="0.5">
+    <image width="32" height="32" style="image-rendering:pixelated" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEQ0lEQVR4nL1XfUzUdRx+7oXjdnBGI/NwBNQ0ASdijFoj6FVnYS0NW2VbYs6ikRtra7Wy3EKy2HCtUYoyIWRqB4cQh7zuRELeDsTjRd654+RFzhSqmY2Xp33ph4NRre2Oe7bv7r/f830+z+fzeb4HuA8yAAoAHgDk7iRVAfABsB7ASwB2AgiRLrOsxBoADwN4E0C6p6dnwyqd7lZI6PoJrVabAuDe5SJWS8TvyuWKEj8/v9/2xO/luTwjLc1dc7/aFSvOA/BzNbnwdZUosVwuz/f39799OCWVHa09HOi2s7KsgaVGC4+mZ1MulxsA3OdKcpXk8SEfH5/RD5I+ZFdbP0esN1hmrKZBX8vKsi5equln/O63CSANgNZV5KLk0TKZ7EzYho1TZcYqOoYnaa6z8FS2kRWlnXPk4jTUdlCn0/0K4A3p0k7DC8ALHh4eprgdr852Wfo5NnSTBfrzzNdfukssjrnBxpTkr0X5iwCslfrFafKX1Wp10/73k2gfuM7+LjuzMg0sK2lfRP5zdR9bGtrp6+s7AWC3VDWnID7wvFqtbhR+j9husK2lm7k5pYuIxblo6qWtb5w7tsfNAjgGINBZ9cK7x5VKZUXCO+9xxOqYU6c/U72EvOZCH4etN5l6OI0KpbJO9Iq0CZ0atXUAsmJjt83aekd5ubGDhYb6JeQNtYMcHbpFw49F1Gg0QwB2SbY5BV8An6xZs/aOxXyVnVf6WFxoXkRcVdbFtpZrHL82yZKiCuG7A0CSK+ZelH6bVqsdEKp6O4eWkAu/rT0ODg+OM+WLr+aVC/LVzvouk0bn9L69CbT2jrC4cHHZW812XrdPsLnewi2bt84qFAoTgNck5S4ZucSAgMDbrU0dPJdvWqR6sMfB0aFfePzoSa5cef+kCB8Aj0mB5DS5iM1IlUpV++2RdJYWX7i73VoabRyzT/CKuZOvbN85q1QqmwEkSKPmsri9B8DBiIjI6RpTPQvy6llV3s3u9lEOWx3M+C6Tfn6rfweQCSBG2vFOq56HUPGERqNpy80+y9ycEpoqRbqN01Rew2efeW5GpVI1CnsAPOjsjP+b+uSYmKdmjIWVrCq/yqa6Dsa/tYdqtdoGIBVAFABvV6peuHQe1Wg0l09kZDHv7EX+VGBiSHDoFAA9gBelDl+2p5VQ9XFgUNBU7g8FzDxuoL//A38AOCK96TyxjBDqH1GpVHUHP0vm5wfSGBgYJJR/A+Ch5X5Qznt/IDx803R9bTd3vb6PMpmsEECYO8j/7nwvr9YTx3KY8b1BrFS7yH5X5Pj/gXjDH4qKip6prrIwbEPENIAvXf2I/C/10VqttjP7pJ77Ez+lQqGoALDJXf9mRIkTn4x5+s/Tp0ro7e09JuW4W0oPKTw+2rI59k74xkixXpMB6OBGiMyPWxcc3CSXy4Xvoe7oeiyAWKfi8RABIMDd5AsvIRrO5bv9n/AXF8lHSOlmRIQAAAAASUVORK5CYII=" />
+  </g>
+  <g inkscape:groupmode="layer" id="cursor" inkscape:label="Cursor"><defs><filter id="halo" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.6" dy="0.8" stdDeviation="0.7" flood-color="#000000" flood-opacity="0.45" /></filter></defs><g filter="url(#halo)"><path fill="#101010" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M2096 2384 c-9 -8 -16 -19 -16 -24 0 -29 -34 -40 -120 -40 -86 0
+-120 -11 -120 -40 0 -23 -34 -40 -80 -40 -33 0 -53 -5 -62 -16 -7 -9 -33 -38
+-58 -64 -25 -26 -51 -55 -58 -64 -9 -11 -29 -16 -62 -16 -33 0 -54 -5 -62 -16
+-17 -20 -382 -385 -402 -402 -11 -8 -16 -29 -16 -62 0 -33 -5 -53 -16 -62 -9
+-7 -38 -33 -64 -58 -26 -25 -55 -51 -64 -58 -11 -9 -16 -29 -16 -62 0 -46 -17
+-80 -40 -80 -23 0 -40 -34 -40 -80 0 -46 -17 -80 -40 -80 -23 0 -40 -34 -40
+-80 0 -46 -17 -80 -40 -80 -23 0 -40 -34 -40 -80 0 -46 -17 -80 -40 -80 -23 0
+-40 -34 -40 -80 0 -46 -17 -80 -40 -80 -23 0 -40 -34 -40 -80 0 -46 -17 -80
+-40 -80 -5 0 -16 -7 -24 -16 -20 -20 -24 -272 -4 -292 20 -20 47 -14 65 16 16
+24 185 195 227 230 11 8 16 29 16 62 0 33 5 53 16 62 9 7 38 33 64 58 26 25
+55 51 64 58 11 9 16 29 16 62 0 33 5 53 16 62 21 17 65 61 82 82 9 11 29 16
+62 16 33 0 53 5 62 16 7 9 33 38 58 64 25 26 51 55 58 64 9 11 29 16 62 16 46
+0 80 17 80 40 0 23 34 40 80 40 33 0 53 5 62 16 7 9 51 56 98 104 47 48 91 95
+98 104 9 11 29 16 62 16 33 0 54 5 62 16 17 20 382 385 402 402 11 8 16 29 16
+62 0 46 17 80 40 80 29 0 40 34 40 120 0 86 11 120 40 120 38 0 57 115 24 142
+-21 17 -65 61 -82 82 -18 23 -183 23 -206 0z" /><path fill="#626065" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M2016 2304 c-9 -8 -16 -19 -16 -24 0 -23 -34 -40 -80 -40 -46 0 -80
+-17 -80 -40 0 -23 -34 -40 -80 -40 -33 0 -53 -5 -62 -16 -7 -9 -33 -38 -58
+-64 -25 -26 -51 -55 -58 -64 -9 -11 -29 -16 -62 -16 -33 0 -54 -5 -62 -16 -17
+-20 -302 -305 -322 -322 -11 -8 -16 -29 -16 -62 0 -33 -5 -53 -16 -62 -9 -7
+-38 -33 -64 -58 -26 -25 -55 -51 -64 -58 -11 -9 -16 -29 -16 -62 0 -46 -17
+-80 -40 -80 -23 0 -40 -34 -40 -80 0 -33 -5 -53 -16 -62 -9 -7 -38 -33 -64
+-58 -26 -25 -55 -51 -64 -58 -13 -10 -16 -32 -16 -102 0 -86 -11 -120 -40
+-120 -22 0 -40 -34 -40 -77 0 -43 -4 -49 -64 -107 -36 -33 -72 -67 -80 -74
+-11 -8 -16 -29 -16 -62 0 -41 -4 -52 -27 -69 -48 -36 -50 -39 -57 -75 -14 -76
+44 -126 81 -69 16 25 106 117 147 151 10 8 16 29 16 59 0 43 4 49 64 107 36
+33 72 67 80 74 10 8 16 29 16 59 0 44 3 49 83 128 45 45 88 90 95 99 9 11 29
+16 62 16 46 0 80 17 80 40 0 23 34 40 80 40 33 0 53 5 62 16 7 9 33 38 58 64
+25 26 51 55 58 64 9 11 29 16 62 16 33 0 53 5 62 16 7 9 33 38 58 64 25 26 51
+55 58 64 9 11 29 16 62 16 33 0 54 5 62 16 17 20 382 385 402 402 11 8 16 29
+16 62 0 46 17 80 40 80 23 0 40 34 40 80 0 46 17 80 40 80 29 0 40 34 40 120
+0 121 1 120 -160 120 -104 0 -132 -3 -144 -16z" /><path fill="#c1bdd1" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M2096 2304 c-9 -8 -16 -19 -16 -24 0 -23 -34 -40 -80 -40 -46 0 -80
+-17 -80 -40 0 -23 -34 -40 -80 -40 -46 0 -80 -17 -80 -40 0 -23 -34 -40 -80
+-40 -33 0 -54 -5 -62 -16 -17 -20 -542 -545 -562 -562 -11 -8 -16 -29 -16 -62
+0 -33 -5 -53 -16 -62 -9 -7 -38 -33 -64 -58 -26 -25 -55 -51 -64 -58 -11 -9
+-16 -29 -16 -62 0 -46 -17 -80 -40 -80 -23 0 -40 -34 -40 -80 0 -46 -17 -80
+-40 -80 -38 0 -57 -112 -24 -144 21 -22 109 -22 126 0 7 9 51 56 98 104 47 48
+91 95 98 104 9 11 29 16 62 16 46 0 80 17 80 40 0 23 34 40 80 40 33 0 53 5
+62 16 7 9 33 38 58 64 25 26 51 55 58 64 9 11 29 16 62 16 33 0 53 5 62 16 7
+9 51 56 98 104 47 48 91 95 98 104 9 11 29 16 62 16 33 0 53 5 62 16 17 21 61
+65 82 82 11 9 16 29 16 62 0 33 5 53 16 62 9 7 38 33 64 58 26 25 55 51 64 58
+11 9 16 29 16 62 0 46 17 80 40 80 23 0 40 34 40 80 0 46 17 80 40 80 23 0 40
+34 40 80 0 71 -13 80 -120 80 -67 0 -92 -4 -104 -16z M635 680 c-14 -22 -29 -40 -34 -40 -24 0 -41 -34 -41 -79 0 -51 -14
+-77 -45 -83 -59 -10 -54 -158 5 -158 29 0 44 29 42 77 -2 55 10 79 43 87 13 3
+32 20 40 37 9 16 27 35 41 41 41 19 54 105 22 146 -19 23 -47 13 -73 -28z" /></g></g>
+  <g inkscape:groupmode="layer" id="ayudas" inkscape:label="Ayudas" sodipodi:insensitive="true">
+    <path d="M 3.5,28.5 h 4 M 5.5,26.5 v 4" stroke="#e63946" stroke-width="0.25" />
+    <circle cx="5.5" cy="28.5" r="0.6" fill="none" stroke="#e63946" stroke-width="0.2" />
+  </g>
+</svg>

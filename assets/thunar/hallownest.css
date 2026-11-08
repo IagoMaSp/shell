@@ -1,0 +1,259 @@
+/* Hallownest theme for Thunar. @hk_accent and @hk_steel are defined by thunar-theme.py */
+
+@define-color hk_void #06070a;
+@define-color hk_shell #0e1015;
+@define-color hk_card #14161c;
+@define-color hk_text #e2e8f0;
+@define-color hk_subtext #8a93a3;
+@define-color hk_faint #4a505c;
+
+.thunar * {
+    outline: none;
+}
+
+.thunar.background,
+.thunar .titlebar,
+.thunar menubar,
+.thunar toolbar {
+    background: @hk_void;
+    color: @hk_text;
+    border: none;
+    box-shadow: none;
+}
+
+.thunar .titlebar {
+    padding: 12px 0 6px 0;
+}
+
+.thunar paned > separator {
+    min-width: 4px;
+    margin: 0 -7px;
+    background: none;
+    box-shadow: none;
+}
+
+/* Toolbar buttons */
+
+.thunar button {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: none;
+    box-shadow: none;
+    color: @hk_subtext;
+    transition: all 200ms ease;
+}
+
+.thunar button:hover {
+    background: alpha(@hk_text, 0.06);
+    border-color: alpha(@hk_steel, 0.15);
+    color: @hk_text;
+}
+
+.thunar button:checked,
+.thunar button:active {
+    background: alpha(@hk_accent, 0.12);
+    border-color: alpha(@hk_accent, 0.3);
+    color: @hk_accent;
+}
+
+.thunar .image-button {
+    padding: 8px;
+    margin: 0 0 0 6px;
+}
+
+/* Path bar */
+
+.thunar .path-bar-button {
+    font-family: "Cinzel";
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0 2px;
+    padding: 6px 12px;
+    background: @hk_shell;
+    border-color: alpha(@hk_steel, 0.15);
+    color: @hk_steel;
+}
+
+.thunar .path-bar-button:hover {
+    background: alpha(@hk_text, 0.06);
+    color: @hk_text;
+}
+
+.thunar .path-bar-button:checked {
+    padding: 6px 20px;
+    background: alpha(@hk_accent, 0.12);
+    border-color: alpha(@hk_accent, 0.35);
+    color: @hk_accent;
+}
+
+.thunar entry {
+    min-height: 30px;
+    padding: 0 12px;
+    border: 1px solid alpha(@hk_steel, 0.15);
+    border-radius: 999px;
+    background: @hk_card;
+    color: @hk_text;
+    box-shadow: none;
+}
+
+.thunar entry:focus {
+    border-color: alpha(@hk_accent, 0.6);
+}
+
+.thunar entry selection {
+    background: alpha(@hk_accent, 0.25);
+    color: @hk_text;
+}
+
+/* Sidebar */
+
+.thunar .sidebar {
+    padding: 0 6px 0 10px;
+    background: none;
+    border: none;
+}
+
+.thunar .sidebar .view {
+    font-family: "Cinzel";
+    font-weight: bold;
+    padding: 7px 4px;
+    border-radius: 10px;
+    background: none;
+    color: @hk_subtext;
+    transition: all 200ms ease;
+}
+
+.thunar .sidebar .view:hover {
+    background: alpha(@hk_text, 0.05);
+    color: @hk_text;
+}
+
+/* Pointers like the in-game menus (HkSelection) */
+.thunar .sidebar .view:selected {
+    background-color: alpha(@hk_accent, 0.08);
+    background-image: url("hallownest/pointer-left.svg"), url("hallownest/pointer-right.svg");
+    background-repeat: no-repeat;
+    background-position: left center, right center;
+    background-size: 19px 8px;
+    color: @hk_accent;
+}
+
+/* Tabs */
+
+.thunar notebook {
+    background: none;
+    border: none;
+}
+
+.thunar header.top {
+    background: none;
+    border: none;
+    padding: 0 10px 0 0;
+    margin: 3px 0 -3px -2px;
+    box-shadow: none;
+}
+
+.thunar header.top tab {
+    font-family: "Cinzel";
+    font-weight: bold;
+    min-height: 0;
+    margin: 0 4px;
+    padding: 4px 14px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: none;
+    box-shadow: none;
+    color: @hk_subtext;
+    transition: all 200ms ease;
+}
+
+.thunar header.top tab:hover {
+    background: alpha(@hk_text, 0.05);
+}
+
+.thunar header.top tab:checked {
+    background: alpha(@hk_accent, 0.1);
+    border-color: alpha(@hk_accent, 0.3);
+    color: @hk_accent;
+}
+
+.thunar header.top tab button {
+    min-width: 16px;
+    min-height: 16px;
+    padding: 0;
+    margin-left: 6px;
+}
+
+/* File view */
+
+.thunar .frame.standard-view {
+    padding: 10px;
+    margin: 10px 15px 0 0;
+    border: 1px solid alpha(@hk_steel, 0.15);
+    border-radius: 16px;
+    background-color: @hk_shell;
+}
+
+.thunar .frame.standard-view .view:not(.rubberband),
+.thunar .frame.standard-view .view *:not(.rubberband) {
+    background-color: transparent;
+    color: @hk_text;
+}
+
+.thunar .frame.standard-view .view:selected,
+.thunar .frame.standard-view .view *:selected {
+    background-color: alpha(@hk_accent, 0.14);
+    color: @hk_accent;
+    border-radius: 10px;
+}
+
+.thunar .frame.standard-view treeview header button {
+    font-family: "Cinzel";
+    font-weight: bold;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid alpha(@hk_steel, 0.15);
+    color: @hk_steel;
+}
+
+.thunar .rubberband,
+.thunar rubberband {
+    background-color: alpha(@hk_accent, 0.12);
+    border: 1px solid alpha(@hk_accent, 0.4);
+}
+
+/* Scrollbars */
+
+.thunar scrollbar {
+    background: none;
+    border: none;
+}
+
+.thunar scrollbar slider {
+    min-width: 4px;
+    min-height: 4px;
+    border: none;
+    border-radius: 999px;
+    background: alpha(@hk_steel, 0.35);
+}
+
+.thunar scrollbar slider:hover {
+    background: alpha(@hk_steel, 0.6);
+}
+
+/* Status bar */
+
+.thunar statusbar {
+    margin: 12px 5px 12px -10px;
+    padding: 8px 12px;
+    border: 1px solid alpha(@hk_steel, 0.15);
+    border-radius: 16px;
+    background-color: @hk_shell;
+    color: @hk_subtext;
+}
+
+/* Image preview */
+
+.thunar box.vertical .image {
+    margin: 15px;
+}

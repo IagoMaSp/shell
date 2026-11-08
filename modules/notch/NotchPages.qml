@@ -4,7 +4,13 @@ import Quickshell
 import Caelestia.I18n
 
 Singleton {
+    // Pages are cycled with arrows/wheel/dots; tools only open from Home or by id
     readonly property var pages: [
+        {
+            id: "home",
+            icon: "home",
+            label: Tr.tr("Home")
+        },
         {
             id: "media",
             icon: "music_note",
@@ -21,14 +27,16 @@ Singleton {
             label: Tr.tr("Weather")
         },
         {
-            id: "performance",
-            icon: "speed",
-            label: Tr.tr("Performance")
-        },
+            id: "focus",
+            icon: "timer",
+            label: Tr.tr("Focus")
+        }
+    ]
+    readonly property var tools: [
         {
-            id: "ai",
-            icon: "smart_toy",
-            label: Tr.tr("AI")
+            id: "clipboard",
+            icon: "content_paste",
+            label: Tr.tr("Clipboard")
         },
         {
             id: "shelf",
@@ -36,14 +44,14 @@ Singleton {
             label: Tr.tr("Shelf")
         },
         {
-            id: "pomodoro",
-            icon: "timer",
-            label: Tr.tr("Focus")
+            id: "ai",
+            icon: "smart_toy",
+            label: Tr.tr("AI")
         },
         {
-            id: "todo",
-            icon: "checklist",
-            label: Tr.tr("To-Do")
+            id: "performance",
+            icon: "speed",
+            label: Tr.tr("Performance")
         },
         {
             id: "settings",
@@ -51,4 +59,10 @@ Singleton {
             label: Tr.tr("Settings")
         }
     ]
+    // ScreenState.notchPage indexes this list
+    readonly property var all: pages.concat(tools)
+
+    function find(id: string): int {
+        return all.findIndex(p => p.id === id);
+    }
 }

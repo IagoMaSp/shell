@@ -87,7 +87,7 @@ MouseArea {
                 Quickshell.execDetached(["sh", "-c", "wl-copy --type image/png < " + path]);
                 Quickshell.execDetached(["notify-send", "-a", "caelestia-cli", "-i", path, Tr.tr("Screenshot taken"), Tr.tr("Screenshot copied to clipboard")]);
             } else {
-                Quickshell.execDetached(["swappy", "-f", path]);
+                Screenshots.store(path);
             }
             closeAnim.start();
         });

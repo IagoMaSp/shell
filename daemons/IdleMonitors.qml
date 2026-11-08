@@ -54,6 +54,24 @@ Scope {
         target: SessionManager
     }
 
+    // Bench rest: darken the screen 8 s before the idle lock (same conditions as that timeout)
+    IdleMonitor {
+        readonly property var entry: GlobalConfig.general.idle.timeouts.values.find(t => t.idleAction === "lock") ?? null
+
+        enabled: {
+            if (!root.enabled || !NotchSettings.values.animBench || !entry || !(entry.enabled ?? true) || entry.timeout <= 10 || root.lock.lock.locked)
+                return false;
+            if (entry.inhibitWhenAudio && root.hasPlayer)
+                return false;
+            if (entry.inhibitWhenCharging && root.isCharging)
+                return false;
+            return true;
+        }
+        timeout: Math.max(1, (entry?.timeout ?? 0) - 8)
+        respectInhibitors: entry?.respectInhibitors ?? true
+        onIsIdleChanged: root.lock.resting = isIdle
+    }
+
     Variants {
         model: GlobalConfig.general.idle.timeouts.values
 

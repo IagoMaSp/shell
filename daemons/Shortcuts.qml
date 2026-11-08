@@ -15,6 +15,14 @@ Scope {
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
+        name: "ocr"
+        description: "Copy the text in a screen region"
+        onPressed: Quickshell.execDetached(["sh", Quickshell.shellPath("assets/ocr.sh")])
+    }
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
         name: "nexus"
         description: "Open nexus"
         onPressed: WindowFactory.create()
@@ -39,8 +47,6 @@ Scope {
         name: "notch"
         description: "Toggle notch"
         onPressed: {
-            if (root.hasFullscreen)
-                return;
             const screenState = ShellState.forActive();
             screenState.notch = !screenState.notch;
         }

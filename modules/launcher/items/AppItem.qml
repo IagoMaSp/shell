@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Widgets
 import Caelestia.Config
+import Caelestia.I18n
 import qs.components
 import qs.services
 import qs.utils
@@ -12,6 +13,16 @@ Item {
 
     required property DesktopEntry modelData
     required property ScreenState screenState
+    readonly property var openGroup: modelData ? Dock.openGroup(modelData.id) : null
+
+    // An app that is already open is focused instead of launched again
+    function open(): void {
+        if (openGroup)
+            Dock.activate(openGroup);
+        else
+            Apps.launch(modelData);
+        screenState.launcher = false;
+    }
 
     implicitHeight: Tokens.sizes.launcher.itemHeight
 
@@ -20,10 +31,7 @@ Item {
 
     StateLayer {
         radius: Tokens.rounding.large
-        onClicked: {
-            Apps.launch(root.modelData);
-            root.screenState.launcher = false;
-        }
+        onClicked: root.open()
     }
 
     Item {
@@ -62,9 +70,9 @@ Item {
             StyledText {
                 id: comment
 
-                text: (root.modelData?.comment || root.modelData?.genericName || root.modelData?.name) ?? ""
+                text: root.openGroup ? Tr.tr("Open · switch to its window") : (root.modelData?.comment || root.modelData?.genericName || root.modelData?.name) ?? ""
                 font: Tokens.font.body.small
-                color: Hallownest.subtext
+                color: root.openGroup ? Hallownest.lifeblood : Hallownest.subtext
 
                 elide: Text.ElideRight
                 width: root.width - icon.width - favouriteIcon.width - Tokens.rounding.extraLargeIncreased

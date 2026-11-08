@@ -8,6 +8,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Wayland
+import Caelestia
 import Caelestia.Config
 import Caelestia.I18n
 import Caelestia.Services
@@ -35,35 +36,63 @@ StyledWindow {
     }
 
     readonly property int pageCount: NotchPages.pages.length
-    readonly property int pageIndex: Math.max(0, Math.min(screenState.notchPage, pageCount - 1))
-    readonly property var page: NotchPages.pages[pageIndex]
+    readonly property int pageIndex: Math.max(0, Math.min(screenState.notchPage, NotchPages.all.length - 1))
+    readonly property var page: NotchPages.all[pageIndex]
+    readonly property bool isTool: pageIndex >= pageCount
     readonly property var pageComponents: ({
+            home: homePage,
             media: mediaPage,
             calendar: calendarPage,
             weather: weatherPage,
             performance: performancePage,
             ai: aiPage,
-            pomodoro: pomodoroPage,
-            todo: todoPage,
+            focus: focusPage,
             shelf: shelfPage,
+            clipboard: clipboardPage,
             settings: settingsPage
         })
 
     property bool hovered
     property bool dragHovered
-    readonly property bool expanded: !hasFullscreen && (hovered || dragHovered || screenState.notch || Shelf.dragging)
-    readonly property bool alertShown: Todos.alert !== null && !expanded && !hasFullscreen && Hypr.focusedMonitor?.name === screen.name
-    readonly property bool osdShown: NotchOsd.current !== null && !alertShown && !expanded && !hasFullscreen && Hypr.focusedMonitor?.name === screen.name
+    // Over a fullscreen window only the shortcut expands it; alerts and notifications still show
+    readonly property bool expanded: hasFullscreen ? screenState.notch : (hovered || dragHovered || screenState.notch || Shelf.dragging)
+    // The dock takes the island's place at the bottom
+    // While the dock is shown, the top edge still opens the notch on hover
+    readonly property bool canPeek: screenState.dockShown && !hasFullscreen && !expanded
+    readonly property bool fullscreenHidden: (hasFullscreen || screenState.dockShown && !(summoned && mascotShown)) && !expanded && !alertShown && !agentAlertShown && !osdShown && !notifShown
+    readonly property bool alertShown: Todos.alert !== null && !expanded && Hypr.focusedMonitor?.name === screen.name
+    readonly property bool agentAlertShown: AgentSessions.current !== null && NotchSettings.values.agentAlerts && !alertShown && !expanded && Hypr.focusedMonitor?.name === screen.name
+    readonly property bool osdShown: NotchOsd.current !== null && !alertShown && !agentAlertShown && !expanded && Hypr.focusedMonitor?.name === screen.name
+    readonly property var popupNotifs: {
+        if (!NotchSettings.values.notifsInNotch)
+            return [];
+        const out = [];
+        for (const n of Notifs.popups)
+            if (!n.closed)
+                out.push(n);
+        return out;
+    }
+    readonly property var activeToast: {
+        if (!NotchSettings.values.notifsInNotch)
+            return null;
+        for (const t of Toaster.toasts)
+            if (!t.closed)
+                return t;
+        return null;
+    }
+    readonly property bool notifShown: (popupNotifs.length > 0 || activeToast !== null) && !osdShown && !alertShown && !agentAlertShown && !expanded && Hypr.focusedMonitor?.name === screen.name
     readonly property bool richOsd: osdShown && ["bluetooth", "charger", "battery"].includes(NotchOsd.current?.kind)
-    readonly property bool minimal: NotchSettings.minimal && !expanded && !osdShown && !alertShown
-    readonly property bool mascotAllowed: NotchSettings.mascot && !hasFullscreen && !expanded && !minimal && !Pomodoro.running && !Todos.alert && Notifs.popups.length === 0
+    readonly property bool minimal: NotchSettings.minimal && !expanded && !osdShown && !alertShown && !agentAlertShown && !notifShown
+    readonly property bool mascotAllowed: NotchSettings.mascot && !hasFullscreen && (!screenState.dockShown || summoned) && !expanded && !minimal && !Pomodoro.running && !Todos.alert && !agentAlertShown && Notifs.popups.length === 0
     property bool mascotShown
     property bool visiting
-    readonly property bool canReact: mascotAllowed && !osdShown && !alertShown && Hypr.focusedMonitor?.name === screen.name
-    readonly property bool islandShown: NotchMedia.lyricsActive && !hasFullscreen && !minimal && (expanded ? page.id === "media" : (NotchMedia.player?.isPlaying ?? false) && Lyrics.hasLyrics)
+    // Called on purpose (Super + F8 menu): shows up in dock mode too, until this visit ends
+    property bool summoned
+    readonly property bool canReact: mascotAllowed && !osdShown && !alertShown && !agentAlertShown && !notifShown && Hypr.focusedMonitor?.name === screen.name
+    readonly property bool islandShown: NotchMedia.lyricsActive && !hasFullscreen && !screenState.dockShown && !minimal && (expanded ? page.id === "media" : (NotchMedia.player?.isPlaying ?? false) && Lyrics.hasLyrics)
 
     readonly property bool active: (NotchMedia.player?.isPlaying ?? false) || Pomodoro.running
-    property color glowColour: active ? Qt.alpha(Hallownest.lifeblood, 0.4) : Qt.alpha("black", 0.75)
+    property color glowColour: AgentSessions.current ? Qt.alpha(Hallownest.gold, 0.45) : active ? Qt.alpha(Hallownest.lifeblood, 0.4) : Season.current === "grimm" ? Qt.alpha(Hallownest.grimm, 0.4) : Qt.alpha("black", 0.75)
 
     property real wheelAccum
     property bool cursorMoving
@@ -72,11 +101,12 @@ StyledWindow {
     property real lastCursorMove
 
     function goTo(index: int): void {
-        screenState.notchPage = (index + pageCount) % pageCount;
+        screenState.notchPage = index;
     }
 
+    // Arrows and wheel cycle the pages only; from a tool they go back Home
     function step(delta: int): void {
-        goTo(pageIndex + delta);
+        goTo(isTool ? 0 : (pageIndex + delta + pageCount) % pageCount);
     }
 
     function updateLook(x: real, y: real): void {
@@ -111,6 +141,10 @@ StyledWindow {
     }
 
     onCanReactChanged: playReaction()
+    onMascotShownChanged: {
+        if (!mascotShown)
+            summoned = false;
+    }
     onIslandShownChanged: NotchMedia.positionUsers += islandShown ? 1 : -1
     onMascotAllowedChanged: {
         if (!mascotAllowed) {
@@ -129,14 +163,18 @@ StyledWindow {
 
     name: "notch"
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
-    WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.layer: hasFullscreen ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: expanded ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     mask: Region {
-        item: root.hasFullscreen ? null : container
+        item: root.fullscreenHidden ? null : container
 
         Region {
             item: island.visible ? island : null
+        }
+
+        Region {
+            item: root.canPeek ? peekZone : null
         }
     }
 
@@ -148,6 +186,27 @@ StyledWindow {
         CAnim {
             duration: 900
         }
+    }
+
+    Binding {
+        target: root.screenState
+        property: "notchWidth"
+        value: pill.width * NotchSettings.scale
+        when: !root.expanded
+    }
+
+    Binding {
+        target: root.screenState
+        property: "notchHeight"
+        value: root.contentItem.Config.border.thickness + pill.height * NotchSettings.scale
+        when: !root.expanded
+    }
+
+    Binding {
+        target: root.screenState
+        property: "notchRadius"
+        value: pill.radius * NotchSettings.scale
+        when: !root.expanded
     }
 
     SystemClock {
@@ -249,12 +308,24 @@ StyledWindow {
 
     Connections {
         function onMascotCallsChanged(): void {
-            if (!NotchSettings.mascot || !root.mascotAllowed || root.mascotShown)
+            if (root.screenState.dockShown && !root.mascotShown && Hypr.focusedMonitor?.name === root.screen.name)
+                root.summoned = true;
+            if (!NotchSettings.mascot || !root.mascotAllowed) {
+                root.summoned = false;
                 return;
-            root.visiting = true;
-            root.mascotShown = true;
-            visitEnd.interval = 15000;
-            visitEnd.restart();
+            }
+            if (!root.mascotShown) {
+                root.visiting = true;
+                root.mascotShown = true;
+                visitEnd.interval = 15000;
+                visitEnd.restart();
+                surpriseTimer.interval = 900;
+            } else {
+                if (root.visiting)
+                    visitEnd.restart();
+                surpriseTimer.interval = 0;
+            }
+            surpriseTimer.restart();
         }
 
         target: root.screenState
@@ -289,11 +360,17 @@ StyledWindow {
     }
 
     Timer {
+        id: surpriseTimer
+
+        onTriggered: root.screenState.mascotPick ? knight.play(root.screenState.mascotPick) : knight.surprise()
+    }
+
+    Timer {
         id: enterTimer
 
         interval: 80
         onTriggered: {
-            if (root.alertShown)
+            if (root.alertShown || root.agentAlertShown || root.notifShown)
                 return;
             if (root.mascotShown)
                 knight.wake();
@@ -309,13 +386,63 @@ StyledWindow {
         onTriggered: root.hovered = false
     }
 
+    // The notch grows under a still cursor, so its own hover may never fire
+    Timer {
+        id: peekCheck
+
+        interval: 600
+        onTriggered: {
+            if (!hoverHandler.hovered)
+                root.hovered = false;
+        }
+    }
+
+    Item {
+        id: peekZone
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: Math.max(container.width, 300)
+        height: 3
+
+        HoverHandler {
+            onHoveredChanged: {
+                if (hovered && root.canPeek) {
+                    root.hovered = true;
+                    peekCheck.restart();
+                }
+            }
+        }
+
+        // A file dragged to the top edge opens the Shelf; the notch's own DropArea takes over
+        DropArea {
+            anchors.fill: parent
+            keys: ["text/uri-list", "text/plain"]
+            onEntered: {
+                root.dragHovered = true;
+                if (!Shelf.dragging)
+                    root.goTo(NotchPages.find("shelf"));
+            }
+            onExited: dragCheck.restart()
+        }
+    }
+
+    Timer {
+        id: dragCheck
+
+        interval: 300
+        onTriggered: {
+            if (!notchDrop.containsDrag)
+                root.dragHovered = false;
+        }
+    }
+
     Item {
         id: container
 
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: shape.width * NotchSettings.scale
         implicitHeight: Config.border.thickness + pill.height * NotchSettings.scale
-        opacity: root.hasFullscreen ? 0 : 1
+        opacity: root.fullscreenHidden ? 0 : 1
         visible: opacity > 0
 
         Behavior on opacity {
@@ -340,12 +467,14 @@ StyledWindow {
         }
 
         DropArea {
+            id: notchDrop
+
             anchors.fill: parent
             keys: ["text/uri-list", "text/plain"]
             onEntered: {
                 root.dragHovered = true;
                 if (!Shelf.dragging)
-                    root.goTo(NotchPages.pages.findIndex(p => p.id === "shelf"));
+                    root.goTo(NotchPages.find("shelf"));
             }
             onExited: root.dragHovered = false
             onDropped: drop => {
@@ -366,6 +495,34 @@ StyledWindow {
             height: pill.height
             scale: NotchSettings.scale
             transformOrigin: Item.TopLeft
+
+            // Seasonal effects sit behind the shape, so only what spills around the pill shows
+            SoulParticles {
+                x: pill.x - 16
+                y: pill.height * 0.3
+                width: pill.width + 32
+                height: pill.height * 0.7 + 18
+                visible: Season.current === "grimm" && !root.fullscreenHidden && !root.minimal
+                running: visible && root.visible
+                count: 16
+                size: 3
+                colour: Hallownest.grimm
+                duration: 1600
+            }
+
+            SoulParticles {
+                x: pill.x - 20
+                y: pill.height - 6
+                width: pill.width + 40
+                height: 80
+                rotation: 180
+                visible: Season.current === "winter" && !root.fullscreenHidden && !root.minimal
+                running: visible && root.visible
+                count: 18
+                size: 3.5
+                colour: Hallownest.soul
+                duration: 6000
+            }
 
             Item {
                 anchors.fill: parent
@@ -394,10 +551,14 @@ StyledWindow {
 
                 property real radius: root.expanded ? 26 : Math.min(height / 2, 14)
                 readonly property real padding: Tokens.padding.large
-                readonly property real collapsedHeight: root.alertShown ? 52 : root.mascotShown && !root.osdShown ? 46 : root.osdShown ? (root.richOsd ? 64 : 40) : 34
+                readonly property real collapsedHeight: root.alertShown || root.agentAlertShown ? 52 : root.notifShown ? notifView.implicitHeight + 16 : root.mascotShown && !root.osdShown ? (knight.bossShown ? 72 : 46) : root.osdShown ? (root.richOsd ? 64 : 40) : 34
                 readonly property real collapsedWidth: {
                     if (root.alertShown)
                         return alertView.implicitWidth + padding * 2;
+                    if (root.agentAlertShown)
+                        return agentAlertView.implicitWidth + padding * 2;
+                    if (root.notifShown)
+                        return notifView.implicitWidth + padding * 2;
                     if (root.osdShown)
                         return root.richOsd ? Math.max(270, richView.implicitWidth + padding * 2) : Math.max(260, osdView.implicitWidth + padding * 2);
                     if (root.mascotShown)
@@ -464,7 +625,7 @@ StyledWindow {
                     id: collapsed
 
                     anchors.centerIn: parent
-                    opacity: !root.expanded && !root.minimal && !root.mascotShown && !root.osdShown && !root.alertShown ? 1 : 0
+                    opacity: !root.expanded && !root.minimal && !root.mascotShown && !root.osdShown && !root.alertShown && !root.agentAlertShown && !root.notifShown ? 1 : 0
                     visible: opacity > 0
 
                     Behavior on opacity {
@@ -531,6 +692,114 @@ StyledWindow {
                     HkButton {
                         icon: "close"
                         onClicked: Todos.dismissAlert()
+                    }
+                }
+
+                RowLayout {
+                    id: agentAlertView
+
+                    readonly property var approval: AgentSessions.current
+                    readonly property bool asking: (approval?.questions?.length ?? 0) > 0
+
+                    function openPage(): void {
+                        root.goTo(NotchPages.find("ai"));
+                        root.screenState.notch = true;
+                    }
+
+                    anchors.centerIn: parent
+                    spacing: Tokens.spacing.medium
+                    opacity: root.agentAlertShown ? 1 : 0
+                    visible: opacity > 0
+
+                    Behavior on opacity {
+                        Anim {
+                            type: Anim.DefaultEffects
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.leftMargin: 4
+                        implicitWidth: 20
+                        implicitHeight: 20
+                        rotation: 45
+                        color: Qt.alpha(Hallownest.gold, 0.15)
+                        border.width: 1.2
+                        border.color: Hallownest.gold
+
+                        MaterialIcon {
+                            anchors.centerIn: parent
+                            rotation: -45
+                            text: agentAlertView.asking ? "question_mark" : "shield"
+                            color: Hallownest.gold
+                            fontStyle: Tokens.font.icon.small
+                        }
+                    }
+
+                    ColumnLayout {
+                        Layout.leftMargin: 2
+                        spacing: 0
+
+                        StyledText {
+                            text: agentAlertView.asking ? Tr.tr("Claude asks") : Tr.tr("Claude needs you")
+                            color: Hallownest.gold
+                            font.family: Hallownest.serif
+                            font.pointSize: 10
+                            font.weight: Font.Bold
+                        }
+
+                        StyledText {
+                            Layout.maximumWidth: 260
+                            text: {
+                                const a = agentAlertView.approval;
+                                if (!a)
+                                    return "";
+                                if (agentAlertView.asking)
+                                    return a.questions[0]?.question ?? "";
+                                return a.detail ? `${a.tool}: ${a.detail.replace(/\s+/g, " ")}` : a.tool;
+                            }
+                            color: Hallownest.soul
+                            font.pointSize: 10
+                            elide: Text.ElideRight
+                        }
+                    }
+
+                    HkButton {
+                        visible: !agentAlertView.asking
+                        icon: "close"
+                        accent: Hallownest.grimm
+                        tinted: true
+                        onClicked: AgentSessions.deny(agentAlertView.approval.id)
+                    }
+
+                    HkButton {
+                        visible: !agentAlertView.asking
+                        icon: "check"
+                        filled: true
+                        onClicked: AgentSessions.allow(agentAlertView.approval.id)
+                    }
+
+                    HkButton {
+                        icon: agentAlertView.asking ? "chat" : "more_horiz"
+                        text: agentAlertView.asking ? Tr.tr("Answer") : ""
+                        filled: agentAlertView.asking
+                        onClicked: agentAlertView.openPage()
+                    }
+                }
+
+                NotifView {
+                    id: notifView
+
+                    anchors.centerIn: parent
+                    notif: root.popupNotifs[0] ?? null
+                    toast: root.popupNotifs.length > 0 ? null : root.activeToast
+                    pending: Math.max(0, root.popupNotifs.length - 1)
+                    opacity: root.notifShown ? 1 : 0
+                    visible: opacity > 0
+
+                    Behavior on opacity {
+                        Anim {
+                            type: Anim.DefaultEffects
+                        }
                     }
                 }
 
@@ -821,7 +1090,7 @@ StyledWindow {
                     music: NotchMedia.player?.isPlaying ?? false
                     tracking: NotchSettings.values.mascotTracking && root.cursorMoving
                     running: visible && root.visible
-                    opacity: root.mascotShown && !root.expanded && !root.osdShown && !root.alertShown ? 1 : 0
+                    opacity: root.mascotShown && !root.expanded && !root.osdShown && !root.alertShown && !root.agentAlertShown && !root.notifShown ? 1 : 0
                     visible: opacity > 0
 
                     onWoke: {
@@ -873,17 +1142,38 @@ StyledWindow {
                     Item {
                         id: header
 
-                        readonly property real minWidth: Math.max(title.implicitWidth, stamp.implicitWidth) * 2 + dots.implicitWidth + Tokens.spacing.large * 2
+                        readonly property real minWidth: Math.max(title.implicitWidth + (back.visible ? back.implicitWidth + Tokens.spacing.small : 0), stamp.implicitWidth) * 2 + dots.implicitWidth + Tokens.spacing.large * 2
 
                         anchors.top: parent.top
                         anchors.left: parent.left
                         anchors.right: parent.right
                         implicitHeight: Math.max(dots.implicitHeight, title.implicitHeight, stamp.implicitHeight)
 
+                        MaterialIcon {
+                            id: back
+
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            visible: root.isTool
+                            text: "arrow_back"
+                            color: backArea.containsMouse ? Hallownest.soul : Hallownest.steel
+
+                            MouseArea {
+                                id: backArea
+
+                                anchors.fill: parent
+                                anchors.margins: -4
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: root.goTo(0)
+                            }
+                        }
+
                         StyledText {
                             id: title
 
-                            anchors.left: parent.left
+                            anchors.left: back.visible ? back.right : parent.left
+                            anchors.leftMargin: back.visible ? Tokens.spacing.small : 0
                             anchors.verticalCenter: parent.verticalCenter
                             text: root.page.label
                             color: Hallownest.soul
@@ -898,7 +1188,7 @@ StyledWindow {
                             id: dots
 
                             anchors.centerIn: parent
-                            current: root.pageIndex
+                            current: root.isTool ? -1 : root.pageIndex
                             notches: NotchPages.pages
 
                             onSelected: index => root.goTo(index)
@@ -1030,7 +1320,7 @@ StyledWindow {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            root.screenState.notchPage = NotchPages.pages.findIndex(p => p.id === "media");
+                            root.screenState.notchPage = NotchPages.find("media");
                             root.screenState.notch = true;
                         }
                     }
@@ -1226,18 +1516,27 @@ StyledWindow {
     }
 
     Component {
-        id: pomodoroPage
+        id: clipboardPage
 
-        Pages.Pomodoro {
+        Pages.Clipboard {
             screenState: root.screenState
             page: root.page
         }
     }
 
     Component {
-        id: todoPage
+        id: homePage
 
-        Pages.Todo {
+        Pages.Home {
+            screenState: root.screenState
+            page: root.page
+        }
+    }
+
+    Component {
+        id: focusPage
+
+        Pages.Focus {
             screenState: root.screenState
             page: root.page
         }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Template for the lock-screen bench. Draw each part in its own layer; keep the layer names.
+     The shell loads every layer as its own image over the same 320x220 canvas, so do not move or
+     resize the canvas. Plain fills, strokes and linear gradients only (no blur/filters: Qt's SVG
+     renderer ignores them). Save your drawing as assets/hallownest/bench.svg. -->
+<svg
+   width="320"
+   height="220"
+   viewBox="0 0 320 220"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#06070a"
+     bordercolor="#9ba4b5"
+     inkscape:pagecheckerboard="false"
+     inkscape:document-units="px" />
+
+  <!-- Bottom of the stack: drawn first -->
+  <g inkscape:groupmode="layer" id="banco" inkscape:label="Banco">
+    <!-- The bench (seat at y=150, legs down to the floor at y=200). Delete this placeholder. -->
+    <rect x="50" y="146" width="220" height="8" rx="2" fill="#4d4d4d" opacity="0.5" />
+  </g>
+
+  <g inkscape:groupmode="layer" id="cuerpo" inkscape:label="Cuerpo">
+    <!-- The Knight's cloak and legs, sitting on the seat. Breathes as one piece (pivot = seat). -->
+  </g>
+
+  <g inkscape:groupmode="layer" id="cabeza" inkscape:label="Cabeza">
+    <!-- Head with horns, WITHOUT the eyes. Tilts/turns around the neck (pivot cross at 160,112). -->
+  </g>
+
+  <g inkscape:groupmode="layer" id="ojos" inkscape:label="Ojos">
+    <!-- Only the two open eyes (black). They blink and look left/right on their own. -->
+  </g>
+
+  <g inkscape:groupmode="layer" id="ojos-felices" inkscape:label="Ojos felices" style="display:none">
+    <!-- Optional: happy eyes (^ ^) shown when the password is right. Hidden layer is fine. -->
+  </g>
+
+  <!-- Reference: the notch mascot's head at the right size. Locked, ignored by the shell. -->
+  <g inkscape:groupmode="layer" id="referencia" inkscape:label="Referencia" sodipodi:insensitive="true" opacity="0.3"
+     transform="translate(15.61,8.4)">
+    <path fill="#daebeb" d="M 116.73,80.86 C 107.51,75.66 105.00,61.82 108.35,53.16 C 110.86,46.24 115.89,40.18 120.42,36.37 L 121.59,40.70 L 126.95,41.39 C 119.24,44.51 113.38,49.70 112.87,56.62 C 112.54,60.95 115.05,63.55 119.24,65.28 Z" />
+    <path fill="#daebeb" d="M 172.04,80.86 C 181.25,75.66 183.77,61.82 180.42,53.16 C 177.90,46.24 172.87,40.18 168.35,36.37 L 167.18,40.70 L 161.81,41.39 C 169.52,44.51 175.39,49.70 175.89,56.62 C 176.23,60.95 173.71,63.55 169.52,65.28 Z" />
+    <rect fill="#daebeb" x="115.89" y="59.22" width="56.99" height="42.40" rx="12.8" />
+    <ellipse fill="#000000" cx="130.3" cy="80" rx="6" ry="9" />
+    <ellipse fill="#000000" cx="158.5" cy="80" rx="6" ry="9" />
+  </g>
+
+  <!-- Guides: ignored by the shell -->
+  <g inkscape:groupmode="layer" id="ayudas" inkscape:label="Ayudas" sodipodi:insensitive="true">
+    <line x1="0" y1="200" x2="320" y2="200" stroke="#6cc9ff" stroke-width="0.6" stroke-dasharray="4 3" />
+    <text x="4" y="196" font-size="7" fill="#6cc9ff">suelo (y=200)</text>
+    <line x1="0" y1="150" x2="320" y2="150" stroke="#f4a261" stroke-width="0.6" stroke-dasharray="4 3" />
+    <text x="4" y="146" font-size="7" fill="#f4a261">asiento (y=150)</text>
+    <path d="M 155 112 H 165 M 160 107 V 117" stroke="#e63946" stroke-width="0.8" />
+    <text x="167" y="114" font-size="7" fill="#e63946">cuello: la cabeza gira aquí</text>
+  </g>
+</svg>

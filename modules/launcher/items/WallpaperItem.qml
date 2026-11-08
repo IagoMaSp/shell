@@ -11,15 +11,13 @@ Item {
 
     required property FileSystemEntry modelData
     required property ScreenState screenState
+    property real imageWidth: Tokens.sizes.launcher.wallpaperWidth
 
-    scale: 0.5
-    opacity: 0
-    z: PathView.z ?? 0 // qmllint disable missing-property
-
-    Component.onCompleted: {
-        scale = Qt.binding(() => PathView.isCurrentItem ? 1 : PathView.onPath ? 0.8 : 0);
-        opacity = Qt.binding(() => PathView.onPath ? 1 : 0);
-    }
+    // qmllint disable missing-property
+    scale: PathView.onPath ? PathView.itemScale ?? 1 : 0
+    opacity: PathView.onPath ? PathView.itemOpacity ?? 1 : 0
+    z: PathView.z ?? 0
+    // qmllint enable missing-property
 
     implicitWidth: image.width + Tokens.padding.medium * 2
     implicitHeight: image.height + label.height + Tokens.spacing.extraSmall + Tokens.padding.large + Tokens.padding.medium
@@ -50,16 +48,16 @@ Item {
 
         anchors.horizontalCenter: parent.horizontalCenter
         y: Tokens.padding.large
-        color: Colours.tPalette.m3surfaceContainer
+        color: Hallownest.card
         radius: Tokens.rounding.large
 
-        implicitWidth: Tokens.sizes.launcher.wallpaperWidth
+        implicitWidth: root.imageWidth
         implicitHeight: implicitWidth / 16 * 9
 
         MaterialIcon {
             anchors.centerIn: parent
             text: "image"
-            color: Colours.tPalette.m3outline
+            color: Hallownest.steel
             fontStyle: Tokens.font.icon.builders.extraLarge.scale(2).weight(Font.DemiBold).build()
         }
 
@@ -67,6 +65,14 @@ Item {
             anchors.fill: parent
             source: root.modelData.path
             playing: root.PathView.isCurrentItem
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            radius: image.radius
+            color: "transparent"
+            border.width: 1
+            border.color: root.PathView.isCurrentItem ? Qt.alpha(Hallownest.soul, 0.5) : Hallownest.border
         }
     }
 
@@ -82,16 +88,7 @@ Item {
         elide: Text.ElideRight
         renderType: Text.QtRendering
         text: root.modelData.relativePath
+        color: root.PathView.isCurrentItem ? Hallownest.soul : Hallownest.subtext
         font: Tokens.font.label.medium
-    }
-
-    Behavior on scale {
-        Anim {}
-    }
-
-    Behavior on opacity {
-        Anim {
-            type: Anim.DefaultEffects
-        }
     }
 }
