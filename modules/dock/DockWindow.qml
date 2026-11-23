@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Widgets
 import Caelestia.Config
@@ -72,7 +73,18 @@ StyledWindow {
     property real previewX
     readonly property var previewGroup: Dock.entries.find(e => e.id === previewId) ?? null
     // Same hidden list as the launcher (launcher.hiddenApps in shell.json)
-    readonly property var apps: DesktopEntries.applications.values.filter(a => !a.noDisplay && !Strings.testRegexList(GlobalConfig.launcher.hiddenApps, a.id)).sort((a, b) => a.name.localeCompare(b.name))
+    readonly property var allApps: DesktopEntries.applications.values.filter(a => !a.noDisplay && !Strings.testRegexList(GlobalConfig.launcher.hiddenApps, a.id)).sort((a, b) => a.name.localeCompare(b.name))
+    // Games have colour icons, so they live in a Games folder instead of the main grid
+    readonly property var apps: allApps.filter(a => !root.isSteamGame(a))
+    property var prismInstances: []
+    readonly property var games: allApps.filter(a => root.isSteamGame(a)).concat(prismInstances).sort((a, b) => a.name.localeCompare(b.name))
+    readonly property var gamesFolder: ({
+            id: "paleshell-games",
+            name: Tr.tr("Games"),
+            icon: "applications-games",
+            folder: true
+        })
+    property bool gamesOpen
 
     readonly property real pitch: 48
     readonly property real dockHeight: 60
@@ -82,6 +94,18 @@ StyledWindow {
 
     function iconFor(group: var): string {
         return group.entry ? Icons.iconPath(group.entry.icon, "image-missing") : Icons.getAppIcon(group.id, "image-missing");
+    }
+
+    function isSteamGame(entry: DesktopEntry): bool {
+        return entry.execString.includes("steam://rungameid");
+    }
+
+    function goBack(): bool {
+        if (!gamesOpen)
+            return false;
+        gamesOpen = false;
+        grid.currentIndex = 0;
+        return true;
     }
 
     function startDrag(from: Item, id: string, source: string): void {
@@ -137,9 +161,12 @@ StyledWindow {
         if (drawerOpen) {
             grabDelay.restart();
             grid.currentIndex = -1;
+            prismScan.running = true;
+        } else {
+            gamesOpen = false;
+            if (peeking)
+                peekHide.restart();
         }
-        else if (peeking)
-            peekHide.restart();
     }
     onWantedChanged: {
         peeking = false;
@@ -171,6 +198,25 @@ StyledWindow {
 
     Timer {
         id: settle
+    }
+
+    // Prism instances have no desktop entries: read their names from instance.cfg
+    Process {
+        id: prismScan
+
+        command: ["sh", "-c", "grep -H '^name=' \"$HOME\"/.local/share/PrismLauncher/instances/*/instance.cfg 2>/dev/null"]
+        stdout: StdioCollector {
+            onStreamFinished: root.prismInstances = text.trim().split("\n").filter(l => l).map(l => {
+                const m = /\/instances\/([^/]+)\/instance\.cfg:name=(.*)$/.exec(l);
+                return m ? {
+                    id: `prism-${m[1]}`,
+                    name: m[2],
+                    comment: "Prism Launcher",
+                    icon: "org.prismlauncher.PrismLauncher",
+                    command: ["prismlauncher", "--launch", m[1]]
+                } : null;
+            }).filter(g => g)
+        }
     }
 
     HyprlandFocusGrab {
@@ -316,11 +362,29 @@ StyledWindow {
                     visible: !root.searching
                     anchors.top: parent.top
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: Tr.tr("Applications")
+                    text: root.gamesOpen ? Tr.tr("Games") : Tr.tr("Applications")
                     color: Hallownest.soul
                     font.family: Hallownest.serif
                     font.pointSize: 12
                     font.weight: Font.Bold
+
+                    MaterialIcon {
+                        anchors.right: parent.left
+                        anchors.rightMargin: Tokens.spacing.small
+                        anchors.verticalCenter: parent.verticalCenter
+                        visible: root.gamesOpen
+                        text: "arrow_back"
+                        color: backArea.containsMouse ? Hallownest.soul : Hallownest.steel
+
+                        MouseArea {
+                            id: backArea
+
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.goBack()
+                        }
+                    }
                 }
 
                 StyledText {
@@ -329,7 +393,7 @@ StyledWindow {
                     visible: !root.searching
                     anchors.top: drawerTitle.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: Tr.tr("Drag apps to the dock to keep them at hand")
+                    text: root.gamesOpen ? Tr.tr("Esc or the arrow to go back") : Tr.tr("Drag apps to the dock to keep them at hand")
                     color: Hallownest.subtext
                     font.pointSize: 9
                 }
@@ -347,15 +411,27 @@ StyledWindow {
                     cellWidth: 92
                     cellHeight: 88
                     clip: true
-                    model: root.apps
+                    model: root.gamesOpen ? root.games : [root.gamesFolder, ...root.apps]
 
                     delegate: Item {
                         id: app
 
-                        required property DesktopEntry modelData
+                        // A DesktopEntry, the Games folder or a Prism instance
+                        required property var modelData
+                        readonly property bool isEntry: !modelData.folder && !modelData.command
                         readonly property bool selected: appArea.containsMouse || GridView.isCurrentItem
 
                         function launch(): void {
+                            if (modelData.folder) {
+                                root.gamesOpen = true;
+                                grid.currentIndex = 0;
+                                return;
+                            }
+                            if (modelData.command) {
+                                Quickshell.execDetached(modelData.command);
+                                root.screenState.launcher = false;
+                                return;
+                            }
                             const group = Dock.openGroup(modelData.id);
                             if (group)
                                 Dock.activate(group);
@@ -420,9 +496,12 @@ StyledWindow {
                             hoverEnabled: true
                             preventStealing: true
                             cursorShape: Qt.PointingHandCursor
-                            drag.target: proxy
+                            drag.target: app.isEntry ? proxy : null
 
-                            onPressed: root.startDrag(appIcon, app.modelData.id, appIcon.source)
+                            onPressed: {
+                                if (app.isEntry)
+                                    root.startDrag(appIcon, app.modelData.id, appIcon.source);
+                            }
                             onPositionChanged: root.moveDrag(drag.active)
                             onReleased: root.endDrag()
                             onClicked: app.launch()
@@ -446,6 +525,7 @@ StyledWindow {
                         maxHeight: root.drawerHeight - root.padding
                         listShown: query !== ""
                         appGrid: grid
+                        backAction: root.goBack
                     }
                 }
             }

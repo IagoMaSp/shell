@@ -23,6 +23,8 @@ Item {
     property bool listShown: true
     // Grid shown instead of the list while nothing is typed (the dock's app menu)
     property GridView appGrid
+    // Returns true when it handled Esc (e.g. leaving a folder of the grid)
+    property var backAction: null
     readonly property real searchHeight: search.height + padding + search.anchors.bottomMargin
 
     implicitWidth: listWrapper.width + padding * 2
@@ -105,7 +107,10 @@ Item {
                 event.accepted = false;
         }
 
-        Keys.onEscapePressed: root.screenState.launcher = false
+        Keys.onEscapePressed: {
+            if (root.listShown || !root.backAction?.())
+                root.screenState.launcher = false;
+        }
 
         Keys.onPressed: event => {
             // Shift+Enter always searches the web, even if an app matches

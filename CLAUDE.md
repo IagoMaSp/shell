@@ -171,7 +171,8 @@ docs/           claude-detalle.md (detalle histórico)
   animaciones en Animations (`mascot`, `animBench`, `animWeather`, `animSeasons`, `animTyping`, `animGoo`).
   Los controles de `components/controls` usan `Hallownest.*`, no `Colours.palette`.
 - **Dock** (`modules/dock/`): `Dock.mode` manual (`Super + F1`), asomar por los bordes, menú de apps =
-  launcher (el panel de `drawers` está apagado), animación de gotas (`GooWindow`). Espacio reservado
+  launcher (el panel de `drawers` está apagado), carpeta Games (juegos de Steam por `steam://rungameid`
+  + instancias de Prism leídas de `instance.cfg`), animación de gotas (`GooWindow`). Espacio reservado
   para notch/dock en `drawers/Exclusions.qml` (constantes fijas).
 - **Launcher**: calculadora directa, web/`@sitio`, `/archivos` (fd), `>tr` (translate-shell), apps ya
   abiertas se enfocan, OCR (`assets/ocr.sh`, `Super + F9`).
