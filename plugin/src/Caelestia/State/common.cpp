@@ -9,7 +9,7 @@ using Qt::StringLiterals::operator""_s;
 Q_LOGGING_CATEGORY(lcState, "caelestia.state", QtInfoMsg)
 
 QString stateDir() {
-    return QStandardPaths::writableLocation(QStandardPaths::GenericStateLocation) + u"/caelestia"_s;
+    return QStandardPaths::writableLocation(QStandardPaths::GenericStateLocation) + u"/paleshell"_s;
 }
 
 QString monitorStateDir() {
@@ -17,7 +17,7 @@ QString monitorStateDir() {
 }
 
 QString runtimeDir() {
-    return QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation) + u"/caelestia"_s;
+    return QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation) + u"/paleshell"_s;
 }
 
 QString monitorRuntimeDir() {

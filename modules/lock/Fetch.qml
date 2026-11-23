@@ -8,6 +8,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -16,10 +17,15 @@ StyledRect {
 
     required property real rootHeight
     readonly property int cBoxSize: Tokens.font.body.medium.pointSize * 2
+    // Undertale human souls, with Determination in the middle
+    readonly property var souls: ["#42fcff", "#fca600", "#003cff", "#ff0000", "#d535d9", "#00c000", "#ffff00"]
+    readonly property var soulPixels: [".###...###.", "#####.#####", "###########", "###########", "###########", ".#########.", "..#######..", "...#####...", "....###....", ".....#....."]
 
     implicitHeight: layout.implicitHeight + layout.anchors.topMargin + layout.anchors.margins
     radius: Tokens.rounding.medium
-    color: Colours.tPalette.m3surfaceContainer
+    color: Hallownest.card
+    border.width: 1
+    border.color: Hallownest.border
 
     ColumnLayout {
         id: layout
@@ -40,7 +46,7 @@ StyledRect {
                 implicitWidth: prompt.implicitWidth + Tokens.padding.medium * 2
                 implicitHeight: prompt.implicitHeight + Tokens.padding.small * 2
 
-                color: Colours.palette.m3primary
+                color: Hallownest.soul
                 radius: Tokens.rounding.medium
 
                 MonoText {
@@ -48,13 +54,13 @@ StyledRect {
 
                     anchors.centerIn: parent
                     text: ">"
-                    color: Colours.palette.m3onPrimary
+                    color: Hallownest.void_
                 }
             }
 
             MonoText {
                 Layout.fillWidth: true
-                text: "caelestiafetch.sh"
+                text: "hallownest.sh"
                 elide: Text.ElideRight
             }
 
@@ -64,7 +70,7 @@ StyledRect {
                 Layout.preferredHeight: 0
                 active: !iconLoader.active
 
-                sourceComponent: SysInfo.isDefaultLogo ? caelestiaLogo : distroIcon
+                sourceComponent: SysInfo.isDefaultLogo ? maskLogo : distroIcon
             }
         }
 
@@ -79,7 +85,7 @@ StyledRect {
                 Layout.fillHeight: true
                 active: root.width > Tokens.sizes.lock.largeLogoWidth
 
-                sourceComponent: SysInfo.isDefaultLogo ? caelestiaLogo : distroIcon
+                sourceComponent: SysInfo.isDefaultLogo ? maskLogo : distroIcon
             }
 
             ColumnLayout {
@@ -143,15 +149,37 @@ StyledRect {
                 spacing: Tokens.spacing.largeIncreased
 
                 Repeater {
-                    model: CUtils.clamp(Math.floor((layout.width + coloursRow.spacing) / (root.cBoxSize + coloursRow.spacing)), 0, 8)
+                    model: {
+                        const count = CUtils.clamp(Math.floor((layout.width + coloursRow.spacing) / (root.cBoxSize + coloursRow.spacing)), 0, root.souls.length);
+                        const start = Math.floor((root.souls.length - count) / 2);
+                        return root.souls.slice(start, start + count);
+                    }
 
-                    StyledRect {
-                        required property int index
+                    Item {
+                        id: soul
 
-                        implicitWidth: implicitHeight
+                        required property color modelData
+
+                        implicitWidth: root.cBoxSize
                         implicitHeight: root.cBoxSize
-                        color: Colours.palette[`term${index}`]
-                        radius: Tokens.rounding.medium
+
+                        PixelArt {
+                            anchors.centerIn: parent
+                            rows: root.soulPixels
+                            pixelSize: root.cBoxSize / 11
+                            color: soul.modelData
+                            scale: soulHover.hovered ? 1.25 : 1
+
+                            Behavior on scale {
+                                Anim {
+                                    type: Anim.FastSpatial
+                                }
+                            }
+                        }
+
+                        HoverHandler {
+                            id: soulHover
+                        }
                     }
                 }
             }
@@ -159,10 +187,11 @@ StyledRect {
     }
 
     Component {
-        id: caelestiaLogo
+        id: maskLogo
 
-        Logo {
-            width: height
+        HealthMask {
+            size: height
+            glow: true
         }
     }
 
@@ -172,7 +201,7 @@ StyledRect {
         ColouredIcon {
             source: SysInfo.osLogo
             implicitSize: height
-            colour: Colours.palette.m3primary
+            colour: Hallownest.soul
             layer.enabled: Config.lock.recolourLogo
         }
     }

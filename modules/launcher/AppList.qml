@@ -6,6 +6,7 @@ import Caelestia.Config
 import qs.components
 import qs.components.containers
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.modules.launcher.items
 import qs.modules.launcher.services
@@ -20,22 +21,67 @@ StyledListView {
 
     readonly property string requestedState: stateForText(search.text)
     readonly property string displayState: stateForText(displayText)
+    readonly property string calcExpression: calcExpressionForText(displayText)
+    readonly property string webQuery: webQueryForText(displayText)
+    readonly property string translateQuery: displayText.startsWith(`${GlobalConfig.launcher.actionPrefix}tr `) ? displayText.slice(GlobalConfig.launcher.actionPrefix.length + 3) : ""
+    readonly property string fileQuery: displayState === "files" ? displayText.slice(1) : ""
 
     function syncDisplayText(): void {
         if (screenState.launcher && requestedState === displayState)
             displayText = search.text;
     }
 
+    // Plain text counts as a calculation when it starts with "=" or looks like maths
+    function isMath(text: string): bool {
+        const t = text.trim();
+        if (t.startsWith("="))
+            return true;
+        return /[\d)π]\s*[+\-*\/^×÷]\s*[\d(.√π]/.test(t) // 2+3, (1+2)*3
+            || /^-?[\d.,]+\s*[^\s\d]*\s+(to|in)\s+[^\s\d]+$/i.test(t) // 10 km to mi
+            || /^[\d.,]+\s*%\s+of\s+[\d.,]+$/i.test(t) // 15% of 200
+            || /^[\d.,]+\s*!$/.test(t) // 5!
+            || /^√\s*[\d(]/.test(t) // √2
+            || /^[a-z]+\(.*\d/i.test(t); // sqrt(16)
+    }
+
+    function calcExpressionForText(text: string): string {
+        const prefix = `${GlobalConfig.launcher.actionPrefix}calc `;
+        if (text.startsWith(prefix))
+            return text.slice(prefix.length);
+        if (text.startsWith(GlobalConfig.launcher.actionPrefix) || !isMath(text))
+            return "";
+        const t = text.trim();
+        return t.startsWith("=") ? t.slice(1).trim() : t;
+    }
+
+    function webQueryForText(text: string): string {
+        const prefix = `${GlobalConfig.launcher.actionPrefix}web `;
+        return text.startsWith(prefix) ? text.slice(prefix.length) : text;
+    }
+
     function stateForText(text: string): string {
         const prefix = GlobalConfig.launcher.actionPrefix;
         if (text.startsWith(prefix)) {
-            for (const action of ["calc", "scheme", "variant"])
+            for (const action of ["calc", "web", "tr"])
                 if (text.startsWith(`${prefix}${action} `))
                     return action;
+            if (text.startsWith(`${prefix}theme `))
+                return "scheme";
+            if (text.startsWith(`${prefix}color `))
+                return "flavour";
 
             return "actions";
         }
 
+        if (text.startsWith("/"))
+            return "files";
+        if (WebSearch.siteSearch(text))
+            return "web";
+        if (isMath(text))
+            return "calc";
+        // Fall back to a web search when nothing matches
+        if (text.trim() && !text.startsWith(GlobalConfig.launcher.specialPrefix) && Apps.search(text).length === 0)
+            return "web";
         return "apps";
     }
 
@@ -44,11 +90,15 @@ StyledListView {
         case "actions":
             return Actions.query(text);
         case "calc":
+        case "web":
+        case "tr":
             return [0];
         case "scheme":
             return Schemes.query(text);
-        case "variant":
-            return M3Variants.query(text);
+        case "flavour":
+            return Flavours.query(text);
+        case "files":
+            return FileSearch.results;
         default:
             return Apps.search(text);
         }
@@ -68,10 +118,8 @@ StyledListView {
     highlightRangeMode: ListView.ApplyRange
 
     highlightFollowsCurrentItem: false
-    highlight: StyledRect {
+    highlight: HkSelection {
         radius: Tokens.rounding.large
-        color: Colours.palette.m3onSurface
-        opacity: 0.08
 
         y: root.currentItem?.y ?? 0
         implicitWidth: root.width
@@ -85,10 +133,11 @@ StyledListView {
     state: screenState.launcher ? requestedState : displayState
 
     onStateChanged: {
-        if (state === "scheme" || state === "variant")
-            Schemes.reload();
+        if (state === "web")
+            WebSearch.reload();
     }
 
+    onFileQueryChanged: FileSearch.search(fileQuery)
     Component.onCompleted: displayText = search.text
 
     states: [
@@ -114,6 +163,27 @@ StyledListView {
             }
         },
         State {
+            name: "tr"
+
+            PropertyChanges {
+                root.delegate: translateItem
+            }
+        },
+        State {
+            name: "web"
+
+            PropertyChanges {
+                root.delegate: webItem
+            }
+        },
+        State {
+            name: "files"
+
+            PropertyChanges {
+                root.delegate: fileItem
+            }
+        },
+        State {
             name: "scheme"
 
             PropertyChanges {
@@ -121,10 +191,10 @@ StyledListView {
             }
         },
         State {
-            name: "variant"
+            name: "flavour"
 
             PropertyChanges {
-                root.delegate: variantItem
+                root.delegate: schemeItem
             }
         }
     ]
@@ -272,17 +342,33 @@ StyledListView {
     }
 
     Component {
-        id: schemeItem
+        id: translateItem
 
-        SchemeItem {
+        TranslateItem {
             list: root
         }
     }
 
     Component {
-        id: variantItem
+        id: webItem
 
-        VariantItem {
+        WebItem {
+            list: root
+        }
+    }
+
+    Component {
+        id: fileItem
+
+        FileItem {
+            list: root
+        }
+    }
+
+    Component {
+        id: schemeItem
+
+        SchemeItem {
             list: root
         }
     }

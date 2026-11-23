@@ -1,0 +1,107 @@
+/* Hallownest: Zen theme matching PaleShell. Managed by assets/zen-theme.py, edit it in the repo. */
+@import url("hallownest-colors.css");
+
+:root {
+    --zen-primary-color: var(--hk-accent) !important;
+    --zen-colors-primary: color-mix(in srgb, var(--hk-accent) 22%, var(--hk-card)) !important;
+    --zen-colors-secondary: color-mix(in srgb, var(--hk-accent) 12%, var(--hk-card)) !important;
+    --zen-colors-tertiary: var(--hk-shell) !important;
+    --zen-colors-border: color-mix(in srgb, var(--hk-steel) 18%, transparent) !important;
+    --zen-colors-border-contrast: color-mix(in srgb, var(--hk-steel) 30%, transparent) !important;
+    --zen-colors-hover-bg: color-mix(in srgb, var(--hk-accent) 8%, transparent) !important;
+    --zen-colors-input-bg: var(--hk-card) !important;
+    --zen-dialog-background: var(--hk-card) !important;
+    --zen-main-browser-background: var(--hk-void) !important;
+    --zen-main-browser-background-toolbar: var(--hk-void) !important;
+    --zen-themed-toolbar-bg-transparent: var(--hk-void) !important;
+    --zen-toolbar-element-bg: color-mix(in srgb, var(--hk-steel) 8%, transparent) !important;
+    --zen-toolbar-element-bg-hover: color-mix(in srgb, var(--hk-accent) 12%, transparent) !important;
+    --toolbar-bgcolor: var(--hk-void) !important;
+    --toolbar-color: var(--hk-text) !important;
+    --toolbarbutton-icon-fill: var(--hk-steel) !important;
+    --tab-selected-bgcolor: color-mix(in srgb, var(--hk-accent) 10%, var(--hk-card)) !important;
+    --focus-outline-color: var(--hk-accent) !important;
+    --arrowpanel-background: var(--hk-card) !important;
+    --arrowpanel-color: var(--hk-text) !important;
+    --arrowpanel-border-color: color-mix(in srgb, var(--hk-steel) 20%, transparent) !important;
+    --toolbar-field-background-color: var(--hk-card) !important;
+    --toolbar-field-focus-background-color: var(--hk-card) !important;
+    --toolbar-field-color: var(--hk-text) !important;
+    accent-color: var(--hk-accent) !important;
+}
+
+/* Void background behind everything (overrides the workspace gradient) */
+#zen-main-app-wrapper,
+#navigator-toolbox,
+#browser,
+#zen-browser-background,
+.zen-browser-generic-background {
+    background: var(--hk-void) !important;
+}
+
+/* Thin steel frame around the web content */
+#tabbrowser-tabbox,
+.browserSidebarContainer {
+    border: 1px solid color-mix(in srgb, var(--hk-steel) 15%, transparent) !important;
+}
+
+/* Tabs: subtle pills, active one with an accent bar */
+.tabbrowser-tab .tab-background {
+    border-radius: 10px !important;
+}
+
+.tabbrowser-tab[selected] .tab-background,
+.tabbrowser-tab[multiselected] .tab-background {
+    background: color-mix(in srgb, var(--hk-accent) 9%, var(--hk-card)) !important;
+    box-shadow: inset 2px 0 0 var(--hk-accent), 0 0 0 1px color-mix(in srgb, var(--hk-steel) 18%, transparent) !important;
+}
+
+.tabbrowser-tab:not([selected]):hover .tab-background {
+    background: color-mix(in srgb, var(--hk-steel) 7%, transparent) !important;
+}
+
+.tab-label {
+    color: var(--hk-subtext) !important;
+}
+
+.tabbrowser-tab[selected] .tab-label {
+    color: var(--hk-text) !important;
+}
+
+/* Workspace name in Cinzel */
+.zen-current-workspace-indicator-name,
+.zen-workspace-name {
+    font-family: "Cinzel", serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    color: var(--hk-accent) !important;
+}
+
+/* URL bar */
+#urlbar-background {
+    background: var(--hk-card) !important;
+    border: 1px solid color-mix(in srgb, var(--hk-steel) 18%, transparent) !important;
+    border-radius: 999px !important;
+}
+
+#urlbar[focused] #urlbar-background,
+#urlbar[open] #urlbar-background {
+    border-color: color-mix(in srgb, var(--hk-accent) 60%, transparent) !important;
+}
+
+.urlbarView-row[selected] {
+    background: color-mix(in srgb, var(--hk-accent) 12%, transparent) !important;
+}
+
+/* Menus and popups */
+menupopup,
+panel {
+    --panel-background: var(--hk-card) !important;
+    --panel-border-color: color-mix(in srgb, var(--hk-steel) 20%, transparent) !important;
+    --panel-border-radius: 12px !important;
+}
+
+menuitem[_moz-menuactive],
+menu[_moz-menuactive] {
+    background: color-mix(in srgb, var(--hk-accent) 12%, transparent) !important;
+}

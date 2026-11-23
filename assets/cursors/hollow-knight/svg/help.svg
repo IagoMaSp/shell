@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Cursor "help (Help.cur)" de Hollow Knight, para redibujar en vector (lienzo 32 x 32, no lo cambies).
+  1. Dibuja en la capa "Cursor" calcando la capa "Referencia" (el pixel art original, bloqueada).
+  2. La capa "Ayudas" marca en rojo el punto activo (hotspot): la punta del cursor debe caer ahi.
+  3. Guarda como SVG de Inkscape con este mismo nombre y ejecuta
+     python3 scripts/hallownest-cursors.py (las capas Referencia y Ayudas se quitan solas).
+  Borra el archivo para volver al pixel art.
+-->
+<svg width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <sodipodi:namedview id="namedview" pagecolor="#2a2d35" inkscape:pageopacity="1" inkscape:zoom="20"
+     inkscape:cx="16.0" inkscape:cy="16.0" inkscape:current-layer="cursor" showgrid="true">
+    <inkscape:grid id="grid" type="xygrid" units="px" spacingx="1" spacingy="1" empspacing="8"
+       color="#9ba4b5" opacity="0.08" empcolor="#9ba4b5" empopacity="0.2" />
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="referencia" inkscape:label="Referencia" sodipodi:insensitive="true" opacity="0.5">
+    <image width="32" height="32" style="image-rendering:pixelated" href="data:image/png;base64,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" />
+  </g>
+  <g inkscape:groupmode="layer" id="cursor" inkscape:label="Cursor"><defs><filter id="halo" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.6" dy="0.8" stdDeviation="0.7" flood-color="#000000" flood-opacity="0.45" /></filter></defs><g filter="url(#halo)"><path fill="#0a0c0f" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M336 2224 c-9 -8 -16 -19 -16 -24 0 -23 -34 -40 -80 -40 -34 0 -53
+-5 -62 -17 -7 -9 -32 -35 -56 -57 l-42 -42 0 -203 0 -204 83 -82 c45 -45 88
+-90 95 -99 11 -13 35 -16 142 -16 151 0 160 -4 160 -80 0 -71 13 -80 120 -80
+70 0 92 3 102 16 17 21 61 65 82 82 13 11 16 35 16 142 0 167 7 160 -160 160
+-162 0 -160 -1 -160 120 0 70 3 92 16 102 21 17 65 61 82 82 18 22 106 22 124
+0 7 -9 33 -38 58 -64 25 -26 51 -55 58 -64 19 -24 343 -24 366 0 23 23 23 188
+0 206 -21 17 -65 61 -82 82 -9 11 -29 16 -62 16 -46 0 -80 17 -80 40 0 38 -22
+40 -360 40 -285 0 -331 -2 -344 -16z M1698 2144 c-17 -21 -61 -65 -82 -82 -11 -9 -16 -29 -16 -62 0 -33
+-5 -53 -16 -62 -9 -7 -38 -33 -64 -58 -26 -25 -55 -51 -64 -58 -13 -10 -16
+-32 -16 -102 l0 -90 -40 -25 c-25 -16 -40 -33 -40 -45 0 -12 15 -29 40 -45 38
+-24 40 -28 40 -74 0 -64 -17 -81 -80 -81 -33 0 -53 -5 -62 -16 -17 -21 -61
+-65 -82 -82 -11 -9 -16 -29 -16 -62 0 -46 -17 -80 -40 -80 -23 0 -40 -34 -40
+-81 0 -46 2 -50 40 -74 52 -33 52 -57 0 -90 -38 -24 -40 -28 -40 -74 0 -52 13
+-74 50 -86 26 -8 34 -43 27 -119 -6 -68 7 -109 36 -114 33 -7 47 17 47 77 0
+82 41 111 76 53 10 -15 31 -39 48 -54 26 -22 31 -35 36 -84 6 -64 26 -88 58
+-68 14 9 18 29 20 110 3 100 11 124 42 124 35 0 45 -28 42 -120 -4 -106 5
+-120 78 -120 46 0 80 17 80 40 0 23 34 40 80 40 63 0 80 17 80 80 0 46 17 80
+40 80 23 0 40 34 40 81 0 46 2 50 40 74 25 16 40 33 40 45 0 12 -15 29 -40 45
+-38 24 -40 28 -40 74 0 47 -17 81 -40 81 -29 0 -40 34 -40 120 0 107 9 120 80
+120 33 0 54 5 62 16 17 21 141 145 162 162 12 10 16 33 16 102 0 69 4 92 16
+102 8 7 62 59 120 115 l104 102 0 85 c0 83 -1 86 -30 108 -17 12 -39 37 -50
+55 -20 34 -47 42 -68 21 -8 -8 -12 -46 -12 -105 0 -73 -3 -95 -16 -105 -21
+-17 -65 -61 -82 -82 -27 -33 -142 -14 -142 24 0 29 -34 40 -120 40 -107 0
+-120 9 -120 81 0 46 2 50 40 74 40 26 50 51 28 73 -19 19 -194 16 -210 -4z M578 1104 c-17 -21 -61 -65 -82 -82 -22 -18 -22 -106 0 -124 21 -17
+65 -61 82 -82 10 -13 32 -16 102 -16 70 0 92 3 102 16 17 21 61 65 82 82 22
+18 22 106 0 124 -21 17 -65 61 -82 82 -19 23 -185 23 -204 0z" /><path fill="#3a4150" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M940 2243 c-46 -9 -60 -31 -60 -94 0 -54 -2 -59 -25 -65 -45 -11 -55
+0 -55 65 0 88 -5 91 -160 91 -127 0 -160 -8 -160 -40 0 -32 -33 -40 -160 -40
+-108 0 -131 -3 -142 -17 -7 -9 -32 -35 -55 -57 l-43 -42 0 -207 0 -206 30 -23
+c17 -12 39 -37 50 -55 27 -45 53 -43 85 7 l25 40 89 0 c108 0 121 -9 121 -80
+0 -46 17 -80 40 -80 23 0 40 -34 40 -80 0 -63 17 -80 80 -80 46 0 80 17 80 40
+0 23 34 40 80 40 76 0 80 9 80 160 0 167 7 160 -160 160 -161 0 -160 -1 -160
+120 0 86 11 120 40 120 23 0 40 34 40 80 0 66 16 80 89 80 l58 0 12 -40 c17
+-56 63 -59 81 -5 8 25 21 39 45 49 18 8 36 23 39 34 4 11 22 30 41 41 69 41
+23 101 -65 84z M1698 2144 c-17 -21 -61 -65 -82 -82 -11 -9 -16 -29 -16 -63 0 -46
+-2 -51 -35 -70 -23 -14 -38 -32 -43 -52 -6 -24 -14 -33 -34 -35 -44 -5 -52
+-25 -49 -122 l2 -89 -40 -26 c-53 -33 -53 -57 -1 -90 38 -24 40 -28 40 -75 0
+-33 -5 -53 -16 -62 -9 -7 -56 -51 -104 -98 -48 -47 -95 -91 -104 -98 -10 -8
+-16 -28 -16 -57 0 -60 -7 -72 -46 -85 -56 -19 -42 -80 18 -80 23 0 28 4 28 24
+0 37 10 56 31 56 10 0 33 18 50 40 28 35 37 40 74 40 45 0 62 10 88 53 18 29
+45 35 65 15 8 -8 12 -55 12 -144 0 -131 8 -164 40 -164 23 0 40 -34 40 -80 0
+-33 5 -54 16 -62 42 -35 211 -206 227 -230 18 -30 45 -36 65 -16 8 8 12 46 12
+104 0 90 11 124 40 124 29 0 40 34 40 120 0 86 -11 120 -40 120 -32 0 -40 33
+-40 160 0 151 4 160 80 160 33 0 54 5 62 16 17 21 141 145 162 162 12 10 16
+33 16 102 0 69 4 92 16 102 8 7 62 59 120 115 l104 102 0 85 c0 83 -1 86 -30
+108 -17 12 -39 37 -50 55 -20 34 -47 42 -68 21 -8 -8 -12 -46 -12 -105 0 -73
+-3 -95 -16 -105 -21 -17 -65 -61 -82 -82 -27 -33 -142 -14 -142 24 0 29 -34
+40 -120 40 -107 0 -120 9 -120 81 0 46 2 50 40 74 40 26 50 51 28 73 -19 19
+-194 16 -210 -4z m-108 -318 c19 -23 8 -61 -18 -64 -32 -5 -52 15 -52 49 0 25
+4 29 29 29 16 0 34 -7 41 -14z m310 4 c39 -21 31 -132 -11 -145 -11 -4 -31
+-25 -45 -46 -30 -47 -61 -50 -82 -7 -15 32 -7 94 15 111 17 14 53 50 77 78 18
+22 21 22 46 9z M1136 2073 c-4 -4 -14 -23 -21 -40 -9 -21 -21 -33 -33 -33 -62 0 -67
+-149 -6 -158 31 -4 49 24 46 77 -2 54 3 63 43 82 41 19 44 72 5 77 -14 2 -29
+-1 -34 -5z M576 1104 c-13 -12 -16 -40 -16 -144 0 -161 -1 -160 120 -160 121 0
+120 -1 120 160 0 161 1 160 -120 160 -67 0 -92 -4 -104 -16z M1376 1033 c-4 -5 -14 -22 -21 -40 -13 -31 -16 -32 -82 -35 -66 -3
+-68 -4 -71 -31 -2 -20 -15 -35 -43 -52 -37 -24 -39 -28 -39 -74 0 -52 13 -74
+50 -86 26 -8 34 -43 27 -119 -6 -68 7 -109 36 -114 32 -6 47 17 47 73 0 47 4
+56 28 74 15 12 33 26 40 31 8 8 12 50 12 145 l0 135 37 17 c40 19 52 45 33 68
+-13 16 -42 20 -54 8z" /><path fill="#838385" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M674 2240 c-41 -16 -38 -71 5 -85 11 -3 29 -21 40 -40 22 -38 50 -45
+72 -19 25 30 12 129 -19 138 -43 12 -79 14 -98 6z M475 2200 l-25 -40 -130 0 c-108 0 -131 -3 -142 -17 -7 -9 -32 -35
+-56 -57 l-42 -42 0 -207 0 -206 30 -23 c17 -12 39 -37 50 -55 27 -45 53 -43
+85 7 14 22 30 40 35 40 5 0 21 18 35 40 15 25 33 40 45 40 13 0 27 -14 40 -40
+26 -50 53 -53 76 -7 20 38 31 47 62 47 22 0 22 -1 22 -144 0 -180 -3 -176 120
+-176 70 0 92 3 102 16 17 21 61 65 82 82 13 10 16 32 16 102 0 107 -9 120 -81
+120 -46 0 -50 -2 -74 -40 -31 -50 -58 -52 -81 -7 -20 38 -31 47 -61 47 l-23 0
+0 268 c0 195 -3 271 -12 280 -22 22 -47 12 -73 -28z M1724 2160 c-17 -6 -36 -21 -42 -34 -6 -14 -24 -33 -39 -43 -39 -25
+-43 -32 -43 -86 0 -42 -3 -49 -32 -67 -18 -11 -39 -34 -48 -52 -9 -19 -25 -34
+-40 -38 -38 -9 -49 -42 -43 -130 l6 -78 -42 -26 c-53 -34 -53 -58 -1 -91 38
+-24 40 -28 40 -74 0 -77 9 -81 160 -81 127 0 160 -8 160 -40 0 -5 7 -16 16
+-24 23 -24 267 -23 286 0 17 21 141 145 162 162 12 10 16 33 16 102 0 69 4 92
+16 102 8 7 62 59 120 115 l104 102 0 85 c0 102 -9 116 -80 116 -63 0 -80 -17
+-80 -80 0 -33 -5 -53 -16 -62 -21 -17 -65 -61 -82 -82 -27 -33 -142 -14 -142
+24 0 29 -34 40 -120 40 -88 0 -90 1 -112 30 -12 17 -37 39 -55 50 -46 27 -43
+54 7 80 82 42 19 108 -76 80z m-140 -333 c38 -28 26 -137 -17 -145 -34 -7 -47
+17 -47 83 0 78 18 96 64 62z m316 3 c39 -21 31 -132 -11 -145 -11 -4 -31 -25
+-45 -46 -30 -47 -61 -50 -82 -7 -15 32 -7 94 15 111 17 14 53 50 77 78 18 22
+21 22 46 9z M1124 2066 c-14 -37 0 -61 36 -61 33 0 35 2 35 35 0 32 -3 35 -33 38
+-21 2 -34 -2 -38 -12z M635 1080 c-14 -22 -29 -40 -34 -40 -41 0 -62 -187 -25 -224 22 -23
+186 -23 208 0 37 37 16 224 -25 224 -5 0 -20 18 -34 40 -16 25 -33 40 -45 40
+-12 0 -29 -15 -45 -40z M1252 880 c-47 -11 -46 -9 -53 -143 -7 -138 1 -172 41 -172 35 0 51
+37 43 106 -8 77 1 103 42 128 73 43 19 104 -73 81z" /><path fill="#e1e1e1" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M724 2226 c-14 -37 0 -61 36 -61 33 0 35 2 35 35 0 32 -3 35 -33 38
+-21 2 -34 -2 -38 -12z M270 2157 c-15 -8 -27 -24 -30 -42 -4 -22 -12 -31 -37 -37 -20 -5
+-38 -19 -47 -36 -8 -15 -28 -37 -45 -50 l-31 -23 0 -129 0 -129 27 -20 c16
+-12 34 -26 41 -31 7 -6 12 -34 12 -63 0 -78 42 -105 77 -49 9 15 33 43 53 63
+19 20 41 43 48 52 9 12 28 17 62 17 76 0 80 9 80 160 l0 129 28 20 c47 36 49
+39 56 75 16 85 -47 128 -84 57 -27 -53 -52 -54 -84 -2 -17 27 -34 40 -56 45
+-42 8 -41 8 -70 -7z m40 -91 c19 -23 8 -61 -18 -64 -32 -5 -52 15 -52 49 0 25
+4 29 29 29 16 0 34 -7 41 -14z M1776 2153 c-4 -4 -14 -23 -21 -40 -9 -21 -21 -33 -33 -33 -40 0 -47
+-25 -44 -156 l3 -123 -43 -45 c-24 -24 -49 -51 -56 -60 -9 -11 -29 -16 -62
+-16 -71 0 -80 -13 -80 -120 0 -70 3 -92 16 -102 21 -17 65 -61 82 -82 11 -13
+35 -16 142 -16 127 0 160 -8 160 -40 0 -41 192 -61 222 -24 17 21 61 65 82 82
+13 10 16 32 16 102 0 70 3 92 16 102 9 7 56 51 104 98 48 47 95 91 104 98 11
+9 16 29 16 62 0 27 6 54 13 60 6 5 24 19 40 31 23 17 27 28 27 69 0 63 -17 80
+-80 80 -62 0 -80 -17 -80 -78 0 -41 -5 -51 -42 -88 -24 -22 -49 -48 -56 -57
+-29 -38 -222 -18 -222 23 0 29 -34 40 -119 40 -105 0 -121 11 -121 81 0 52 5
+61 45 80 41 19 44 72 5 77 -14 2 -29 -1 -34 -5z m126 -330 c15 -13 18 -32 18
+-104 0 -106 -9 -119 -80 -119 -71 0 -80 13 -80 117 0 106 11 123 78 123 28 0
+52 -6 64 -17z M736 1584 c-10 -10 -16 -33 -16 -64 0 -63 17 -80 80 -80 63 0 80 17
+80 80 0 31 -6 54 -16 64 -21 21 -107 21 -128 0z M644 946 c-11 -28 1 -51 32 -65 18 -8 37 -27 45 -45 20 -45 74 -46
+74 -1 0 24 -6 33 -31 44 -18 8 -37 27 -45 45 -16 35 -64 50 -75 22z" /></g></g>
+  <g inkscape:groupmode="layer" id="ayudas" inkscape:label="Ayudas" sodipodi:insensitive="true">
+    <path d="M 0.5,4.5 h 4 M 2.5,2.5 v 4" stroke="#e63946" stroke-width="0.25" />
+    <circle cx="2.5" cy="4.5" r="0.6" fill="none" stroke="#e63946" stroke-width="0.2" />
+  </g>
+</svg>

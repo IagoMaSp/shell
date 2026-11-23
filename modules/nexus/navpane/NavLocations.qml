@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import Caelestia.Config
 import qs.components
@@ -50,12 +51,14 @@ VerticalFadeFlickable {
                     return h % 2 === 0 ? h : h + 1;
                 }
 
-                color: isCurrentPage ? Colours.palette.m3secondaryContainer : Colours.layer(Colours.palette.m3surfaceContainerHigh, 2)
+                color: isCurrentPage ? Qt.alpha(Hallownest.soul, 0.1) : Hallownest.card
+                border.width: 1
+                border.color: isCurrentPage ? Qt.alpha(Hallownest.soul, 0.38) : Hallownest.border
 
-                topLeftRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryStart ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
-                topRightRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryStart ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
-                bottomLeftRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryEnd ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
-                bottomRightRadius: stateLayer.pressed ? Tokens.rounding.medium : isCurrentPage ? Tokens.rounding.extraLargeIncreased : isCategoryEnd ? Tokens.rounding.extraLarge : Tokens.rounding.extraSmall
+                topLeftRadius: stateLayer.pressed ? 8 : isCurrentPage ? 12 : isCategoryStart ? 12 : 4
+                topRightRadius: stateLayer.pressed ? 8 : isCurrentPage ? 12 : isCategoryStart ? 12 : 4
+                bottomLeftRadius: stateLayer.pressed ? 8 : isCurrentPage ? 12 : isCategoryEnd ? 12 : 4
+                bottomRightRadius: stateLayer.pressed ? 8 : isCurrentPage ? 12 : isCategoryEnd ? 12 : 4
 
                 RadiusBehavior on topLeftRadius {}
                 RadiusBehavior on topRightRadius {}
@@ -74,11 +77,44 @@ VerticalFadeFlickable {
                     onClicked: root.nState.currentPageIdx = item.index
                 }
 
+                Item {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 10
+                    height: 10
+                    opacity: item.isCurrentPage ? 1 : 0
+                    layer.enabled: opacity > 0
+                    layer.effect: MultiEffect {
+                        shadowEnabled: true
+                        shadowColor: Hallownest.soul
+                        shadowBlur: 0.7
+                        shadowHorizontalOffset: 0
+                        shadowVerticalOffset: 0
+                        blurMax: 8
+                    }
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: 5
+                        height: 5
+                        rotation: 45
+                        color: Hallownest.soul
+                    }
+
+                    Behavior on opacity {
+                        Anim {
+                            type: Anim.DefaultEffects
+                        }
+                    }
+                }
+
                 RowLayout {
                     id: layout
 
                     anchors.fill: parent
                     anchors.margins: Tokens.padding.large
+                    anchors.leftMargin: Tokens.padding.large + 6
                     spacing: Tokens.spacing.medium
 
                     StyledRect {
@@ -87,15 +123,17 @@ VerticalFadeFlickable {
                         Layout.bottomMargin: -1
                         implicitWidth: height
 
-                        radius: Tokens.rounding.full
-                        color: item.isCurrentPage ? Colours.palette.m3primary : Colours.palette.m3secondaryContainer
+                        radius: 8
+                        color: item.isCurrentPage ? Qt.alpha(Hallownest.soul, 0.14) : Hallownest.button
+                        border.width: 1
+                        border.color: item.isCurrentPage ? Qt.alpha(Hallownest.soul, 0.5) : Hallownest.border
 
                         MaterialIcon {
                             anchors.centerIn: parent
                             anchors.verticalCenterOffset: 1
 
                             text: item.modelData.icon
-                            color: item.isCurrentPage ? Colours.palette.m3onPrimary : Colours.palette.m3onSecondaryContainer
+                            color: item.isCurrentPage ? Hallownest.soul : Hallownest.subtext
                             fontStyle: Tokens.font.icon.builders.medium.weight(Font.Medium).build()
                             grade: 25
                             fill: item.modelData.noFill ? 0 : 1
@@ -109,6 +147,7 @@ VerticalFadeFlickable {
                         StyledText {
                             Layout.fillWidth: true
                             text: item.modelData.label
+                            color: item.isCurrentPage ? Hallownest.soul : Hallownest.text
                             font: Tokens.font.body.medium
                             elide: Text.ElideRight
                         }
@@ -116,7 +155,7 @@ VerticalFadeFlickable {
                         StyledText {
                             Layout.fillWidth: true
                             text: item.modelData.description
-                            color: Colours.palette.m3onSurfaceVariant
+                            color: Hallownest.subtext
                             font: Tokens.font.label.small
                             elide: Text.ElideRight
                         }

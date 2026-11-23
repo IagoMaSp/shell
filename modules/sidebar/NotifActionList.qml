@@ -9,6 +9,7 @@ import qs.components
 import qs.components.containers
 import qs.components.effects
 import qs.services
+import qs.utils
 
 Item {
     id: root
@@ -123,7 +124,7 @@ Item {
 
                     Layout.preferredWidth: implicitWidth + (actionStateLayer.pressed ? Tokens.padding.large : 0)
                     radius: actionStateLayer.pressed ? Tokens.rounding.medium / 2 : Tokens.rounding.medium
-                    color: Colours.layer(Colours.palette.m3surfaceContainerHighest, 4)
+                    color: Hallownest.button
 
                     Timer {
                         id: copyTimer
@@ -163,7 +164,7 @@ Item {
                         MaterialIcon {
                             animate: action.modelData.isCopy ?? false
                             text: action.modelData.isCopy ? "content_copy" : "close"
-                            color: Colours.palette.m3onSurfaceVariant
+                            color: Hallownest.subtext
                         }
                     }
 
@@ -172,7 +173,7 @@ Item {
 
                         IconImage {
                             asynchronous: true
-                            source: Quickshell.iconPath(action.modelData.identifier)
+                            source: Icons.iconPath(action.modelData.identifier)
                         }
                     }
 
@@ -181,7 +182,7 @@ Item {
 
                         StyledText {
                             text: action.modelData.text
-                            color: Colours.palette.m3onSurfaceVariant
+                            color: Hallownest.subtext
                         }
                     }
 

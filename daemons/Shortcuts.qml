@@ -10,7 +10,17 @@ Scope {
     id: root
 
     property bool launcherInterrupted
+    // Over a fullscreen window a single Super tap is ignored (games, video); a double tap opens
+    property real lastSuperTap
     readonly property bool hasFullscreen: Hypr.focusedWorkspace?.toplevels.values.some(t => t.lastIpcObject.fullscreen > 1) ?? false
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
+        name: "ocr"
+        description: "Copy the text in a screen region"
+        onPressed: Quickshell.execDetached(["sh", Quickshell.shellPath("assets/ocr.sh")])
+    }
 
     // qmllint disable unresolved-type
     CustomShortcut {
@@ -24,25 +34,23 @@ Scope {
     CustomShortcut {
         // qmllint enable unresolved-type
         name: "showall"
-        description: "Toggle launcher, dashboard and osd"
+        description: "Toggle launcher"
         onPressed: {
             if (root.hasFullscreen)
                 return;
             const v = ShellState.forActive();
-            v.launcher = v.dashboard = v.osd = v.utilities = !(v.launcher || v.dashboard || v.osd || v.utilities);
+            v.launcher = !v.launcher;
         }
     }
 
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
-        name: "dashboard"
-        description: "Toggle dashboard"
+        name: "notch"
+        description: "Toggle notch"
         onPressed: {
-            if (root.hasFullscreen)
-                return;
             const screenState = ShellState.forActive();
-            screenState.dashboard = !screenState.dashboard;
+            screenState.notch = !screenState.notch;
         }
     }
 
@@ -66,9 +74,13 @@ Scope {
         description: "Toggle launcher"
         onPressed: root.launcherInterrupted = false
         onReleased: {
-            if (!root.launcherInterrupted && !root.hasFullscreen) {
-                const screenState = ShellState.forActive();
+            const screenState = ShellState.forActive();
+            const now = Date.now();
+            if (!root.launcherInterrupted && (!root.hasFullscreen || screenState.launcher || now - root.lastSuperTap < 400)) {
                 screenState.launcher = !screenState.launcher;
+                root.lastSuperTap = 0;
+            } else {
+                root.lastSuperTap = root.launcherInterrupted ? 0 : now;
             }
             root.launcherInterrupted = false;
         }
@@ -95,23 +107,10 @@ Scope {
         }
     }
 
-    // qmllint disable unresolved-type
-    CustomShortcut {
-        // qmllint enable unresolved-type
-        name: "utilities"
-        description: "Toggle utilities"
-        onPressed: {
-            if (root.hasFullscreen)
-                return;
-            const screenState = ShellState.forActive();
-            screenState.utilities = !screenState.utilities;
-        }
-    }
-
     IpcHandler {
         function toggle(drawer: string): void {
             if (list().split("\n").includes(drawer)) {
-                if (root.hasFullscreen && ["launcher", "session", "dashboard"].includes(drawer))
+                if (root.hasFullscreen && ["launcher", "session", "notch"].includes(drawer))
                     return;
                 const screenState = ShellState.forActive();
                 screenState[drawer] = !screenState[drawer];

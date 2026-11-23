@@ -65,7 +65,9 @@ Fit fitFor(const QSize& native, const QSize& bucket, Qt::AspectRatioMode mode) {
     if (scaled.width() > native.width() || scaled.height() > native.height())
         scaled = native;
 
-    const auto cropSize = mode == Qt::KeepAspectRatioByExpanding ? bucket.boundedTo(scaled) : scaled;
+    // Don't crop to the bucket: buckets are rounded to 256 px and have another aspect ratio, so cropping
+    // here plus the Image's own PreserveAspectCrop zoomed the wallpaper in. The Image crops to the real size.
+    const auto cropSize = scaled;
     const QPoint origin((scaled.width() - cropSize.width()) / 2, (scaled.height() - cropSize.height()) / 2);
     return { .scaled = scaled, .crop = QRect(origin, cropSize) };
 }

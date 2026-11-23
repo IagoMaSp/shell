@@ -3,86 +3,55 @@ pragma Singleton
 import ".."
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import Caelestia.Config
+import qs.services
 import qs.utils
 
+// The styles for ">theme", each previewed with the current flavour
 Searcher {
     id: root
 
-    property string currentScheme
-    property string currentVariant
+    function coloursFor(style: string, flavour: string): var {
+        const s = Hallownest.styles[style];
+        return {
+            surface: s.base.void.slice(1),
+            outline: s.flavours[flavour].steel.slice(1),
+            primary: s.flavours[flavour].accent.slice(1)
+        };
+    }
 
     function transformSearch(search: string): string {
-        return search.slice(`${GlobalConfig.launcher.actionPrefix}scheme `.length);
+        return search.slice(`${GlobalConfig.launcher.actionPrefix}theme `.length);
     }
 
     function selector(item: var): string {
-        return `${item.name} ${item.flavour}`;
+        return item.title;
     }
 
-    function reload(): void {
-        getCurrent.running = true;
-    }
-
-    list: schemes.instances
+    list: styles.instances
     useFuzzy: GlobalConfig.launcher.useFuzzy.schemes
-    keys: ["name", "flavour"]
+    keys: ["title", "style"]
     weights: [0.9, 0.1]
 
     Variants {
-        id: schemes
+        id: styles
+
+        model: Hallownest.styleNames
 
         Scheme {}
     }
 
-    Process {
-        id: getSchemes
-
-        running: true
-        command: ["caelestia", "scheme", "list"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const schemeData = JSON.parse(text);
-                const list = Object.entries(schemeData).map(([name, f]) => Object.entries(f).map(([flavour, colours]) => ({
-                                name,
-                                flavour,
-                                colours
-                            })));
-
-                const flat = [];
-                for (const s of list)
-                    for (const f of s)
-                        flat.push(f);
-
-                schemes.model = flat.sort((a, b) => String(a.name + a.flavour).localeCompare((b.name + b.flavour)));
-            }
-        }
-    }
-
-    Process {
-        id: getCurrent
-
-        running: true
-        command: ["caelestia", "scheme", "get", "-nfv"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const [name, flavour, variant] = text.trim().split("\n");
-                root.currentScheme = `${name} ${flavour}`;
-                root.currentVariant = variant;
-            }
-        }
-    }
-
     component Scheme: QtObject {
-        required property var modelData
-        readonly property string name: modelData.name
-        readonly property string flavour: modelData.flavour
-        readonly property var colours: modelData.colours
+        required property string modelData
+        readonly property string style: modelData
+        readonly property string title: Hallownest.styles[style].name
+        readonly property string subtitle: Hallownest.flavour
+        readonly property bool current: style === Hallownest.style
+        readonly property var colours: root.coloursFor(style, Hallownest.flavour)
 
         function onClicked(list: AppList): void {
             list.screenState.launcher = false;
-            Quickshell.execDetached(["caelestia", "scheme", "set", "-n", name, "-f", flavour]);
+            Hallownest.setStyle(style);
         }
     }
 }

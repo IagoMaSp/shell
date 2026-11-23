@@ -21,7 +21,6 @@ MaterialShape {
     property bool animated: true
     property int morphAnimRotation: 60
     property real morphScale: 0.14
-    property alias rotateAnimDuration: rotateAnim.duration
 
     property real stiffness: 180
     property real dampingRatio: 0.6
@@ -53,7 +52,7 @@ MaterialShape {
     }
 
     implicitSize: 38
-    color: Colours.palette.m3primary
+    color: Hallownest.soul
     toShape: shapes[0]
 
     ElapsedTimer {

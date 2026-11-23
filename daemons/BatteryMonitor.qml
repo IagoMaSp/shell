@@ -5,6 +5,7 @@ import Caelestia
 import Caelestia.Config
 import Caelestia.I18n
 import Caelestia.Services
+import qs.services
 
 Scope {
     id: root
@@ -23,6 +24,10 @@ Scope {
         if (root.lastPercentage >= 0) {
             for (const level of root.warnLevels) {
                 if (p <= level.level && root.lastPercentage > level.level) {
+                    if (NotchSettings.values.osdBattery) {
+                        NotchOsd.showBattery(Tr.trMarked(level.title ?? Tr.tr("Battery warning")), Tr.trMarked(level.message ?? Tr.tr("Battery level is low")), level.icon ?? "battery_android_alert", p / 100, level.critical ?? false);
+                        break;
+                    }
                     Toaster.toast(Tr.trMarked(level.title ?? Tr.tr("Battery warning")), Tr.trMarked(level.message ?? Tr.tr("Battery level is low")), level.icon ?? "battery_android_alert", level.critical ? Toast.Error : Toast.Warning);
                     break;
                 }
@@ -30,7 +35,10 @@ Scope {
         }
 
         if (!hibernateTimer.running && p <= GlobalConfig.general.battery.criticalLevel) {
-            Toaster.toast(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", Toast.Error);
+            if (NotchSettings.values.osdBattery)
+                NotchOsd.showBattery(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", p / 100, true);
+            else
+                Toaster.toast(Tr.tr("Hibernating in 5 seconds"), Tr.tr("Hibernating to prevent data loss"), "battery_android_alert", Toast.Error);
             hibernateTimer.start();
         }
 
@@ -42,12 +50,15 @@ Scope {
             if (!UPower.displayDevice.ready)
                 return;
 
+            if (NotchSettings.values.autoPowerProfile)
+                PowerProfiles.profile = UPower.onBattery ? PowerProfile.PowerSaver : PowerProfile.Balanced;
+
             if (UPower.onBattery) {
-                if (GlobalConfig.utilities.toasts.chargingChanged)
+                if (GlobalConfig.utilities.toasts.chargingChanged && !NotchSettings.values.osdCharger)
                     Toaster.toast(Tr.tr("Charger unplugged"), Tr.tr("Battery is discharging"), "power_off");
                 root.handleBatteryWarnings();
             } else {
-                if (GlobalConfig.utilities.toasts.chargingChanged)
+                if (GlobalConfig.utilities.toasts.chargingChanged && !NotchSettings.values.osdCharger)
                     Toaster.toast(Tr.tr("Charger plugged in"), Tr.tr("Battery is charging"), "power");
                 root.lastPercentage = 100;
             }

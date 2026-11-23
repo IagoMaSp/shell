@@ -1,0 +1,185 @@
+/* Hallownest theme for Obsidian. Source file: assets/obsidian-theme.py prepends the font and
+   flavour colours (--hk-*) and installs it as a CSS snippet in every vault. */
+
+.theme-dark {
+    --background-primary: var(--hk-shell);
+    --background-primary-alt: var(--hk-card);
+    --background-secondary: var(--hk-void);
+    --background-secondary-alt: var(--hk-card);
+    --background-modifier-border: var(--hk-border);
+    --background-modifier-border-hover: color-mix(in srgb, var(--hk-steel) 30%, transparent);
+    --background-modifier-border-focus: var(--hk-accent);
+    --background-modifier-hover: color-mix(in srgb, var(--hk-steel) 10%, transparent);
+    --background-modifier-active-hover: color-mix(in srgb, var(--hk-accent) 14%, transparent);
+    --background-modifier-form-field: var(--hk-card);
+    --background-modifier-error: var(--hk-grimm);
+    --background-modifier-success: var(--hk-unn);
+
+    --text-normal: var(--hk-text);
+    --text-muted: var(--hk-subtext);
+    --text-faint: var(--hk-faint);
+    --text-accent: var(--hk-accent);
+    --text-accent-hover: var(--hk-text);
+    --text-on-accent: var(--hk-void);
+    --text-selection: color-mix(in srgb, var(--hk-accent) 22%, transparent);
+    --text-highlight-bg: color-mix(in srgb, var(--hk-gold) 28%, transparent);
+    --text-error: var(--hk-grimm);
+    --text-success: var(--hk-unn);
+    --text-warning: var(--hk-gold);
+
+    --color-accent: var(--hk-accent);
+    --color-accent-1: var(--hk-accent);
+    --color-accent-2: var(--hk-text);
+    --interactive-accent: var(--hk-accent);
+    --interactive-accent-hover: var(--hk-text);
+    --interactive-normal: var(--hk-card);
+    --interactive-hover: color-mix(in srgb, var(--hk-steel) 16%, var(--hk-card));
+
+    --titlebar-background: var(--hk-void);
+    --titlebar-background-focused: var(--hk-void);
+    --tab-container-background: var(--hk-void);
+    --tab-background-active: var(--hk-shell);
+    --tab-text-color-focused-active: var(--hk-text);
+    --ribbon-background: var(--hk-void);
+    --status-bar-background: var(--hk-void);
+    --status-bar-border-color: var(--hk-border);
+    --divider-color: var(--hk-border);
+    --nav-item-color-active: var(--hk-text);
+    --nav-item-background-active: color-mix(in srgb, var(--hk-accent) 12%, transparent);
+
+    --link-color: var(--hk-accent);
+    --link-color-hover: var(--hk-text);
+    --link-external-color: var(--hk-lifeblood);
+    --link-unresolved-color: var(--hk-subtext);
+    --tag-color: var(--hk-accent);
+    --tag-background: color-mix(in srgb, var(--hk-accent) 12%, transparent);
+    --tag-border-color: color-mix(in srgb, var(--hk-accent) 30%, transparent);
+    --tag-border-width: 1px;
+    --blockquote-border-color: var(--hk-steel);
+    --code-background: var(--hk-void);
+    --code-normal: var(--hk-text);
+    --hr-color: var(--hk-border);
+    --checkbox-color: var(--hk-accent);
+    --checkbox-color-hover: var(--hk-text);
+    --checkbox-border-color: var(--hk-steel);
+    --checkbox-radius: 50%;
+    --table-border-color: var(--hk-border);
+    --table-header-background: var(--hk-card);
+    --scrollbar-thumb-bg: color-mix(in srgb, var(--hk-steel) 25%, transparent);
+    --scrollbar-active-thumb-bg: color-mix(in srgb, var(--hk-steel) 45%, transparent);
+
+    --h1-color: var(--hk-accent);
+    --h2-color: var(--hk-text);
+    --h3-color: var(--hk-steel);
+    --h4-color: var(--hk-steel);
+    --h5-color: var(--hk-subtext);
+    --h6-color: var(--hk-subtext);
+    --h1-font: "Cinzel", serif;
+    --h2-font: "Cinzel", serif;
+    --h3-font: "Cinzel", serif;
+    --inline-title-font: "Cinzel", serif;
+    --inline-title-color: var(--hk-accent);
+    --font-monospace-theme: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+
+    --modal-background: var(--hk-shell);
+    --modal-border-color: var(--hk-border);
+    --modal-radius: 14px;
+    --radius-s: 6px;
+    --radius-m: 10px;
+    --radius-l: 14px;
+    --button-radius: 999px;
+    --input-radius: 999px;
+    --callout-radius: 10px;
+}
+
+/* Glow on the page title, like the shell's soul text */
+.theme-dark .inline-title {
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 18px color-mix(in srgb, var(--hk-accent) 35%, transparent);
+}
+
+/* Diamond before h1/h2, like HkSection */
+.theme-dark .markdown-rendered h1::before,
+.theme-dark .markdown-rendered h2::before,
+.theme-dark .HyperMD-header-1 .cm-header-1:first-of-type::before,
+.theme-dark .HyperMD-header-2 .cm-header-2:first-of-type::before {
+    content: "";
+    display: inline-block;
+    width: 0.32em;
+    height: 0.32em;
+    margin-right: 0.45em;
+    vertical-align: middle;
+    transform: rotate(45deg);
+    background: currentColor;
+    opacity: 0.7;
+}
+
+/* Cards with steel border: modals, menus, popovers, settings */
+.theme-dark .modal,
+.theme-dark .menu,
+.theme-dark .popover,
+.theme-dark .suggestion-container,
+.theme-dark .prompt {
+    border: 1px solid var(--hk-border);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Active tab as a card */
+.theme-dark .workspace-tab-header.is-active {
+    border: 1px solid var(--hk-border);
+    border-bottom: none;
+}
+
+/* Active file: tinted row with an accent bar, like HkSelection */
+.theme-dark .nav-file-title.is-active {
+    box-shadow: inset 2px 0 0 var(--hk-accent);
+}
+
+/* Section headers in Cinzel */
+.theme-dark .vertical-tab-header-group-title,
+.theme-dark .setting-item-heading .setting-item-name,
+.theme-dark .workspace-tab-header-inner-title {
+    font-family: "Cinzel", serif;
+}
+
+.theme-dark .vertical-tab-header-group-title,
+.theme-dark .setting-item-heading .setting-item-name {
+    color: var(--hk-steel);
+    letter-spacing: 0.06em;
+}
+
+/* Filled pill buttons */
+.theme-dark button.mod-cta {
+    background: var(--hk-accent);
+    color: var(--hk-void);
+}
+
+.theme-dark button:not(.clickable-icon) {
+    border: 1px solid var(--hk-border);
+    box-shadow: none;
+}
+
+/* Blockquotes and callouts as dark cards */
+.theme-dark .markdown-rendered blockquote {
+    background: var(--hk-card);
+    border-radius: 0 10px 10px 0;
+    padding: 0.4em 1em;
+}
+
+.theme-dark .callout {
+    border: 1px solid color-mix(in srgb, rgb(var(--callout-color)) 30%, transparent);
+}
+
+/* Charm colours for callouts */
+.theme-dark .callout[data-callout="warning"],
+.theme-dark .callout[data-callout="caution"] { --callout-color: var(--hk-gold-rgb); }
+.theme-dark .callout[data-callout="danger"],
+.theme-dark .callout[data-callout="error"],
+.theme-dark .callout[data-callout="bug"],
+.theme-dark .callout[data-callout="failure"] { --callout-color: var(--hk-grimm-rgb); }
+.theme-dark .callout[data-callout="success"],
+.theme-dark .callout[data-callout="check"],
+.theme-dark .callout[data-callout="done"] { --callout-color: var(--hk-unn-rgb); }
+.theme-dark .callout[data-callout="note"],
+.theme-dark .callout[data-callout="info"],
+.theme-dark .callout[data-callout="tip"] { --callout-color: var(--hk-lifeblood-rgb); }

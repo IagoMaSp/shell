@@ -5,6 +5,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.controls
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -47,9 +48,10 @@ Item {
         State {
             name: "wallpapers"
 
+            // Uses the whole app menu
             PropertyChanges {
-                root.implicitWidth: Math.max(root.Tokens.sizes.launcher.itemWidth * 1.2, wallpaperList.implicitWidth)
-                root.implicitHeight: root.Tokens.sizes.launcher.wallpaperHeight
+                root.implicitWidth: root.content.width - root.padding * 2
+                root.implicitHeight: root.maxHeight
                 wallpaperList.active: true
             }
         }
@@ -96,17 +98,13 @@ Item {
         asynchronous: true
         active: false
 
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
 
         sourceComponent: WallpaperList {
             objectName: "launcherWallpaperList"
 
             search: root.search
             screenState: root.screenState
-            panels: root.panels
-            content: root.content
         }
     }
 
@@ -122,10 +120,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
-        MaterialIcon {
-            text: root.state === "wallpapers" ? "wallpaper_slideshow" : "manage_search"
-            color: Colours.palette.m3onSurfaceVariant
-            fontStyle: Tokens.font.icon.extraLarge
+        Mask {
+            size: 42
+            filled: false
+            colour: Hallownest.steel
 
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -135,13 +133,15 @@ Item {
 
             StyledText {
                 text: root.state === "wallpapers" ? Tr.tr("No wallpapers found") : Tr.tr("No results")
-                color: Colours.palette.m3onSurfaceVariant
-                font: Tokens.font.body.builders.large.weight(Font.Medium).build()
+                color: Hallownest.soul
+                font.family: Hallownest.serif
+                font.pointSize: 13
+                font.weight: Font.Bold
             }
 
             StyledText {
-                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? Tr.tr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : Tr.tr("Try searching for something else")
-                color: Colours.palette.m3onSurfaceVariant
+                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? Tr.tr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : root.search.text.startsWith("/") ? Tr.tr("Type a name to search your files") : Tr.tr("Try searching for something else")
+                color: Hallownest.subtext
                 font: Tokens.font.body.medium
             }
         }

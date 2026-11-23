@@ -130,4 +130,12 @@ Scope {
             root.activeAsync = true;
         }
     }
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
+        name: "screenshotFull"
+        description: "Take a screenshot of the focused monitor"
+        onPressed: Screenshots.fullscreen()
+    }
 }

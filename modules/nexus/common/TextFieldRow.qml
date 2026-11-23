@@ -16,9 +16,7 @@ ConnectedRect {
     property string value
     property alias placeholderText: input.placeholderText
     property string errorText
-    property alias maximumLength: input.maximumLength
     property alias validate: input.validate
-    property alias validator: input.validator
     property bool smallField
     readonly property alias field: input
 
@@ -63,7 +61,7 @@ ConnectedRect {
                 Layout.fillWidth: true
                 visible: root.subtext
                 text: input.isError && root.errorText ? root.errorText : root.subtext
-                color: input.isError && root.errorText ? Colours.palette.m3error : Colours.palette.m3outline
+                color: input.isError && root.errorText ? Hallownest.grimm : Hallownest.subtext
                 font: Tokens.font.label.small
                 elide: Text.ElideRight
                 animate: root.errorText

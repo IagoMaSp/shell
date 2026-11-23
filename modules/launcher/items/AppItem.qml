@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Widgets
 import Caelestia.Config
+import Caelestia.I18n
 import qs.components
 import qs.services
 import qs.utils
@@ -12,6 +13,16 @@ Item {
 
     required property DesktopEntry modelData
     required property ScreenState screenState
+    readonly property var openGroup: modelData ? Dock.openGroup(modelData.id) : null
+
+    // An app that is already open is focused instead of launched again
+    function open(): void {
+        if (openGroup)
+            Dock.activate(openGroup);
+        else
+            Apps.launch(modelData);
+        screenState.launcher = false;
+    }
 
     implicitHeight: Tokens.sizes.launcher.itemHeight
 
@@ -20,23 +31,20 @@ Item {
 
     StateLayer {
         radius: Tokens.rounding.large
-        onClicked: {
-            Apps.launch(root.modelData);
-            root.screenState.launcher = false;
-        }
+        onClicked: root.open()
     }
 
     Item {
         anchors.fill: parent
-        anchors.leftMargin: Tokens.padding.medium
-        anchors.rightMargin: Tokens.padding.medium
+        anchors.leftMargin: Tokens.padding.medium + 16
+        anchors.rightMargin: Tokens.padding.medium + 16
         anchors.margins: Tokens.padding.small
 
         IconImage {
             id: icon
 
             asynchronous: true
-            source: Quickshell.iconPath(root.modelData?.icon, "image-missing")
+            source: Icons.iconPath(root.modelData?.icon, "image-missing")
             implicitSize: parent.height * 0.8
 
             anchors.verticalCenter: parent.verticalCenter
@@ -54,15 +62,17 @@ Item {
                 id: name
 
                 text: root.modelData?.name ?? ""
-                font: Tokens.font.body.medium
+                color: Hallownest.soul
+                font.pointSize: Tokens.font.body.medium.pointSize
+                font.weight: Font.Medium
             }
 
             StyledText {
                 id: comment
 
-                text: (root.modelData?.comment || root.modelData?.genericName || root.modelData?.name) ?? ""
+                text: root.openGroup ? Tr.tr("Open · switch to its window") : (root.modelData?.comment || root.modelData?.genericName || root.modelData?.name) ?? ""
                 font: Tokens.font.body.small
-                color: Colours.palette.m3outline
+                color: root.openGroup ? Hallownest.lifeblood : Hallownest.subtext
 
                 elide: Text.ElideRight
                 width: root.width - icon.width - favouriteIcon.width - Tokens.rounding.extraLargeIncreased
@@ -79,10 +89,11 @@ Item {
             anchors.right: parent.right
             active: root.modelData && Strings.testRegexList(GlobalConfig.launcher.favouriteApps, root.modelData.id)
 
-            sourceComponent: MaterialIcon {
-                text: "favorite"
-                fill: 1
-                color: Colours.palette.m3primary
+            sourceComponent: Rectangle {
+                implicitWidth: 8
+                implicitHeight: 8
+                rotation: 45
+                color: Hallownest.gold
             }
         }
     }

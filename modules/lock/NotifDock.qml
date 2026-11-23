@@ -8,9 +8,8 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.components.containers
-import qs.components.effects
+import qs.components.hallownest
 import qs.services
-import qs.utils
 
 ColumnLayout {
     id: root
@@ -22,12 +21,25 @@ ColumnLayout {
 
     spacing: Tokens.spacing.medium
 
-    StyledText {
+    RowLayout {
         Layout.fillWidth: true
-        text: Notifs.list.length > 0 ? Tr.trN("%n notification", "%n notifications", Notifs.list.length) : Tr.tr("Notifications")
-        color: Colours.palette.m3outline
-        font: Tokens.font.mono.builders.small.weight(Font.Medium).build()
-        elide: Text.ElideRight
+        spacing: Tokens.spacing.small
+
+        StyledText {
+            Layout.fillWidth: true
+            text: Notifs.list.length > 0 ? Tr.trN("%n notification", "%n notifications", Notifs.list.length) : Tr.tr("Notifications")
+            color: Hallownest.steel
+            font: Tokens.font.mono.builders.small.weight(Font.Medium).build()
+            elide: Text.ElideRight
+        }
+
+        HkButton {
+            visible: Notifs.list.length > 0 && !Config.lock.hideNotifs
+            implicitHeight: 26
+            icon: "clear_all"
+            text: Tr.tr("Clear")
+            onClicked: Notifs.clear()
+        }
     }
 
     ClipRect {
@@ -41,31 +53,24 @@ ColumnLayout {
 
         Loader {
             asynchronous: true
-            anchors.centerIn: parent
+            anchors.fill: parent
             active: opacity > 0
             opacity: Notifs.list.length > 0 && !Config.lock.hideNotifs ? 0 : 1
 
-            sourceComponent: ColumnLayout {
-                spacing: Tokens.spacing.largeIncreased
+            sourceComponent: Arcade {
+                id: arcade
 
-                Image {
-                    asynchronous: true
-                    source: Paths.absolutePath(Config.paths.lockNoNotifsPic)
-                    fillMode: Image.PreserveAspectFit
-                    sourceSize.width: clipRect.width * 0.8 * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1)
+                label: Config.lock.hideNotifs ? Tr.tr("Unlock for notifications") : Tr.tr("No notifications")
 
-                    layer.enabled: true
-                    layer.effect: Colouriser {
-                        colorizationColor: Colours.palette.m3outlineVariant
-                        brightness: 1
+                Connections {
+                    function onGameKey(key: int, pressed: bool, isRepeat: bool): void {
+                        if (pressed)
+                            arcade.keyPressed(key, isRepeat);
+                        else
+                            arcade.keyReleased(key);
                     }
-                }
 
-                StyledText {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: Config.lock.hideNotifs ? Tr.tr("Unlock for notifications") : Tr.tr("No notifications")
-                    color: Colours.palette.m3outlineVariant
-                    font: Tokens.font.mono.builders.large.weight(Font.Medium).build()
+                    target: root.lock
                 }
             }
 
@@ -79,6 +84,8 @@ ColumnLayout {
         StyledListView {
             anchors.fill: parent
             visible: !Config.lock.hideNotifs
+            // An empty list would still steal clicks from the games underneath
+            enabled: count > 0
             spacing: Tokens.spacing.small
             clip: true
 

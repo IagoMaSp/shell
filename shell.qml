@@ -10,8 +10,14 @@ import Caelestia.Config
 import qs.services
 import qs.modules.areapicker
 import qs.modules.background
+import qs.modules.dock
 import qs.modules.drawers
+import qs.modules.emoji
+import qs.modules.keybinds
 import qs.modules.lock
+import qs.modules.notch
+import qs.modules.overview
+import qs.modules.styletransition
 import qs.daemons
 
 ShellRoot {
@@ -44,6 +50,12 @@ ShellRoot {
     Background {}
     Drawers {}
     AreaPicker {}
+    Keybinds {}
+    Emoji {}
+    Overview {}
+    StyleTransition {}
+    Notch {}
+    Dock {}
     Lock {
         id: lock
     }

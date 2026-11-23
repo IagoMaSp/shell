@@ -4,6 +4,7 @@ import Caelestia.Config
 import Caelestia.I18n
 import qs.components
 import qs.services
+import qs.modules.notch.pages.weather
 
 ColumnLayout {
     id: root
@@ -16,7 +17,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         animate: true
         text: Weather.description
-        color: Colours.palette.m3onSurfaceVariant
+        color: Hallownest.subtext
         font: Tokens.font.body.large
     }
 
@@ -29,15 +30,17 @@ ColumnLayout {
 
             animate: true
             text: Weather.temp
-            color: Colours.palette.m3primary
-            font: Tokens.font.headline.builders.large.scale(1.5).weight(Font.DemiBold).width(80).build()
+            color: Hallownest.lifeblood
+            font.family: Hallownest.serif
+            font.pointSize: Tokens.font.headline.large.pointSize * 1.4
+            font.weight: Font.Bold
         }
 
-        MaterialIcon {
-            animate: true
-            text: Weather.icon
-            color: Colours.palette.m3secondary
-            fontStyle: Tokens.font.headline.builders.large.scale(1.5).build()
+        WeatherIcon {
+            icon: Weather.icon
+            colour: Hallownest.soul
+            size: 64
+            ambient: true
         }
     }
 
@@ -47,7 +50,7 @@ ColumnLayout {
         animate: true
         // TRANSLATORS: %1 = apparent temperature, unit already included
         text: Tr.tr("Feels like %1").arg(Weather.temp)
-        color: Colours.palette.m3onSurfaceVariant
+        color: Hallownest.subtext
         font: Tokens.font.body.large
     }
 
@@ -60,7 +63,7 @@ ColumnLayout {
             // TRANSLATORS: %1/%2 = today's max and min temperature, units already included
             return Tr.tr("High %1 • Low %2").arg(Weather.formatTemp(today?.maxTempC)).arg(Weather.formatTemp(today?.minTempC));
         }
-        color: Colours.palette.m3onSurfaceVariant
+        color: Hallownest.subtext
         font: Tokens.font.body.medium
     }
 }

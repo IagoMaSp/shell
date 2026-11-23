@@ -12,7 +12,10 @@ StyledText {
     Layout.bottomMargin: Tokens.spacing.extraSmall
     Layout.leftMargin: Tokens.padding.small
 
-    color: Colours.palette.m3onSurfaceVariant
-    font: Tokens.font.label.medium
+    color: Hallownest.steel
+    font.family: Hallownest.serif
+    font.pointSize: Tokens.font.label.medium.pointSize + 1
+    font.weight: Font.Bold
+    font.letterSpacing: 0.8
     elide: Text.ElideRight
 }

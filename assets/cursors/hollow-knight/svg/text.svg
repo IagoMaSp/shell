@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Cursor "text (Text.cur)" de Hollow Knight, para redibujar en vector (lienzo 32 x 32, no lo cambies).
+  1. Dibuja en la capa "Cursor" calcando la capa "Referencia" (el pixel art original, bloqueada).
+  2. La capa "Ayudas" marca en rojo el punto activo (hotspot): la punta del cursor debe caer ahi.
+  3. Guarda como SVG de Inkscape con este mismo nombre y ejecuta
+     python3 scripts/hallownest-cursors.py (las capas Referencia y Ayudas se quitan solas).
+  Borra el archivo para volver al pixel art.
+-->
+<svg width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <sodipodi:namedview id="namedview" pagecolor="#2a2d35" inkscape:pageopacity="1" inkscape:zoom="20"
+     inkscape:cx="16.0" inkscape:cy="16.0" inkscape:current-layer="cursor" showgrid="true">
+    <inkscape:grid id="grid" type="xygrid" units="px" spacingx="1" spacingy="1" empspacing="8"
+       color="#9ba4b5" opacity="0.08" empcolor="#9ba4b5" empopacity="0.2" />
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="referencia" inkscape:label="Referencia" sodipodi:insensitive="true" opacity="0.5">
+    <image width="32" height="32" style="image-rendering:pixelated" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADy0lEQVR4nO2XX0hbdxTHvzdJs+QW/zBrm3WK4B9yryGkKLg8jK5JwCJF8ME9CNoXw3CgqwFRpgVRHOLDRBEKRQRtC9M9TEoetNXS+KCwCqJPglVpBi1KNa0EFfx3xvnxU0LZ07i3MNgXwr3JQ87nnvM753su8L/+nRQAXwBIB3AZgPVzJJKDpAHIAvAVgO8BPATQBaBE/valBFPMCO4D8KuqqlMAJgoKCt4cHh5Sb28vAXiZnp7+wul0/gGgRmbGUGUCeDA2Nkanp6c0MjJCuq4Tq7+/n6qrq2l/f5+2t7fJ7XbHAQSNLAunU8/Pz399dnZG/GH19fWJ6+joKO3t7dHJyYn43tXVxRlpAeAwEsBTWFgY5+C1tbUUiUQokUiIgBx8dnaWsrOzaXd3l7q7uxngZwBOGKhrAKKbm5s0MDBAiqJQNBoVAMfHx5STk0N+v1/cBwKBfQBVAC4ZCcBPUx8KhZJc58XFRWptbRUAy8vL1NLSIs4AlwXACICvje4E/rOrAH6w2WxPLRbLu4aGBgGwurrKQQ8VRYkB+AWAF4DNyOCpEFcAhB0Ox9ulpSUBwOeisrKSIR4DuAHAbkbwcwCvx+N5Njc3R7FYTAAsLCxQPB6n5ubmD06n80cAqlkAFpvN9k19ff2cx+P5S9M0ATA4OEgOhyNRUVHxKhgM3pdZMk08am8CiGialjwHAPAEwHcACswsQaoJhXRd/5gCMCCnpeEe8E+yALil6/qHFIB+aVSfRdxigeLi4sQnGcgwOwOKfMpCdjxN0z5yC0qARwD80pJN2w2sLpfr22Aw+Juqqq+KioqEMzKA3W5/HwgEXpaVlYXNsOILAKvVGqqpqVnj6Tc0NCTakMfyxsYGNTY2vldV9a7RJvTp4cvjDSg3Nze5tbUlADgLoVDo3AM8RptQav2zAdQB+B3Adk9Pz8UkBMAO+BxABwC3GeeAl4u7fr9/Z2VlRVhxR0eHAJiZmaHOzk6xDUUikTPZEbw3GqpriqJE19fXaXh4mDIyMmh6eloAJJNJysrKoqqqKlGO0tLSBIDbRjoip79E1/W3HLC8vJzq6urE9sM6Ojqi8fFxSktLEztBW1sblyRi9EpW4vP53nHf8wp23v98nZycJN6ODw4OBFB7ezsD/CRHtmG6arFYJubn50XQqakp8nq9F24YDodFJnZ2dngrfiMNy9CDyK110263T/h8vjVFUZ7l5eWtcQc0NTUdA4i5XK4/MzMzpwHUmuULdjlq3XIc3wHQA+CefGnhGXFdDiLTPUGRWeH3Qg7IQ+q/qb8BW28Lu2xhQfwAAAAASUVORK5CYII=" />
+  </g>
+  <g inkscape:groupmode="layer" id="cursor" inkscape:label="Cursor"><defs><filter id="halo" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.6" dy="0.8" stdDeviation="0.7" flood-color="#000000" flood-opacity="0.45" /></filter></defs><g filter="url(#halo)"><path fill="#0c0c0c" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1195 2280 l-25 -40 -89 0 c-87 0 -121 -11 -121 -40 0 -23 -34 -40
+-80 -40 -76 0 -80 -9 -80 -160 0 -107 3 -131 16 -142 9 -7 51 -47 93 -88 42
+-42 88 -83 104 -93 39 -25 34 -52 -13 -82 -38 -24 -40 -28 -40 -74 0 -64 17
+-81 80 -81 78 0 80 -5 80 -200 0 -195 -2 -200 -80 -200 -63 0 -80 -17 -80 -81
+0 -46 2 -50 40 -74 47 -30 52 -57 13 -82 -16 -10 -62 -51 -104 -93 -42 -41
+-84 -81 -93 -88 -24 -19 -24 -265 0 -284 21 -17 65 -61 82 -82 19 -24 665 -24
+684 0 17 21 61 65 82 82 24 19 24 265 0 284 -9 7 -38 33 -64 58 -26 25 -55 51
+-64 58 -13 11 -16 35 -16 142 0 107 -3 131 -16 142 -9 7 -38 33 -64 58 -26 25
+-55 51 -64 58 -23 19 -23 185 0 204 9 7 38 33 64 58 26 25 55 51 64 58 13 11
+16 35 16 142 0 151 4 160 80 160 78 0 80 4 80 200 0 144 -2 171 -16 182 -21
+17 -65 61 -82 82 -11 13 -35 16 -142 16 l-130 0 -25 40 c-16 25 -33 40 -45 40
+-12 0 -29 -15 -45 -40z" /><path fill="#434343" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1216 2224 c-9 -8 -16 -19 -16 -24 0 -32 -33 -40 -160 -40 -170 0
+-160 13 -160 -200 0 -207 -4 -200 120 -200 107 0 120 -9 120 -80 0 -63 -17
+-80 -80 -80 -63 0 -80 -17 -80 -80 0 -63 17 -80 81 -80 46 0 50 2 74 40 35 56
+71 53 89 -7 10 -33 -11 -101 -34 -108 -42 -13 -50 -32 -50 -125 0 -86 11 -120
+40 -120 22 0 40 -34 40 -76 0 -69 -12 -84 -68 -84 -52 0 -69 9 -96 53 -38 61
+-95 6 -77 -74 12 -51 22 -59 82 -59 59 0 79 -21 79 -83 0 -68 -14 -77 -120
+-77 -107 0 -120 -9 -120 -80 0 -46 -17 -80 -40 -80 -38 0 -57 -115 -24 -142
+41 -34 131 -126 147 -151 25 -39 52 -34 82 13 24 38 28 40 74 40 47 0 81 -17
+81 -40 0 -23 34 -40 80 -40 46 0 80 17 80 40 0 29 34 40 120 40 70 0 92 3 102
+16 17 21 61 65 82 82 23 19 23 185 0 204 -21 17 -65 61 -82 82 -10 13 -32 16
+-105 16 -59 0 -97 4 -105 12 -20 20 -14 47 16 65 15 9 43 33 63 53 20 19 43
+40 51 47 23 17 31 78 16 111 -20 42 -54 41 -75 -2 -18 -40 -46 -54 -68 -36
+-12 10 -15 57 -15 270 0 213 3 260 15 270 22 18 50 4 68 -36 21 -43 55 -44 75
+-2 15 33 7 94 -16 111 -8 7 -31 28 -51 47 -20 20 -48 44 -63 53 -30 18 -36 45
+-16 65 8 8 46 12 105 12 73 0 95 3 105 16 17 21 61 65 82 82 23 19 23 185 0
+204 -21 17 -65 61 -82 82 -10 13 -32 16 -102 16 -86 0 -120 11 -120 40 0 38
+-112 57 -144 24z m299 -259 c0 -24 -6 -33 -33 -44 -19 -9 -35 -25 -38 -38 -8
+-32 -30 -46 -60 -39 -38 10 -30 56 13 75 18 8 36 24 39 35 17 57 79 65 79 11z
+m-400 -79 c0 -52 -63 -62 -73 -12 -7 33 6 47 40 44 29 -3 33 -7 33 -32z m-5
+-1260 c6 -8 10 -25 8 -38 -5 -34 -71 -34 -76 0 -4 28 14 52 38 52 10 0 23 -7
+30 -14z m329 -22 c8 -18 27 -37 45 -45 25 -11 31 -20 31 -44 0 -45 -54 -44
+-74 1 -8 18 -27 37 -45 45 -52 23 -45 83 9 77 11 -2 26 -16 34 -34z" /><path fill="#989898" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1218 2229 c-14 -8 -18 -23 -18 -67 0 -91 -41 -111 -85 -42 l-25 40
+-89 0 c-122 0 -121 2 -121 -160 0 -107 3 -131 16 -142 21 -17 65 -61 82 -82
+10 -13 32 -16 105 -16 59 0 97 -4 105 -12 22 -22 12 -47 -28 -73 -22 -14 -40
+-30 -40 -35 0 -5 -18 -21 -40 -35 -69 -44 -49 -85 42 -85 79 0 78 4 78 -280 0
+-284 1 -280 -78 -280 -91 0 -111 -41 -42 -85 38 -24 40 -28 40 -74 0 -64 -17
+-81 -80 -81 -33 0 -53 -5 -62 -16 -17 -21 -61 -65 -82 -82 -13 -11 -16 -35
+-16 -142 0 -162 -1 -160 121 -160 l89 0 25 40 c43 69 85 49 85 -40 0 -89 42
+-109 85 -40 14 22 30 40 35 40 5 0 21 18 35 40 16 25 33 40 45 40 12 0 29 -15
+45 -40 24 -38 28 -40 75 -40 33 0 53 5 62 16 17 21 61 65 82 82 22 18 22 106
+0 124 -57 46 -64 57 -64 102 0 67 -15 76 -120 76 -107 0 -120 9 -120 81 0 46
+2 50 40 74 25 16 40 33 40 45 0 12 -15 29 -40 45 l-40 25 0 248 c0 138 4 254
+10 262 6 10 31 17 71 20 112 9 112 71 0 80 -72 6 -81 15 -81 82 0 69 14 78
+120 78 105 0 120 9 120 76 0 45 7 56 64 102 22 18 22 106 0 124 -21 17 -65 61
+-82 82 -9 11 -29 16 -62 16 -47 0 -51 -2 -75 -40 -44 -69 -85 -49 -85 42 0 46
+-4 59 -19 68 -25 13 -101 13 -123 -1z m-179 -266 c9 -19 26 -36 43 -42 33 -12
+46 -37 31 -60 -18 -28 -56 -20 -72 15 -8 18 -27 37 -45 45 -34 15 -44 42 -25
+65 19 24 52 13 68 -23z m469 25 c20 -20 15 -105 -8 -128 -23 -23 -108 -28
+-128 -8 -21 21 -13 48 19 67 17 11 39 33 50 50 19 32 46 40 67 19z m-403
+-1362 c20 -14 25 -58 12 -108 -13 -49 -124 -62 -147 -18 -14 26 -3 48 31 66
+16 8 29 19 29 24 0 12 37 50 48 50 5 0 17 -6 27 -14z m395 -6 c23 -23 28 -108
+8 -128 -21 -21 -48 -13 -67 19 -11 17 -33 39 -50 50 -32 19 -40 46 -19 67 20
+20 105 15 128 -8z" /><path fill="#f4f4f4" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1209 2223 c-10 -11 -13 -40 -11 -103 2 -71 0 -91 -14 -104 -26 -26
+-56 -16 -66 22 -5 20 -18 37 -33 44 -14 6 -34 26 -45 45 -26 45 -53 43 -84 -6
+-14 -22 -34 -42 -46 -46 -22 -7 -26 -21 -34 -115 -6 -76 7 -111 43 -120 13 -3
+28 -13 33 -23 4 -9 12 -25 16 -34 19 -39 122 -41 142 -3 22 42 -20 74 -84 63
+-51 -8 -66 8 -66 72 0 70 19 87 91 83 50 -3 55 -5 69 -36 9 -18 30 -41 48 -52
+l32 -20 0 -90 0 -90 -40 -25 c-52 -33 -52 -57 0 -90 l40 -25 0 -335 0 -335
+-25 -12 c-28 -13 -55 3 -55 32 0 24 -24 42 -52 38 -41 -5 -32 -59 13 -80 23
+-10 39 -26 43 -41 3 -14 22 -34 41 -46 l35 -20 0 -91 0 -90 -40 -25 c-22 -14
+-40 -33 -40 -43 0 -30 -22 -42 -75 -42 -64 0 -85 19 -85 77 0 58 7 70 46 83
+31 11 35 15 32 43 -5 50 -56 46 -80 -5 -12 -24 -25 -38 -37 -38 -36 0 -46 -28
+-43 -114 3 -98 7 -113 33 -121 11 -4 31 -24 45 -46 31 -49 58 -51 84 -6 11 19
+31 39 45 45 15 7 28 24 33 44 5 21 15 34 28 36 36 4 49 -15 54 -79 9 -110 72
+-112 78 -3 4 68 14 84 53 84 24 0 29 -4 29 -25 0 -14 9 -33 20 -42 31 -27 63
+-59 78 -77 14 -18 97 -22 122 -6 11 7 16 39 21 132 7 135 -1 169 -40 178 -14
+3 -30 19 -40 40 -13 29 -22 35 -46 35 -44 0 -44 -53 0 -74 40 -19 45 -28 45
+-82 0 -63 -19 -79 -98 -79 l-62 0 0 64 c0 63 -1 65 -40 96 -36 29 -40 36 -40
+77 0 41 4 50 53 97 28 28 64 59 80 69 55 35 29 77 -48 77 -87 0 -85 -9 -85
+327 0 313 1 318 52 311 16 -2 24 -11 26 -28 5 -36 22 -51 51 -48 52 6 37 71
+-20 83 l-29 7 0 194 0 194 63 0 c78 0 97 -16 97 -81 0 -53 -7 -64 -43 -78 -50
+-19 -47 -76 4 -76 17 0 28 9 40 35 10 21 26 37 40 40 39 9 47 43 40 178 -5 93
+-10 125 -21 132 -25 16 -108 12 -122 -6 -15 -18 -47 -50 -78 -76 -11 -10 -20
+-29 -20 -43 0 -21 -5 -25 -29 -25 -45 0 -52 18 -49 118 3 94 -7 122 -42 122
+-10 0 -24 -7 -31 -17z" /></g></g>
+  <g inkscape:groupmode="layer" id="ayudas" inkscape:label="Ayudas" sodipodi:insensitive="true">
+    <path d="M 13.5,16.5 h 4 M 15.5,14.5 v 4" stroke="#e63946" stroke-width="0.25" />
+    <circle cx="15.5" cy="16.5" r="0.6" fill="none" stroke="#e63946" stroke-width="0.2" />
+  </g>
+</svg>

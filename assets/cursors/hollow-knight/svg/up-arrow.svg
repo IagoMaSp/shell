@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Cursor "up-arrow (Alternate.cur)" de Hollow Knight, para redibujar en vector (lienzo 32 x 32, no lo cambies).
+  1. Dibuja en la capa "Cursor" calcando la capa "Referencia" (el pixel art original, bloqueada).
+  2. La capa "Ayudas" marca en rojo el punto activo (hotspot): la punta del cursor debe caer ahi.
+  3. Guarda como SVG de Inkscape con este mismo nombre y ejecuta
+     python3 scripts/hallownest-cursors.py (las capas Referencia y Ayudas se quitan solas).
+  Borra el archivo para volver al pixel art.
+-->
+<svg width="32" height="32" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+  <sodipodi:namedview id="namedview" pagecolor="#2a2d35" inkscape:pageopacity="1" inkscape:zoom="20"
+     inkscape:cx="16.0" inkscape:cy="16.0" inkscape:current-layer="cursor" showgrid="true">
+    <inkscape:grid id="grid" type="xygrid" units="px" spacingx="1" spacingy="1" empspacing="8"
+       color="#9ba4b5" opacity="0.08" empcolor="#9ba4b5" empopacity="0.2" />
+  </sodipodi:namedview>
+  <g inkscape:groupmode="layer" id="referencia" inkscape:label="Referencia" sodipodi:insensitive="true" opacity="0.5">
+    <image width="32" height="32" style="image-rendering:pixelated" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC+klEQVR4nO2XT0iTcRjHv2uulm71QodGOcqIZESL4SEvq8j2TmR2akVz0zETRIyYEGMirpMuBvOg67KDQhcvXXYqKDBkDEu8OAaCHaLtIAgp/mGbbk88L68wopPsfT3UF15+bC+8z+d5fs/vfb4vcHw1AmiWV9WlBWD3+XzveJV/qyo9gNeZTKYC4M1JVOE8gPc7OztkNpu/ArgGQKNWcA5ks1qtP6vVKnV3dx8CcCq9DRy0AYAOwFkAfSMjI8RKJBIEIASgSb7fUO9q8MMuAngM4DmAB1z+bDYrAWxubpLRaMwAEAH4ATyTT0fdIDgrTygU2l1cXKwC+DwwMEC1mpyc5Cqk5+fnyzMzMyUAL+VK1UVNgiC8XVlZoeHhYers7KS9vT0qlUpS8IODA+nq7+8nj8dD6XSa2traPgG4XC+ARkEQEtvb27S6ukrlcplisRjxCWBVKhWamJiQoNbW1qT/bTbbRwCX6gXATSW2t7d/8/v9+y0tLTQ1NUWFQkEC4DWVSpHJZCKv11sURTEHwA3gDOr84rkDID40NLTPDdjT0yMBBINBWlhYoGg0eqjRaJJykxpRZ3FHN3u93mQ8Hi8IgrDkcDgkgMHBQdLpdEvj4+M/gsFgCsANpV5K3NW35ePWK4ri/hEAgBcAHspVMkBBnQJwGsB9p9NZC/BU3nO+r7g4yN0/AJ7IzQpVAXgWnBiAKIq7/wH+2Qqw8bjncDhqAZ7KU1OV7C8ACHR0dBzWAITl4aO4KzJptdpQV1dXPhAIEAOMjY2Ry+X6ZTAY2JxeV9IbcnaPIpFIkcfu+vq6BLCxsUHLy8s0NzfHlehTshcYwDU6Olrc2tqi6elpaRjNzs5SPp+nZDLJAD4lAaQtAPDKarWWcrmcBMAVsNvtpNFoogCuKG3PuQmvWiyWD0eGhB2Q3W7PArip1hcST8Net9stAYTD4SNbfg4qiUts1uv1X4rFIrW2tn4HcEutUQxZbNEiuVyuotPpYkqbkL+Js7XIHyG8Hjv734TipdwJtChHAAAAAElFTkSuQmCC" />
+  </g>
+  <g inkscape:groupmode="layer" id="cursor" inkscape:label="Cursor"><defs><filter id="halo" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.6" dy="0.8" stdDeviation="0.7" flood-color="#000000" flood-opacity="0.45" /></filter></defs><g filter="url(#halo)"><path fill="#171717" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1212 2468 c-7 -7 -12 -36 -12 -64 0 -46 -4 -55 -27 -73 -16 -12 -34
+-26 -40 -31 -9 -7 -13 -41 -13 -100 0 -70 -3 -92 -16 -102 -21 -17 -65 -61
+-82 -82 -10 -13 -32 -16 -102 -16 -87 0 -120 -11 -120 -41 0 -5 -18 -20 -40
+-34 -25 -16 -40 -33 -40 -45 0 -12 15 -29 40 -45 37 -23 40 -29 40 -71 0 -72
+11 -84 78 -84 91 0 113 -44 42 -80 -41 -21 -51 -45 -28 -68 8 -8 46 -12 104
+-12 71 0 96 -4 108 -16 24 -24 24 -747 0 -766 -9 -7 -38 -33 -64 -58 -26 -25
+-55 -51 -64 -58 -33 -27 -14 -142 24 -142 23 0 40 -34 40 -80 0 -46 17 -80 40
+-80 23 0 40 -34 40 -80 0 -33 5 -53 16 -62 18 -15 50 -47 77 -78 22 -25 32
+-25 55 0 26 31 58 63 76 78 11 9 16 29 16 62 0 46 17 80 40 80 23 0 40 34 40
+80 0 46 17 80 40 80 38 0 57 115 24 142 -9 7 -38 33 -64 58 -26 25 -55 51 -64
+58 -24 19 -24 742 0 766 12 12 37 16 104 16 107 0 120 9 120 80 0 33 5 53 16
+62 9 7 38 33 64 58 26 25 55 51 64 58 22 18 22 106 0 124 -21 17 -65 61 -82
+82 -10 13 -32 16 -102 16 -70 0 -92 3 -102 16 -17 21 -61 65 -82 82 -13 10
+-16 32 -16 102 0 59 -4 93 -12 100 -7 5 -25 19 -40 31 -24 18 -28 27 -28 73 0
+53 -12 76 -40 76 -9 0 -21 -5 -28 -12z" /><path fill="#585858" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1209 2464 c-10 -13 -13 -48 -11 -144 3 -127 -5 -160 -38 -160 -23 0
+-40 -34 -40 -80 0 -46 -17 -80 -41 -80 -5 0 -20 -18 -34 -40 -16 -25 -33 -40
+-45 -40 -12 0 -29 15 -45 40 -24 38 -28 40 -74 40 -72 0 -81 -13 -81 -120 0
+-70 4 -92 16 -102 18 -15 53 -51 78 -80 20 -22 45 -21 57 5 5 9 13 25 18 35 5
+10 19 17 37 17 46 0 42 -54 -5 -76 -19 -9 -38 -26 -43 -38 -4 -12 -24 -31 -43
+-42 -43 -26 -44 -57 -3 -77 46 -22 95 -6 124 39 25 39 50 49 72 27 21 -21 17
+-833 -4 -850 -9 -7 -38 -33 -64 -58 -26 -25 -55 -51 -64 -58 -22 -17 -22 -105
+0 -126 10 -10 33 -16 64 -16 71 0 80 -13 80 -120 0 -59 4 -93 13 -100 6 -5 24
+-19 39 -30 23 -18 27 -29 30 -77 5 -101 70 -103 76 -3 3 51 6 56 67 114 35 34
+71 67 79 74 11 8 16 29 16 62 0 46 17 80 40 80 38 0 57 115 24 142 -9 7 -38
+33 -64 58 -26 25 -55 51 -64 58 -21 17 -25 829 -4 850 22 22 47 12 72 -27 29
+-45 78 -61 124 -39 41 20 40 51 -3 77 -19 11 -39 30 -43 42 -5 12 -24 29 -43
+38 -28 13 -34 22 -34 46 0 44 53 44 74 0 19 -40 27 -45 88 -45 69 0 73 9 73
+164 0 147 -5 156 -81 156 -46 0 -50 -2 -74 -40 -16 -25 -33 -40 -45 -40 -12 0
+-29 15 -45 40 -14 22 -29 40 -34 40 -30 0 -41 33 -41 120 0 59 -4 93 -12 100
+-7 5 -26 20 -41 31 -27 21 -28 23 -25 109 2 63 -1 92 -11 103 -17 22 -45 22
+-62 1z" /><path fill="#909090" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1209 2384 c-10 -13 -13 -48 -11 -144 3 -127 -5 -160 -38 -160 -23 0
+-40 -34 -40 -80 0 -34 -5 -53 -17 -62 -9 -7 -35 -32 -57 -55 -37 -38 -47 -43
+-88 -43 -73 0 -98 34 -50 69 48 37 53 43 50 59 -6 29 -51 44 -99 33 -55 -12
+-59 -20 -59 -123 0 -114 4 -118 120 -118 106 0 120 -9 120 -78 0 -55 -5 -64
+-45 -83 -44 -21 -44 -74 0 -74 25 0 33 6 47 36 10 22 26 39 41 42 13 4 30 21
+40 42 17 36 43 45 65 23 9 -9 12 -136 12 -510 0 -576 14 -518 -124 -518 -102
+0 -116 -9 -116 -80 0 -63 17 -80 80 -80 63 0 80 -17 80 -80 0 -50 13 -73 50
+-85 26 -8 34 -43 27 -119 -6 -68 7 -109 36 -114 32 -6 47 17 47 73 0 47 4 56
+28 74 15 12 33 26 40 31 8 7 12 41 12 100 0 107 9 120 80 120 63 0 80 17 80
+80 0 63 -17 80 -80 80 -33 0 -53 5 -62 16 -7 9 -32 36 -55 60 l-43 43 0 449
+c0 335 3 451 12 460 22 22 47 12 73 -28 14 -22 30 -40 35 -40 5 0 21 -18 35
+-41 31 -47 62 -50 83 -7 22 46 6 95 -39 124 -39 25 -49 50 -27 72 8 8 46 12
+104 12 120 0 124 3 124 118 0 102 -4 111 -56 122 -49 11 -81 4 -96 -23 -9 -18
+-5 -25 31 -56 23 -20 41 -39 41 -43 0 -21 -36 -38 -79 -38 -61 0 -81 20 -81
+83 0 38 -4 49 -27 66 -16 12 -34 26 -40 31 -7 6 -13 33 -13 60 0 27 -6 54 -12
+60 -7 5 -26 20 -41 31 -27 21 -28 23 -25 109 2 63 -1 92 -11 103 -17 22 -45
+22 -62 1z" /><path fill="#f0f0f0" transform="translate(0.000000,32.000000) scale(0.012500,-0.012500)" d="M1209 2384 c-10 -13 -13 -48 -11 -144 l3 -127 -28 -22 c-15 -11 -34
+-26 -40 -31 -7 -6 -13 -33 -13 -61 0 -45 -3 -51 -32 -69 -18 -11 -39 -34 -48
+-52 -14 -31 -19 -33 -71 -36 -46 -2 -58 1 -74 18 -22 25 -11 53 23 58 52 8 58
+77 7 77 -24 0 -33 -6 -46 -35 -10 -21 -26 -37 -40 -40 -32 -8 -52 -51 -43 -95
+9 -52 24 -61 109 -68 95 -7 123 2 132 44 7 36 25 46 59 31 22 -11 24 -17 24
+-76 0 -63 -1 -65 -29 -71 -57 -12 -72 -77 -20 -83 29 -3 46 12 51 48 2 17 10
+26 26 28 53 8 52 19 52 -513 0 -559 5 -525 -83 -525 -53 0 -72 -15 -81 -65
+-16 -82 63 -132 88 -55 12 40 50 49 70 17 15 -24 -3 -49 -43 -61 -30 -9 -31
+-10 -31 -67 0 -34 5 -63 13 -69 6 -5 25 -20 40 -31 27 -21 28 -23 25 -109 -3
+-92 7 -120 42 -120 35 0 45 28 42 120 -3 86 -2 88 25 109 15 11 34 26 41 31 7
+6 12 35 12 69 0 57 -1 58 -31 67 -40 12 -58 37 -43 62 20 31 58 22 70 -18 25
+-77 104 -27 88 55 -9 51 -28 65 -83 65 -86 0 -81 -31 -81 523 l0 486 28 20
+c15 12 33 26 40 31 7 6 12 34 12 66 0 48 3 56 24 66 34 15 52 5 59 -31 9 -42
+36 -51 135 -42 93 8 91 6 103 61 18 80 -39 134 -77 73 -27 -43 -44 -53 -94
+-53 -49 0 -70 13 -70 42 0 10 -18 29 -40 43 -38 24 -40 28 -40 75 0 27 -6 54
+-12 60 -7 5 -26 20 -41 31 l-28 22 3 127 c3 134 -4 160 -42 160 -10 0 -24 -7
+-31 -16z" /></g></g>
+  <g inkscape:groupmode="layer" id="ayudas" inkscape:label="Ayudas" sodipodi:insensitive="true">
+    <path d="M 13.5,2.5 h 4 M 15.5,0.5 v 4" stroke="#e63946" stroke-width="0.25" />
+    <circle cx="15.5" cy="2.5" r="0.6" fill="none" stroke="#e63946" stroke-width="0.2" />
+  </g>
+</svg>

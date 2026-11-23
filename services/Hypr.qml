@@ -48,10 +48,6 @@ Singleton {
         dispatch(usingLua ? `hl.dsp.focus({ workspace = "${ws}" })` : `workspace ${ws}`);
     }
 
-    function toggleSpecial(name: string): void {
-        dispatch(usingLua ? `hl.dsp.workspace.toggle_special("${name}")` : `togglespecialworkspace ${name}`);
-    }
-
     function cycleSpecialWorkspace(direction: string): void {
         const openSpecials = workspaces.values.filter(w => w.name.startsWith("special:") && w.lastIpcObject.windows > 0);
 
@@ -85,16 +81,8 @@ Singleton {
         focusWorkspace(openSpecials[nextIndex].name);
     }
 
-    function monitorNames(): list<string> {
-        return monitors.values.map(e => e.name);
-    }
-
     function monitorFor(screen: ShellScreen): HyprlandMonitor {
         return Hyprland.monitorFor(screen);
-    }
-
-    function trimWsName(name: string): string {
-        return name.startsWith("special:") ? name.slice("special:".length) : name;
     }
 
     function toplevelsForWs(ws: int, ignoredTags = []): list<HyprlandToplevel> {
@@ -111,9 +99,9 @@ Singleton {
 
     function reloadDynamicConfs(): void {
         if (usingLua) {
-            extras.batchMessage(['eval hl.bind("Caps_Lock", hl.dsp.global("caelestia:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })', 'eval hl.bind("Num_Lock", hl.dsp.global("caelestia:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })', 'eval hl.bind("code:66", hl.dsp.global("caelestia:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })']);
+            extras.batchMessage(['eval hl.bind("Caps_Lock", hl.dsp.global("paleshell:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })', 'eval hl.bind("Num_Lock", hl.dsp.global("paleshell:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })', 'eval hl.bind("code:66", hl.dsp.global("paleshell:refreshDevices"), { locked = true, non_consuming = true, ignore_mods = true, release = true })']);
         } else {
-            extras.batchMessage(["keyword bindlni ,Caps_Lock,global,caelestia:refreshDevices", "keyword bindlni ,Num_Lock,global,caelestia:refreshDevices", "keyword bindlni ,code:66,global,caelestia:refreshDevices"]);
+            extras.batchMessage(["keyword bindlni ,Caps_Lock,global,paleshell:refreshDevices", "keyword bindlni ,Num_Lock,global,paleshell:refreshDevices", "keyword bindlni ,code:66,global,paleshell:refreshDevices"]);
         }
     }
 
@@ -162,7 +150,7 @@ Singleton {
     FileView {
         id: kbLayoutFile
 
-        path: Quickshell.env("CAELESTIA_XKB_RULES_PATH") || "/usr/share/X11/xkb/rules/base.lst"
+        path: "/usr/share/X11/xkb/rules/base.lst"
         onLoaded: {
             const layoutMatch = text().match(/! layout\n([\s\S]*?)\n\n/);
             if (layoutMatch) {

@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import Caelestia.Config
 import qs.components
+import qs.components.hallownest
 import qs.services
 
 ColumnLayout {
@@ -27,16 +28,27 @@ ColumnLayout {
     StyledText {
         Layout.alignment: Qt.AlignHCenter
 
-        text: Time.format("dddd • d MMM").toUpperCase()
-        color: Colours.palette.m3onSurface
-        font: Tokens.font.title.builders.medium.weight(Font.DemiBold).build()
+        text: Time.format("dddd ◆ d MMMM")
+        color: Hallownest.steel
+        font.family: Hallownest.serif
+        font.pointSize: Tokens.font.title.medium.pointSize
+        font.weight: Font.Bold
+        font.letterSpacing: 1.5
     }
 
-    ProfilePic {
+    HkDivider {
         Layout.alignment: Qt.AlignHCenter
-        Layout.topMargin: Tokens.spacing.extraExtraLarge * root.centerScale
-        Layout.bottomMargin: Tokens.spacing.extraLarge * root.centerScale
-        centerWidth: root.centerWidth
+        Layout.preferredWidth: root.centerWidth * 0.6
+        Layout.topMargin: -Tokens.spacing.medium
+    }
+
+    NextClass {
+        Layout.alignment: Qt.AlignHCenter
+        maxWidth: root.centerWidth
+    }
+
+    Item {
+        Layout.fillHeight: true
     }
 
     PasswordInput {

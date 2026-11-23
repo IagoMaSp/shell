@@ -17,7 +17,9 @@ StyledRect {
         return base + brief.anchors.topMargin;
     }
     radius: Tokens.rounding.extraExtraLarge
-    color: Colours.tPalette.m3surfaceContainer
+    color: Hallownest.card
+    border.width: 1
+    border.color: Hallownest.border
 
     Timer {
         running: true

@@ -2,12 +2,19 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Notifications
 import Caelestia.Config
 
 Singleton {
     id: root
 
+    // Our tinted icon theme, rebuilt in place on every style change. Qt caches theme icons by name, so
+    // its icons are served as file URLs with a revision that changes whenever the theme is rebuilt
+    readonly property string tintedTheme: `${Quickshell.env("HOME")}/.local/share/icons/YAMIS-Hallownest`
+    property var tinted: ({})
+    property int tintedRev
+    property bool rescanQueued
     readonly property var weatherIcons: ({
             "0": "clear_day",
             "1": "clear_day",
@@ -37,46 +44,6 @@ Singleton {
             "95": "thunderstorm",
             "96": "thunderstorm",
             "99": "thunderstorm"
-        })
-
-    readonly property var categoryIcons: ({
-            WebBrowser: "web",
-            Printing: "print",
-            Security: "security",
-            Network: "chat",
-            Archiving: "archive",
-            Compression: "archive",
-            Development: "code",
-            IDE: "code",
-            TextEditor: "edit_note",
-            Audio: "music_note",
-            Music: "music_note",
-            Player: "music_note",
-            Recorder: "mic",
-            Game: "sports_esports",
-            FileTools: "files",
-            FileManager: "files",
-            Filesystem: "files",
-            FileTransfer: "files",
-            Settings: "settings",
-            DesktopSettings: "settings",
-            HardwareSettings: "settings",
-            TerminalEmulator: "terminal",
-            ConsoleOnly: "terminal",
-            Utility: "build",
-            Monitor: "monitor_heart",
-            Midi: "graphic_eq",
-            Mixer: "graphic_eq",
-            AudioVideoEditing: "video_settings",
-            AudioVideo: "music_video",
-            Video: "videocam",
-            Building: "construction",
-            Graphics: "photo_library",
-            "2DGraphics": "photo_library",
-            RasterGraphics: "photo_library",
-            TV: "tv",
-            System: "host",
-            Office: "content_paste"
         })
 
     // qmlformat off
@@ -114,51 +81,27 @@ Singleton {
     /**
      * Checks if a name matches an icon rule. See the IconRule type in the config module.
      */
-    function matchIconRule(name: string, iconRule: var): bool {
-        if (!iconRule.icon)
-            return false;
 
-        if (iconRule.regex) {
-            const re = new RegExp(iconRule.regex, iconRule.flags ?? "");
-            if (re.test(name))
-                return true;
-        } else if (iconRule.name === name) {
-            return true;
-        }
-
-        return false;
+    // Drop-in for Quickshell.iconPath that sees the tinted theme change
+    function iconPath(icon: var, fallback: var): string {
+        const path = tinted[icon];
+        if (path)
+            return `file://${path}?v=${tintedRev}`;
+        return fallback === undefined ? Quickshell.iconPath(icon) : Quickshell.iconPath(icon, fallback);
     }
 
-    function matchIconRuleList(name: string, rules: var): string {
-        if (!rules)
-            return "";
-
-        for (const iconRule of rules.values)
-            if (matchIconRule(name, iconRule))
-                return iconRule.icon;
-
-        return "";
+    function reloadTinted(): void {
+        if (scan.running)
+            rescanQueued = true;
+        else
+            scan.running = true;
     }
 
     function getAppIcon(name: string, fallback: string): string {
         const icon = DesktopEntries.heuristicLookup(name)?.icon;
         if (fallback !== "undefined")
-            return Quickshell.iconPath(icon, fallback);
-        return Quickshell.iconPath(icon);
-    }
-
-    function getAppCategoryIcon(name: string, fallback: string): string {
-        const match = matchIconRuleList(name, GlobalConfig.bar.workspaces.windowIcons);
-        if (match)
-            return match;
-
-        const categories = DesktopEntries.heuristicLookup(name)?.categories;
-        if (categories)
-            for (const [key, value] of Object.entries(categoryIcons))
-                if (categories.includes(key))
-                    return value;
-
-        return fallback;
+            return iconPath(icon, fallback);
+        return iconPath(icon);
     }
 
     /**
@@ -221,12 +164,31 @@ Singleton {
         return icon;
     }
 
-    function getBatteryIcon(percentage: real, charging = false): string {
-        if (percentage === 1)
-            return charging ? "battery_charging_full" : "battery_full";
-        let level = Math.floor(percentage * 7);
-        if (charging && (level === 4 || level === 1))
-            level--;
-        return charging ? `battery_charging_${(level + 3) * 10}` : `battery_${level}_bar`;
+    Process {
+        id: scan
+
+        running: true
+        command: ["find", root.tintedTheme, "-path", "*/scalable/*", "-name", "*.svg"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const map = {};
+                for (const path of text.split("\n")) {
+                    const name = path.slice(path.lastIndexOf("/") + 1, -4);
+                    // apps/ wins over the other contexts when a name repeats
+                    if (name && (!map[name] || path.includes("/apps/")))
+                        map[name] = path;
+                }
+                root.tinted = map;
+                root.tintedRev++;
+            }
+        }
+
+        onExited: {
+            if (root.rescanQueued) {
+                root.rescanQueued = false;
+                running = true;
+            }
+        }
     }
 }

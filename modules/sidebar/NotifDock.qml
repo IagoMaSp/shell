@@ -10,6 +10,7 @@ import qs.components
 import qs.components.containers
 import qs.components.controls
 import qs.components.effects
+import qs.components.hallownest
 import qs.services
 import qs.utils
 
@@ -44,8 +45,10 @@ Item {
             opacity: root.notifCount > 0 ? 1 : 0
 
             text: root.notifCount
-            color: Colours.palette.m3outline
-            font: Tokens.font.label.large
+            color: Hallownest.soul
+            font.family: Hallownest.serif
+            font.pointSize: 12
+            font.weight: Font.Bold
 
             Behavior on anchors.leftMargin {
                 Anim {}
@@ -68,8 +71,10 @@ Item {
 
             // TRANSLATORS: the count itself is rendered separately, immediately to the left
             text: root.notifCount > 0 ? Tr.trCtxN("notification", "notifications", root.notifCount, "notification count label, number shown separately") : Tr.tr("Notifications")
-            color: Colours.palette.m3outline
-            font: Tokens.font.label.large
+            color: Hallownest.steel
+            font.family: Hallownest.serif
+            font.pointSize: 12
+            font.weight: Font.Bold
             elide: Text.ElideRight
         }
     }
@@ -95,24 +100,20 @@ Item {
             sourceComponent: ColumnLayout {
                 spacing: Tokens.spacing.extraLarge
 
-                Image {
-                    asynchronous: true
-                    source: Paths.absolutePath(Config.paths.noNotifsPic)
-                    fillMode: Image.PreserveAspectFit
-                    sourceSize.width: clipRect.width * 0.8 * ((QsWindow.window as QsWindow)?.devicePixelRatio ?? 1)
-
-                    layer.enabled: true
-                    layer.effect: Colouriser {
-                        colorizationColor: Colours.palette.m3outlineVariant
-                        brightness: 1
-                    }
+                Mask {
+                    Layout.alignment: Qt.AlignHCenter
+                    size: Math.min(160, clipRect.width * 0.45)
+                    filled: false
+                    colour: Hallownest.steel
                 }
 
                 StyledText {
                     Layout.alignment: Qt.AlignHCenter
                     text: Tr.tr("All up to date!")
-                    color: Colours.palette.m3outlineVariant
-                    font: Tokens.font.headline.builders.small.width(90).build()
+                    color: Hallownest.steel
+                    font.family: Hallownest.serif
+                    font.pointSize: 14
+                    font.weight: Font.Bold
                 }
             }
 
@@ -182,19 +183,11 @@ Item {
         opacity: root.notifCount > 0 ? 1 : 0
         active: opacity > 0
 
-        sourceComponent: IconButton {
-            id: clearBtn
-
+        sourceComponent: HkButton {
+            implicitHeight: 40
             icon: "clear_all"
-            font: Tokens.font.icon.large
+            accent: Hallownest.soul
             onClicked: clearTimer.start()
-
-            Elevation {
-                anchors.fill: parent
-                radius: parent.radius
-                z: -1
-                level: clearBtn.stateLayer.containsMouse ? 4 : 3
-            }
         }
 
         Behavior on scale {

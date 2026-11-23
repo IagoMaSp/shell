@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import M3Shapes
 import Caelestia.Config
 import Caelestia.I18n
 import qs.components
@@ -18,14 +17,6 @@ Item {
     readonly property alias placeholderWidth: nonAnimPlaceholder.width
     property string buffer
     property bool showPassword
-    readonly property list<int> shapeQueue: {
-        const shapes = [MaterialShape.Slanted, MaterialShape.Arch, MaterialShape.Fan, MaterialShape.Arrow, MaterialShape.SemiCircle, MaterialShape.Triangle, MaterialShape.Diamond, MaterialShape.ClamShell, MaterialShape.Pentagon, MaterialShape.Gem, MaterialShape.Sunny, MaterialShape.VerySunny, MaterialShape.Cookie4Sided, MaterialShape.Ghostish, MaterialShape.SoftBurst];
-        for (let i = shapes.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shapes[i], shapes[j]] = [shapes[j], shapes[i]];
-        }
-        return shapes;
-    }
 
     clip: true
 
@@ -69,7 +60,7 @@ Item {
         text: nonAnimPlaceholder.text
 
         animate: true
-        color: root.pam.passwd.active ? Colours.palette.m3secondary : Colours.palette.m3outline
+        color: root.pam.passwd.active ? Hallownest.lifeblood : Hallownest.faint
         font: Tokens.font.body.builders.medium.scale(root.centerScale).width(110).build()
 
         opacity: root.buffer ? 0 : 1
@@ -169,11 +160,6 @@ Item {
             PauseAnimation {
                 duration: 180 * Tokens.anim.durations.scale
             }
-            PropertyAction {
-                target: charShape
-                property: "shape"
-                value: MaterialShape.Circle
-            }
             ParallelAnimation {
                 Anim {
                     target: charShape
@@ -223,13 +209,15 @@ Item {
             }
         }
 
-        MaterialShape {
+        Rectangle {
             id: charShape
 
             anchors.centerIn: parent
-            implicitSize: charList.implicitHeight * 1.5
-            shape: root.shapeQueue[char.index % root.shapeQueue.length] ?? MaterialShape.Circle
-            color: Colours.palette.m3onSurface
+            implicitWidth: charList.implicitHeight * 0.55
+            implicitHeight: implicitWidth
+            rotation: 45
+            radius: 1.5
+            color: Hallownest.soul
 
             opacity: root.showPassword ? 0 : 1
 
